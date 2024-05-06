@@ -12,13 +12,16 @@ INCLUDEPATH += src/
 
 SOURCES += \
     src/main.cpp \
-    src/mainwindow.cpp
+    src/mainwindow.cpp \
+    src/starterdialog.cpp
 
 HEADERS += \
-    src/mainwindow.h
+    src/mainwindow.h \
+    src/starterdialog.h
 
 FORMS += \
-    src/mainwindow.ui
+    src/mainwindow.ui \
+    src/starterdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
