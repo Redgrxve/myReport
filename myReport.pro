@@ -8,20 +8,26 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += src/
+INCLUDEPATH += \
+    src/gui/ \
+    src/base/
 
 SOURCES += \
-    src/main.cpp \
-    src/mainwindow.cpp \
-    src/starterdialog.cpp
+    src/base/nospacevalidator.cpp \
+    src/base/namevalidator.cpp \
+    src/app/main.cpp \
+    src/gui/mainwindow.cpp \
+    src/gui/starterdialog.cpp
 
 HEADERS += \
-    src/mainwindow.h \
-    src/starterdialog.h
+    src/base/nospacevalidator.h \
+    src/base/namevalidator.h \
+    src/gui/mainwindow.h \
+    src/gui/starterdialog.h
 
 FORMS += \
-    src/mainwindow.ui \
-    src/starterdialog.ui
+    src/gui/mainwindow.ui \
+    src/gui/starterdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

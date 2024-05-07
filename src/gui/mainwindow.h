@@ -19,9 +19,5 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
-private slots:
-    void onStarterDialogAccepted();
-    void onStarterDialogRejected();
 };
 #endif // MAINWINDOW_H

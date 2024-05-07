@@ -18,8 +18,13 @@ public:
 private:
     Ui::StarterDialog *ui;
 
+public slots:
+    void createMainWindow();
+
 private slots:
     void onCheckBoxToggled(bool checked);
+    void onAddClicked();
+    void onComboBoxChanged();
 };
 
 #endif // STARTERDIALOG_H

@@ -137,6 +137,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboBox</tabstop>
+  <tabstop>checkBox</tabstop>
+  <tabstop>lastNameLineEdit</tabstop>
+  <tabstop>firstNameLineEdit</tabstop>
+  <tabstop>patronymicLineEdit</tabstop>
+  <tabstop>addButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -146,8 +154,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>392</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -162,8 +170,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>392</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
