@@ -96,8 +96,7 @@ void StarterDialog::onAddClicked()
         }
     }
 
-    if (!writeNameToDatabase(newTeacherName))
-    {
+    if (!writeNameToDatabase(newTeacherName)) {
         QMessageBox::warning(this, tr("Внимание"),
                                    tr("Ошибка при добавлении нового преподавателя."
                                       "\nПопробуйте еще раз."));
@@ -105,6 +104,7 @@ void StarterDialog::onAddClicked()
     }
 
     ui->comboBox->addItem(newTeacherName);
+    ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);
     clearLineEdits();
 }
 
