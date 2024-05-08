@@ -3,6 +3,9 @@
 
 #include <QDialog>
 
+class QSqlDatabase;
+class QSqlQuery;
+
 namespace Ui {
 class StarterDialog;
 }
@@ -12,19 +15,24 @@ class StarterDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StarterDialog(QWidget *parent = nullptr);
+    explicit StarterDialog(QSqlQuery *selectNamesQuery, QSqlDatabase *db, QWidget *parent = nullptr);
     ~StarterDialog();
 
 private:
     Ui::StarterDialog *ui;
+    QSqlDatabase *m_db;
+
+    void clearLineEdits() const;
+    void fillComboBox(QSqlQuery *queryResult) const;
+    bool writeNameToDatabase(const QString &fullName);
 
 public slots:
-    void createMainWindow();
+    void createMainWindow() const;
 
 private slots:
-    void onCheckBoxToggled(bool checked);
+    void onCheckBoxToggled(bool checked) const;
     void onAddClicked();
-    void onComboBoxChanged();
+    void onComboBoxChanged() const;
 };
 
 #endif // STARTERDIALOG_H

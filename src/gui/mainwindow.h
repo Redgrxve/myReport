@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class QSqlDatabase;
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -14,10 +16,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QSqlDatabase *db, QWidget *parent = nullptr);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
+    QSqlDatabase *m_db;
 };
 #endif // MAINWINDOW_H

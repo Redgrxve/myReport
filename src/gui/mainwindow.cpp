@@ -1,15 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "starterdialog.h"
 
-#include <QMessageBox>
-#include <QTimer>
+#include <QSqlDatabase>
+#include <QSqlError>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QSqlDatabase *db, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_db(db)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
