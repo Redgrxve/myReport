@@ -13,19 +13,24 @@ INCLUDEPATH += \
     src/base/
 
 SOURCES += \
+    src/base/databasemanager.cpp \
     src/base/nospacevalidator.cpp \
     src/base/namevalidator.cpp \
     src/app/main.cpp \
+    src/gui/groupslistwidget.cpp \
     src/gui/mainwindow.cpp \
     src/gui/starterdialog.cpp
 
 HEADERS += \
+    src/base/databasemanager.h \
     src/base/nospacevalidator.h \
     src/base/namevalidator.h \
+    src/gui/groupslistwidget.h \
     src/gui/mainwindow.h \
     src/gui/starterdialog.h
 
 FORMS += \
+    src/gui/groupslistwidget.ui \
     src/gui/mainwindow.ui \
     src/gui/starterdialog.ui
 
@@ -33,3 +38,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    src/res/resources.qrc

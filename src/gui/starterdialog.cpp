@@ -2,23 +2,20 @@
 #include "mainwindow.h"
 #include "nospacevalidator.h"
 #include "ui_starterdialog.h"
+#include "databasemanager.h"
 
 #include <QMessageBox>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
 
-StarterDialog::StarterDialog(QSqlQuery *selectNamesQuery, QSqlDatabase *db, QWidget *parent)
+StarterDialog::StarterDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::StarterDialog)
-    , m_db(db)
 {
     ui->setupUi(this);
 
     ui->newTeacherGroupBox->hide();
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-    fillComboBox(selectNamesQuery);
+    ui->comboBox->insertItems(0, DatabaseManager::instance()->selectFromTeachers());
     if (ui->comboBox->count() == 0)
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
@@ -42,27 +39,6 @@ void StarterDialog::clearLineEdits() const
     ui->lastNameLineEdit->clear();
     ui->firstNameLineEdit->clear();
     ui->patronymicLineEdit->clear();
-}
-
-void StarterDialog::fillComboBox(QSqlQuery *queryResult) const
-{
-    while (queryResult->next()) {
-        ui->comboBox->addItem(queryResult->value(0).toString());
-    }
-}
-
-bool StarterDialog::writeNameToDatabase(const QString &fullName)
-{
-    QSqlQuery query;
-    query.prepare("INSERT INTO teachers (fullName) VALUES (:name)");
-    query.bindValue(":name", fullName);
-    if (!query.exec()) {
-        qDebug() << "Error executing query: " <<  query.lastError().text();
-        return false;
-    }
-
-    qDebug() << "Row added successfully.";
-    return true;
 }
 
 void StarterDialog::onCheckBoxToggled(bool checked) const
@@ -96,7 +72,7 @@ void StarterDialog::onAddClicked()
         }
     }
 
-    if (!writeNameToDatabase(newTeacherName)) {
+    if (!DatabaseManager::instance()->insertToTeachers(newTeacherName)) {
         QMessageBox::warning(this, tr("Внимание"),
                                    tr("Ошибка при добавлении нового преподавателя."
                                       "\nПопробуйте еще раз."));
@@ -115,6 +91,6 @@ void StarterDialog::onComboBoxChanged() const
 
 void StarterDialog::createMainWindow() const
 {
-    MainWindow* mainWindow = new MainWindow(m_db);
+    MainWindow* mainWindow = new MainWindow();
     mainWindow->show();
 }

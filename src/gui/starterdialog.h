@@ -3,9 +3,6 @@
 
 #include <QDialog>
 
-class QSqlDatabase;
-class QSqlQuery;
-
 namespace Ui {
 class StarterDialog;
 }
@@ -15,16 +12,13 @@ class StarterDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StarterDialog(QSqlQuery *selectNamesQuery, QSqlDatabase *db, QWidget *parent = nullptr);
+    explicit StarterDialog(QWidget *parent = nullptr);
     ~StarterDialog();
 
 private:
     Ui::StarterDialog *ui;
-    QSqlDatabase *m_db;
 
     void clearLineEdits() const;
-    void fillComboBox(QSqlQuery *queryResult) const;
-    bool writeNameToDatabase(const QString &fullName);
 
 public slots:
     void createMainWindow() const;

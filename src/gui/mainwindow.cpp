@@ -4,10 +4,9 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 
-MainWindow::MainWindow(QSqlDatabase *db, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_db(db)
 {
     ui->setupUi(this);
 
