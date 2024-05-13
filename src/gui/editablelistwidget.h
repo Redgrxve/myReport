@@ -20,8 +20,8 @@ public:
 protected:
     Ui::EditableListWidget *ui;
 
-    virtual void addNewItem();
-    virtual void removeSelectedItem();
+    virtual void addNewItem() = 0;
+    virtual void removeSelectedItem() = 0;
 
 protected slots:
     void onAddButtonClicked();
