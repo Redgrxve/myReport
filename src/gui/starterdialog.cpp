@@ -63,9 +63,9 @@ void StarterDialog::onAddClicked()
 
 
     if (ui->comboBox->findText(newTeacherName) != -1) {
-        QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Внимание"),
-                                                                        tr("Такое ФИО уже присутствует в списке."
-                                                                           "\nВы хотите его добавить?"));
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question( this, tr("Внимание"), tr("Такое ФИО уже присутствует в списке."
+                                                                "\nВы хотите его добавить?"));
         if (reply == QMessageBox::No) {
             clearLineEdits();
             return;

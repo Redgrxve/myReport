@@ -21,6 +21,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QSqlDatabase *m_db;
+
+private slots:
+    void onGroupsTriggered();
 };
 #endif // MAINWINDOW_H

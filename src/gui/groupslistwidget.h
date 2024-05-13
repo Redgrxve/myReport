@@ -17,6 +17,12 @@ public:
 
 private:
     Ui::GroupsListWidget *ui;
+
+    bool isItemInList(const QString &text) const;
+
+private slots:
+    void onAddButtonClicked();
+    void onDeleteButtonClicked();
 };
 
 #endif // GROUPSLISTWIDGET_H

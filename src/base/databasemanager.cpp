@@ -22,7 +22,7 @@ DatabaseManager *DatabaseManager::instance()
 
 bool DatabaseManager::connect()
 {
-    QString dbPath = "databas.db";
+    QString dbPath = "database.db";
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName(dbPath);
 
@@ -82,6 +82,24 @@ bool DatabaseManager::insertToTeachers(const QString &fullName) const
     return true;
 }
 
+bool DatabaseManager::insertToGroups(const QString &name) const
+{
+    if (isItemInGroups(name))
+        return false;
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO groups (name) VALUES (:name)");
+    query.bindValue(":name", name);
+    if (!query.exec()) {
+        qDebug() << "Ошибка при вставке в groups"
+                 << query.lastError();
+        return false;
+    }
+
+    qDebug() << "Строка успешно вствлена в groups";
+    return true;
+}
+
 QStringList DatabaseManager::selectFromTeachers() const
 {
     QSqlQuery query;
@@ -93,11 +111,65 @@ QStringList DatabaseManager::selectFromTeachers() const
 
     QStringList result;
     while (query.next()) {
-        result.push_back(query.value(0).toString());
-        result.sort();
+        result.append(query.value(0).toString());
+    }
+    result.sort();
+    return result;
+}
+
+QStringList DatabaseManager::selectFromGroups() const
+{
+    QSqlQuery query;
+    if (!query.exec("SELECT name FROM groups")) {
+        qDebug() << "Ошибка при получении данных из groups"
+                 << query.lastError();
+        return QStringList();
     }
 
+    QStringList result;
+    while (query.next()) {
+        result.append(query.value(0).toString());
+    }
+    result.sort();
     return result;
+}
+
+bool DatabaseManager::deleteFromTeachers(const QString &item) const
+{
+    return false;
+}
+
+bool DatabaseManager::deleteFromGroups(const QString &item) const
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM groups WHERE name = :item");
+    query.bindValue(":item", item);
+    if (!query.exec()) {
+        qDebug() << "Ошибка при удалении элемента из таблицы groups:"
+                 << query.lastError();
+        return false;
+    }
+    return true;
+}
+
+bool DatabaseManager::isItemInTeachers(const QString &item) const
+{
+    return false;
+}
+
+bool DatabaseManager::isItemInGroups(const QString &item) const
+{
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(name) FROM groups WHERE name = :item");
+    query.bindValue(":item", item);
+    if (!query.exec()) {
+        qDebug() << "Ошибка при получении кол-ва эл-тов из groups"
+                 << query.lastError();
+        return true;
+    }
+
+    int count = query.next() ? query.value(0).toInt() : 0;
+    return count > 0;
 }
 
 bool DatabaseManager::createDatabaseFile(const QString &path) const

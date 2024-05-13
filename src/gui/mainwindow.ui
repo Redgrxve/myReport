@@ -42,8 +42,8 @@
     <property name="title">
      <string>Списки</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
+    <addaction name="actionGroups"/>
+    <addaction name="actionDisciplines"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -72,7 +72,7 @@
     <enum>QAction::NoRole</enum>
    </property>
   </action>
-  <action name="action">
+  <action name="actionGroups">
    <property name="icon">
     <iconset resource="../res/resources.qrc">
      <normaloff>:/icons/icons/people.png</normaloff>:/icons/icons/people.png</iconset>
@@ -81,7 +81,7 @@
     <string>Группы</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="actionDisciplines">
    <property name="text">
     <string>Дисциплины</string>
    </property>
@@ -90,5 +90,25 @@
  <resources>
   <include location="../res/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionGroups</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onGroupsTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onGroupsTriggered()</slot>
+ </slots>
 </ui>

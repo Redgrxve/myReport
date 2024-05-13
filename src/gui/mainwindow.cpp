@@ -1,3 +1,4 @@
+#include "groupslistwidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -15,5 +16,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::onGroupsTriggered()
+{
+    GroupsListWidget* groupsWidget = new GroupsListWidget();
+    groupsWidget->show();
 }
 
