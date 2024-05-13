@@ -1,7 +1,7 @@
 #ifndef GROUPSLISTWIDGET_H
 #define GROUPSLISTWIDGET_H
 
-#include <editablelistwidget.h>
+#include "editablelistwidget.h"
 
 class GroupsListWidget : public EditableListWidget
 {
