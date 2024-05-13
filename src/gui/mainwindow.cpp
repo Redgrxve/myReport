@@ -1,4 +1,4 @@
-#include "groupslistwidget.h"
+#include "editablelistwidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::onGroupsTriggered()
 {
-    GroupsListWidget* groupsWidget = new GroupsListWidget();
+    EditableListWidget* groupsWidget = new EditableListWidget();
     groupsWidget->show();
 }
 

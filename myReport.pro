@@ -17,7 +17,7 @@ SOURCES += \
     src/base/nospacevalidator.cpp \
     src/base/namevalidator.cpp \
     src/app/main.cpp \
-    src/gui/groupslistwidget.cpp \
+    src/gui/editablelistwidget.cpp \
     src/gui/mainwindow.cpp \
     src/gui/starterdialog.cpp
 
@@ -25,12 +25,12 @@ HEADERS += \
     src/base/databasemanager.h \
     src/base/nospacevalidator.h \
     src/base/namevalidator.h \
-    src/gui/groupslistwidget.h \
+    src/gui/editablelistwidget.h \
     src/gui/mainwindow.h \
     src/gui/starterdialog.h
 
 FORMS += \
-    src/gui/groupslistwidget.ui \
+    src/gui/editablelistwidget.ui \
     src/gui/mainwindow.ui \
     src/gui/starterdialog.ui
 

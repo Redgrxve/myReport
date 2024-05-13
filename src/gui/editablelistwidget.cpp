@@ -1,13 +1,13 @@
-#include "groupslistwidget.h"
-#include "ui_groupslistwidget.h"
+#include "editablelistwidget.h"
+#include "ui_editablelistwidget.h"
 #include "databasemanager.h"
 
 #include <QInputDialog>
 #include <QMessageBox>
 
-GroupsListWidget::GroupsListWidget(QWidget *parent)
+EditableListWidget::EditableListWidget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::GroupsListWidget)
+    , ui(new Ui::EditableListWidget)
 {
     ui->setupUi(this);
 
@@ -18,18 +18,18 @@ GroupsListWidget::GroupsListWidget(QWidget *parent)
     connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(onDeleteButtonClicked()));
 }
 
-GroupsListWidget::~GroupsListWidget()
+EditableListWidget::~EditableListWidget()
 {
     delete ui;
 }
 
-bool GroupsListWidget::isItemInList(const QString &text) const
+bool EditableListWidget::isItemInList(const QString &text) const
 {
     QList<QListWidgetItem*> items = ui->listWidget->findItems(text, Qt::MatchExactly);
     return !items.isEmpty();
 }
 
-void GroupsListWidget::onAddButtonClicked()
+void EditableListWidget::addNewItem()
 {
     bool okPressed;
     QString groupName = QInputDialog::getText(this, tr("Добавление новой группы"),
@@ -56,7 +56,7 @@ void GroupsListWidget::onAddButtonClicked()
     ui->listWidget->sortItems();
 }
 
-void GroupsListWidget::onDeleteButtonClicked()
+void EditableListWidget::removeSelectedItem()
 {
     auto selectedItem = ui->listWidget->currentItem();
     if (!selectedItem)
@@ -70,4 +70,14 @@ void GroupsListWidget::onDeleteButtonClicked()
     }
 
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
+}
+
+void EditableListWidget::onAddButtonClicked()
+{
+    addNewItem();
+}
+
+void EditableListWidget::onDeleteButtonClicked()
+{
+    removeSelectedItem();
 }
