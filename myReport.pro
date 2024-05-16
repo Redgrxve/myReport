@@ -13,6 +13,7 @@ INCLUDEPATH += \
     src/base/
 
 SOURCES += \
+    src/gui/disciplineslistwidget.cpp \
     src/gui/groupslistwidget.cpp \
     src/base/databasemanager.cpp \
     src/base/nospacevalidator.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     src/gui/starterdialog.cpp
 
 HEADERS += \
+    src/gui/disciplineslistwidget.h \
     src/gui/groupslistwidget.h \
     src/base/databasemanager.h \
     src/base/nospacevalidator.h \

@@ -9,11 +9,10 @@ class GroupsListWidget : public EditableListWidget
 
 public:
     explicit GroupsListWidget(QWidget* parent = nullptr);
-    ~GroupsListWidget();
 
 private:
-    void addNewItem() override;
-    void removeSelectedItem() override;
+    bool addToDatabase(const QString &item) override;
+    bool deleteFromDatabase(const QString &item) override;
 };
 
 #endif // GROUPSLISTWIDGET_H

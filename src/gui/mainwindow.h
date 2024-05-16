@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 
-class QSqlDatabase;
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -24,5 +22,6 @@ private:
 
 private slots:
     void onGroupsTriggered();
+    void onDisciplinesTriggered();
 };
 #endif // MAINWINDOW_H

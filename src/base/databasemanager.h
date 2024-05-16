@@ -13,17 +13,17 @@ public:
 
     bool connect();
 
-    bool insertToTeachers(const QString &fullName) const;
-    bool insertToGroups(const QString &name) const;
+    bool insertToTeachers(const QString &item) const;
+    bool insertToGroups(const QString &item) const;
+    bool insertToDisciplines(const QString &item) const;
 
     QStringList selectFromTeachers() const;
     QStringList selectFromGroups() const;
+    QStringList selectFromDisciplines() const;
 
     bool deleteFromTeachers(const QString &item) const;
     bool deleteFromGroups(const QString &item) const;
-
-    bool isItemInTeachers(const QString &item) const;
-    bool isItemInGroups(const QString &item) const;
+    bool deleteFromDisciplines(const QString &item) const;
 
     QSqlDatabase *database();
 
@@ -37,6 +37,21 @@ private:
 
     bool createDatabaseFile(const QString &path) const;
     bool createTables() const;
+
+    bool insertToTable(const QString &item,
+                       const QString &table,
+                       const QString &column) const;
+
+    QStringList selectFromTable(const QString &table,
+                                const QString &column) const;
+
+    bool deleteFromTable(const QString &item,
+                         const QString &table,
+                         const QString &column) const;
+
+    bool isItemInTable(const QString &item,
+                       const QString &table,
+                       const QString &column) const;
 };
 
 #endif // DATABASEMANAGER_H

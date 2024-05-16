@@ -2,6 +2,7 @@
 #define EDITABLELISTWIDGET_H
 
 #include <QWidget>
+#include <QListWidget>
 
 namespace Ui {
 class EditableListWidget;
@@ -20,8 +21,12 @@ public:
 protected:
     Ui::EditableListWidget *ui;
 
-    virtual void addNewItem() = 0;
-    virtual void removeSelectedItem() = 0;
+    virtual bool addToDatabase(const QString &item) = 0;
+    virtual bool deleteFromDatabase(const QString &item) = 0;
+
+    void addNewItem();
+    void removeSelectedItem();
+    QListWidget *listWidget() const;
 
 protected slots:
     void onAddButtonClicked();

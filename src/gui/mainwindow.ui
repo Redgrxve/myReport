@@ -75,13 +75,17 @@
   <action name="actionGroups">
    <property name="icon">
     <iconset resource="../res/resources.qrc">
-     <normaloff>:/icons/icons/people.png</normaloff>:/icons/icons/people.png</iconset>
+     <normaloff>:/icons/icons/group.png</normaloff>:/icons/icons/group.png</iconset>
    </property>
    <property name="text">
     <string>Группы</string>
    </property>
   </action>
   <action name="actionDisciplines">
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/icons/book.png</normaloff>:/icons/icons/book.png</iconset>
+   </property>
    <property name="text">
     <string>Дисциплины</string>
    </property>
@@ -107,8 +111,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDisciplines</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onDisciplinesTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onGroupsTriggered()</slot>
+  <slot>onDisciplinesTriggered()</slot>
  </slots>
 </ui>

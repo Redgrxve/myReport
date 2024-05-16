@@ -10,6 +10,7 @@
         <file>icons/plus.png</file>
         <file>icons/save-as.png</file>
         <file>icons/text-editor.png</file>
-        <file>icons/people.png</file>
+        <file>icons/group.png</file>
+        <file>icons/book.png</file>
     </qresource>
 </RCC>

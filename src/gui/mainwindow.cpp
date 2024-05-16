@@ -1,9 +1,7 @@
-#include "groupslistwidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-#include <QSqlDatabase>
-#include <QSqlError>
+#include "groupslistwidget.h"
+#include "disciplineslistwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,7 +18,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::onGroupsTriggered()
 {
-    GroupsListWidget* groupsWidget = new GroupsListWidget;
+    GroupsListWidget *groupsWidget = new GroupsListWidget;
     groupsWidget->show();
+}
+
+void MainWindow::onDisciplinesTriggered()
+{
+    DisciplinesListWidget *disciplinesWidget = new DisciplinesListWidget;
+    disciplinesWidget->show();
 }
 
