@@ -24,8 +24,9 @@ protected:
     virtual bool addToDatabase(const QString &item) = 0;
     virtual bool deleteFromDatabase(const QString &item) = 0;
 
-    void addNewItem();
-    void removeSelectedItem();
+    virtual void addNewItem();
+    virtual void removeSelectedItem();
+
     QListWidget *listWidget() const;
 
 protected slots:

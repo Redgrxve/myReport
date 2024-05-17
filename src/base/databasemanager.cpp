@@ -117,7 +117,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS teachers ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "fullName TEXT)";
+                "fullName TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы преподавателей: "
                  << query.lastError();
@@ -126,7 +126,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS groups ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "name TEXT)";
+                "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы групп: "
                  << query.lastError();
@@ -135,7 +135,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS disciplines ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "name TEXT)";
+                "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы дисциплины: "
                  << query.lastError();
