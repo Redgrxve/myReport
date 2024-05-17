@@ -37,16 +37,16 @@ void ListEditWidget::addNewItem()
         return;
 
     if (groupName.isEmpty()) {
-        QMessageBox::warning(this, "Внимание",
-                             "Поле должно быть заполнено.");
+        QMessageBox::warning(this, tr("Внимание"),
+                             tr("Поле должно быть заполнено."));
         return;
     }
 
     if (!addToDatabase(groupName)) {
-        QMessageBox::critical(this, "Ошибка",
-                              "Ошибка при добавлении элемента в базу данных."
+        QMessageBox::critical(this, tr("Ошибка"),
+                              tr("Ошибка при добавлении элемента в базу данных."
                               "\nВозможно, элемент уже добавлена в список."
-                              "\nПопробуйте еще раз.");
+                                 "\nПопробуйте еще раз."));
         return;
     }
 
@@ -61,9 +61,9 @@ void ListEditWidget::removeSelectedItem()
         return;
 
     if (!deleteFromDatabase(selectedItem->text())) {
-        QMessageBox::critical(this, "Ошибка",
-                              "Ошибка при удалении элемента из базы данных."
-                              "\nПопробуйте еще раз.");
+        QMessageBox::critical(this, tr("Ошибка"),
+                              tr("Ошибка при удалении элемента из базы данных."
+                                 "\nПопробуйте еще раз."));
         return;
     }
 
