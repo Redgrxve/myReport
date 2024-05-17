@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "groupslistwidget.h"
-#include "disciplineslistwidget.h"
+#include "groupslistedit.h"
+#include "subjectslistedit.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,13 +18,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::onGroupsTriggered()
 {
-    GroupsListWidget *groupsWidget = new GroupsListWidget;
+    GroupsListEdit *groupsWidget = new GroupsListEdit;
     groupsWidget->show();
 }
 
 void MainWindow::onDisciplinesTriggered()
 {
-    DisciplinesListWidget *disciplinesWidget = new DisciplinesListWidget;
+    SubjectsListEdit *disciplinesWidget = new SubjectsListEdit;
     disciplinesWidget->show();
 }
 

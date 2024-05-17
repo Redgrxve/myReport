@@ -1,25 +1,25 @@
-#ifndef EDITABLELISTWIDGET_H
-#define EDITABLELISTWIDGET_H
+#ifndef LISTEDITWIDGET_H
+#define LISTEDITWIDGET_H
 
 #include <QWidget>
 #include <QListWidget>
 
 namespace Ui {
-class EditableListWidget;
+class ListEditWidget;
 }
 
-class EditableListWidget : public QWidget
+class ListEditWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit EditableListWidget(QWidget *parent = nullptr);
-    virtual ~EditableListWidget();
+    explicit ListEditWidget(QWidget *parent = nullptr);
+    virtual ~ListEditWidget();
 
     bool isItemInList(const QString &text) const;
 
 protected:
-    Ui::EditableListWidget *ui;
+    Ui::ListEditWidget *ui;
 
     virtual bool addToDatabase(const QString &item) = 0;
     virtual bool deleteFromDatabase(const QString &item) = 0;
@@ -33,4 +33,4 @@ protected slots:
     void onDeleteButtonClicked();
 };
 
-#endif // EDITABLELISTWIDGET_H
+#endif // LISTEDITWIDGET_H

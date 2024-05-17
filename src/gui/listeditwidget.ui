@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EditableListWidget</class>
- <widget class="QWidget" name="EditableListWidget">
+ <class>ListEditWidget</class>
+ <widget class="QWidget" name="ListEditWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

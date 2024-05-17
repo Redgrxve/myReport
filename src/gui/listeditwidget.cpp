@@ -1,12 +1,12 @@
-#include "editablelistwidget.h"
-#include "ui_editablelistwidget.h"
+#include "listeditwidget.h"
+#include "ui_listeditwidget.h"
 
 #include <QInputDialog>
 #include <QMessageBox>
 
-EditableListWidget::EditableListWidget(QWidget *parent)
+ListEditWidget::ListEditWidget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::EditableListWidget)
+    , ui(new Ui::ListEditWidget)
 {
     ui->setupUi(this);
 
@@ -16,18 +16,18 @@ EditableListWidget::EditableListWidget(QWidget *parent)
     connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(onDeleteButtonClicked()));
 }
 
-EditableListWidget::~EditableListWidget()
+ListEditWidget::~ListEditWidget()
 {
     delete ui;
 }
 
-bool EditableListWidget::isItemInList(const QString &text) const
+bool ListEditWidget::isItemInList(const QString &text) const
 {
     QList<QListWidgetItem*> items = ui->listWidget->findItems(text, Qt::MatchExactly);
     return !items.isEmpty();
 }
 
-void EditableListWidget::addNewItem()
+void ListEditWidget::addNewItem()
 {
     bool okPressed;
     QString groupName = QInputDialog::getText(this, tr("Добавление нового элемента"),
@@ -54,7 +54,7 @@ void EditableListWidget::addNewItem()
     listWidget()->sortItems();
 }
 
-void EditableListWidget::removeSelectedItem()
+void ListEditWidget::removeSelectedItem()
 {
     auto selectedItem = listWidget()->currentItem();
     if (!selectedItem)
@@ -70,17 +70,17 @@ void EditableListWidget::removeSelectedItem()
     delete listWidget()->takeItem(listWidget()->row(selectedItem));
 }
 
-QListWidget *EditableListWidget::listWidget() const
+QListWidget *ListEditWidget::listWidget() const
 {
     return ui->listWidget;
 }
 
-void EditableListWidget::onAddButtonClicked()
+void ListEditWidget::onAddButtonClicked()
 {
     addNewItem();
 }
 
-void EditableListWidget::onDeleteButtonClicked()
+void ListEditWidget::onDeleteButtonClicked()
 {
     removeSelectedItem();
 }

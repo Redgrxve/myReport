@@ -13,28 +13,28 @@ INCLUDEPATH += \
     src/base/
 
 SOURCES += \
-    src/gui/disciplineslistwidget.cpp \
-    src/gui/groupslistwidget.cpp \
     src/base/databasemanager.cpp \
     src/base/nospacevalidator.cpp \
     src/base/namevalidator.cpp \
     src/app/main.cpp \
-    src/gui/editablelistwidget.cpp \
+    src/gui/groupslistedit.cpp \
+    src/gui/listeditwidget.cpp \
     src/gui/mainwindow.cpp \
-    src/gui/starterdialog.cpp
+    src/gui/starterdialog.cpp \
+    src/gui/subjectslistedit.cpp
 
 HEADERS += \
-    src/gui/disciplineslistwidget.h \
-    src/gui/groupslistwidget.h \
     src/base/databasemanager.h \
     src/base/nospacevalidator.h \
     src/base/namevalidator.h \
-    src/gui/editablelistwidget.h \
+    src/gui/groupslistedit.h \
+    src/gui/listeditwidget.h \
     src/gui/mainwindow.h \
-    src/gui/starterdialog.h
+    src/gui/starterdialog.h \
+    src/gui/subjectslistedit.h
 
 FORMS += \
-    src/gui/editablelistwidget.ui \
+    src/gui/listeditwidget.ui \
     src/gui/mainwindow.ui \
     src/gui/starterdialog.ui
 
