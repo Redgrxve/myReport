@@ -35,9 +35,6 @@ bool DatabaseManager::connect()
         return false;
     }
 
-    QSqlQuery query;
-    query.exec("PRAGMA key = 'your_encryption_key';");
-
     if (!createTables())
         return false;
 
