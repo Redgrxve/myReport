@@ -19,6 +19,7 @@ SOURCES += \
     src/app/main.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/listeditwidget.cpp \
+    src/gui/logindialog.cpp \
     src/gui/mainwindow.cpp \
     src/gui/starterdialog.cpp \
     src/gui/subjectslistedit.cpp
@@ -29,12 +30,14 @@ HEADERS += \
     src/base/namevalidator.h \
     src/gui/groupslistedit.h \
     src/gui/listeditwidget.h \
+    src/gui/logindialog.h \
     src/gui/mainwindow.h \
     src/gui/starterdialog.h \
     src/gui/subjectslistedit.h
 
 FORMS += \
     src/gui/listeditwidget.ui \
+    src/gui/logindialog.ui \
     src/gui/mainwindow.ui \
     src/gui/starterdialog.ui
 

@@ -35,15 +35,18 @@ bool DatabaseManager::connect()
         return false;
     }
 
+    QSqlQuery query;
+    query.exec("PRAGMA key = 'your_encryption_key';");
+
     if (!createTables())
         return false;
 
     return true;
 }
 
-bool DatabaseManager::insertToTeachers(const QString &item) const
+bool DatabaseManager::insertToUsers(const QString &login, const QString &password) const
 {
-    return insertToTable(item, "teachers", "fullName");
+    return insertToTable({login, password}, "users", {"login", "password"});
 }
 
 bool DatabaseManager::insertToGroups(const QString &item) const
@@ -115,9 +118,10 @@ bool DatabaseManager::createTables() const
     QSqlQuery query;
     QString queryText;
 
-    queryText = "CREATE TABLE IF NOT EXISTS teachers ("
+    queryText = "CREATE TABLE IF NOT EXISTS users ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "fullName TEXT NOT NULL)";
+                "login TEXT NOT NULL,"
+                "password TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы преподавателей: "
                  << query.lastError();
@@ -150,8 +154,11 @@ bool DatabaseManager::insertToTable(const QString &item,
                                     const QString &column) const
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO " + table + "(" + column + ")"
-                  + " VALUES (:item)");
+    QString queryText;
+
+    queryText = QString("INSERT INTO %table (%column) VALUES (:item)")
+                    .arg(table, column);
+    query.prepare(queryText);
     query.bindValue(":item", item);
     if (!query.exec()) {
         qDebug() << "Ошибка при вставке в "
@@ -161,6 +168,39 @@ bool DatabaseManager::insertToTable(const QString &item,
     }
 
     qDebug() << "Строка успешно вствлена в " << table;
+    return true;
+}
+
+bool DatabaseManager::insertToTable(const QStringList items, const QString &table, const QStringList &columns) const
+{
+    if (items.size() != columns.size())
+        return false;
+
+    QSqlQuery query;
+    QStringList queryParams;
+    QString queryText;
+    QString paramNames;
+    QString columnNames;
+
+    for (int i = 0; i < items.size(); ++i) {
+        queryParams.append(":value" + QString::number(i));
+    }
+    paramNames = queryParams.join(", ");
+    columnNames = columns.join(", ");
+    queryText = QString("INSERT INTO %1 (%2) VALUES (%3)")
+                    .arg(table, columnNames, paramNames);
+    query.prepare(queryText);
+    for (int i = 0; i < items.size(); ++i) {
+        query.bindValue(queryParams[i], items[i]);
+    }
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка при вставке в "
+                 << table
+                 << query.lastError();
+        return false;
+    }
+
     return true;
 }
 

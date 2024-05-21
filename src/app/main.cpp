@@ -1,4 +1,4 @@
-#include "starterdialog.h"
+#include "logindialog.h"
 #include "databasemanager.h"
 
 #include <QApplication>
@@ -16,9 +16,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    StarterDialog starterDialog;
-    QObject::connect(&starterDialog, SIGNAL(accepted()), &starterDialog, SLOT(createMainWindow()));
-    QObject::connect(&starterDialog, SIGNAL(rejected()), &a, SLOT(quit()));
-    starterDialog.show();
+    LoginDialog loginDialog;
+    QObject::connect(&loginDialog, SIGNAL(accepted()), &loginDialog, SLOT(createMainWindow()));
+    loginDialog.show();
     return a.exec();
 }

@@ -72,12 +72,12 @@ void StarterDialog::onAddClicked()
         }
     }
 
-    if (!DatabaseManager::instance()->insertToTeachers(newTeacherName)) {
-        QMessageBox::warning(this, tr("Внимание"),
-                                   tr("Ошибка при добавлении нового преподавателя."
-                                      "\nПопробуйте еще раз."));
-        return;
-    }
+    // if (!DatabaseManager::instance()->insertToUsers(newTeacherName)) {
+    //     QMessageBox::warning(this, tr("Внимание"),
+    //                                tr("Ошибка при добавлении нового преподавателя."
+    //                                   "\nПопробуйте еще раз."));
+    //     return;
+    // }
 
     ui->comboBox->addItem(newTeacherName);
     ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);

@@ -13,7 +13,7 @@ public:
 
     bool connect();
 
-    bool insertToTeachers(const QString &item) const;
+    bool insertToUsers(const QString &login, const QString &password) const;
     bool insertToGroups(const QString &item) const;
     bool insertToDisciplines(const QString &item) const;
 
@@ -41,6 +41,10 @@ private:
     bool insertToTable(const QString &item,
                        const QString &table,
                        const QString &column) const;
+
+    bool insertToTable(const QStringList items,
+                       const QString &table,
+                       const QStringList &columns) const;
 
     QStringList selectFromTable(const QString &table,
                                 const QString &column) const;
