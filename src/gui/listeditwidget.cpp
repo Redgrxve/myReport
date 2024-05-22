@@ -44,7 +44,7 @@ void ListEditWidget::addNewItem()
 
     if (!addToDatabase(groupName)) {
         QMessageBox::critical(this, tr("Ошибка"),
-                              tr("Ошибка при добавлении элемента в базу данных."
+                              tr("Ошибка при добавлении элемента."
                               "\nВозможно, элемент уже добавлена в список."
                                  "\nПопробуйте еще раз."));
         return;

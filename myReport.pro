@@ -10,13 +10,15 @@ CONFIG += c++17
 
 INCLUDEPATH += \
     src/gui/ \
-    src/base/
+    src/base/ \
+    F:\Development\Libs\OpenSSL-Win64\include
 
 SOURCES += \
     src/base/databasemanager.cpp \
     src/base/nospacevalidator.cpp \
     src/base/namevalidator.cpp \
     src/app/main.cpp \
+    src/base/password.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/listeditwidget.cpp \
     src/gui/logindialog.cpp \
@@ -28,6 +30,7 @@ HEADERS += \
     src/base/databasemanager.h \
     src/base/nospacevalidator.h \
     src/base/namevalidator.h \
+    src/base/password.h \
     src/gui/groupslistedit.h \
     src/gui/listeditwidget.h \
     src/gui/logindialog.h \

@@ -41,25 +41,20 @@ bool DatabaseManager::connect()
     return true;
 }
 
-bool DatabaseManager::insertToUsers(const QString &login, const QString &password) const
+bool DatabaseManager::insertToUsers(const QString &login,
+                                    const QString &password) const
 {
     return insertToTable({login, password}, "users", {"login", "password"});
 }
 
 bool DatabaseManager::insertToGroups(const QString &item) const
 {
-    if (isItemInTable(item, "groups", "name"))
-        return false;
-
     return insertToTable(item, "groups", "name");
 }
 
-bool DatabaseManager::insertToDisciplines(const QString &item) const
+bool DatabaseManager::insertToSubjects(const QString &item) const
 {
-    if (isItemInTable(item, "disciplines", "name"))
-        return false;
-
-    return insertToTable(item, "disciplines", "name");
+    return insertToTable(item, "subjects", "name");
 }
 
 QStringList DatabaseManager::selectFromTeachers() const
@@ -72,9 +67,25 @@ QStringList DatabaseManager::selectFromGroups() const
     return selectFromTable("groups", "name");
 }
 
-QStringList DatabaseManager::selectFromDisciplines() const
+QStringList DatabaseManager::selectFromSubjects() const
 {
-    return selectFromTable("disciplines", "name");
+    return selectFromTable("subjects", "name");
+}
+
+QString DatabaseManager::selectPasswordFromUsers(const QString &login) const
+{
+    QString result;
+    if (!isItemInTable(login, "users", "login"))
+        return result;
+
+    QSqlQuery query;
+    query.prepare("SELECT password FROM users WHERE login = :login");
+    query.bindValue(":login", login);
+    if (!query.exec())
+        return result;
+
+    result = query.next() ? query.value(0).toString() : "";
+    return result;
 }
 
 bool DatabaseManager::deleteFromTeachers(const QString &item) const
@@ -87,9 +98,9 @@ bool DatabaseManager::deleteFromGroups(const QString &item) const
     return deleteFromTable(item, "groups", "name");
 }
 
-bool DatabaseManager::deleteFromDisciplines(const QString &item) const
+bool DatabaseManager::deleteFromSubjects(const QString &item) const
 {
-    return deleteFromTable(item, "disciplines", "name");
+    return deleteFromTable(item, "subjects", "name");
 }
 
 QSqlDatabase *DatabaseManager::database()
@@ -118,23 +129,25 @@ bool DatabaseManager::createTables() const
     queryText = "CREATE TABLE IF NOT EXISTS users ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "login TEXT NOT NULL,"
-                "password TEXT NOT NULL)";
+                "password TEXT NOT NULL,"
+                "UNIQUE(login))";
     if (!query.exec(queryText)) {
-        qDebug() << "Ошибка при создании таблицы преподавателей: "
+        qDebug() << "Ошибка при создании таблицы пользователей: "
                  << query.lastError();
         return false;
     }
 
     queryText = "CREATE TABLE IF NOT EXISTS groups ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "name TEXT NOT NULL)";
+                "name TEXT NOT NULL,"
+                "UNIQUE(name))";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы групп: "
                  << query.lastError();
         return false;
     }
 
-    queryText = "CREATE TABLE IF NOT EXISTS disciplines ("
+    queryText = "CREATE TABLE IF NOT EXISTS subjects ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
@@ -153,7 +166,7 @@ bool DatabaseManager::insertToTable(const QString &item,
     QSqlQuery query;
     QString queryText;
 
-    queryText = QString("INSERT INTO %table (%column) VALUES (:item)")
+    queryText = QString("INSERT INTO %1 (%2) VALUES (:item)")
                     .arg(table, column);
     query.prepare(queryText);
     query.bindValue(":item", item);
@@ -168,7 +181,9 @@ bool DatabaseManager::insertToTable(const QString &item,
     return true;
 }
 
-bool DatabaseManager::insertToTable(const QStringList items, const QString &table, const QStringList &columns) const
+bool DatabaseManager::insertToTable(const QStringList items,
+                                    const QString &table,
+                                    const QStringList &columns) const
 {
     if (items.size() != columns.size())
         return false;
@@ -205,18 +220,45 @@ QStringList DatabaseManager::selectFromTable(const QString &table,
                                              const QString &column) const
 {
     QSqlQuery query;
+    QStringList result;
+
     if (!query.exec("SELECT " + column + " FROM " + table)) {
         qDebug() << "Ошибка при получении данных из "
                  << table
                  << query.lastError();
-        return QStringList();
+        return result;
     }
 
-    QStringList result;
     while (query.next()) {
         result.append(query.value(0).toString());
     }
     result.sort();
+    return result;
+}
+
+// not usable
+QStringList DatabaseManager::selectFromTable(const QString &table,
+                                             const QString &column,
+                                             const QString &condition) const
+{
+    QSqlQuery query;
+    QString queryText;
+    QStringList result;
+
+    if (condition.isEmpty()) {
+        queryText = QString("SELECT %1 FROM %2").arg(column, table);
+    } else {
+        queryText = QString("SELECT %1 FROM %2 WHERE %3")
+                        .arg(column, table, condition);
+    }
+
+    if (!query.exec(queryText))
+        return result;
+
+    while (query.next()) {
+        result.append(query.value(0).toString());
+    }
+
     return result;
 }
 

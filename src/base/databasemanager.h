@@ -15,15 +15,16 @@ public:
 
     bool insertToUsers(const QString &login, const QString &password) const;
     bool insertToGroups(const QString &item) const;
-    bool insertToDisciplines(const QString &item) const;
+    bool insertToSubjects(const QString &item) const;
 
     QStringList selectFromTeachers() const;
     QStringList selectFromGroups() const;
-    QStringList selectFromDisciplines() const;
+    QStringList selectFromSubjects() const;
+    QString selectPasswordFromUsers(const QString &login) const;
 
     bool deleteFromTeachers(const QString &item) const;
     bool deleteFromGroups(const QString &item) const;
-    bool deleteFromDisciplines(const QString &item) const;
+    bool deleteFromSubjects(const QString &item) const;
 
     QSqlDatabase *database();
 
@@ -48,6 +49,10 @@ private:
 
     QStringList selectFromTable(const QString &table,
                                 const QString &column) const;
+
+    QStringList selectFromTable(const QString &table,
+                                const QString &column,
+                                const QString &condition) const;
 
     bool deleteFromTable(const QString &item,
                          const QString &table,

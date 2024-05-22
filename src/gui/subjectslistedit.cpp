@@ -5,16 +5,16 @@ SubjectsListEdit::SubjectsListEdit(QWidget *parent)
     : ListEditWidget(parent)
 {
     setWindowTitle(tr("Список дисциплин"));
-    listWidget()->addItems(DatabaseManager::instance()->selectFromDisciplines());
+    listWidget()->addItems(DatabaseManager::instance()->selectFromSubjects());
 }
 
 bool SubjectsListEdit::addToDatabase(const QString &item)
 {
-    return DatabaseManager::instance()->insertToDisciplines(item);
+    return DatabaseManager::instance()->insertToSubjects(item);
 }
 
 bool SubjectsListEdit::deleteFromDatabase(const QString &item)
 {
-    return DatabaseManager::instance()->deleteFromDisciplines(item);
+    return DatabaseManager::instance()->deleteFromSubjects(item);
 }
 

@@ -42,10 +42,20 @@ void LoginDialog::onLoginClicked()
 {
     if (ui->loginLineEdit->text().isEmpty()
         || ui->loginPasswordLineEdit->text().isEmpty()) {
-        QMessageBox::critical(this, tr("Внимание"),
+        QMessageBox::warning(this, tr("Внимание"),
                              tr("Необходимо заполнить все поля"));
         return;
     }
+
+    QString login = ui->loginLineEdit->text();
+    QString password = ui->loginPasswordLineEdit->text();
+    QString registeredPassword = DatabaseManager::instance()->selectPasswordFromUsers(login);
+    if (registeredPassword.isEmpty() || password != registeredPassword) {
+        QMessageBox::warning(this, tr("Внимание"),
+                              tr("Неправильный логин или пароль"));
+        return;
+    }
+
     emit accepted();
     close();
 }
@@ -55,14 +65,14 @@ void LoginDialog::onSignupClicked()
     if (ui->signupLoginLineEdit->text().isEmpty()
         || ui->signupPasswordLineEdit->text().isEmpty()
         || ui->repeatPasswordLineEdit->text().isEmpty()) {
-        QMessageBox::critical(this, tr("Внимание"),
+        QMessageBox::warning(this, tr("Внимание"),
                               tr("Необходимо заполнить все поля"));
         return;
     }
 
     if (ui->signupPasswordLineEdit->text()
         != ui->repeatPasswordLineEdit->text()) {
-        QMessageBox::critical(this, tr("Внимание"),
+        QMessageBox::warning(this, tr("Внимание"),
                               tr("Пароли должны совпадать"));
         return;
     }
@@ -70,9 +80,9 @@ void LoginDialog::onSignupClicked()
     QString login = ui->signupLoginLineEdit->text();
     QString password = ui->signupPasswordLineEdit->text();
     if (!DatabaseManager::instance()->insertToUsers(login, password)) {
-        QMessageBox::critical(this, tr("Внимание"),
+        QMessageBox::warning(this, tr("Внимание"),
                               tr("Ошибка при регистрации."
-                                 "\nВозможно, не все поля заполнены."
+                                 "\nВозможно, такой логин уже существует."
                                  "\nПопробуйте еще раз"));
         return;
     }
