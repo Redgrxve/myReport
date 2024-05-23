@@ -2,6 +2,7 @@
 #include "ui_logindialog.h"
 #include "mainwindow.h"
 #include "databasemanager.h"
+#include "password.h"
 
 #include <QMessageBox>
 
@@ -48,9 +49,9 @@ void LoginDialog::onLoginClicked()
     }
 
     QString login = ui->loginLineEdit->text();
-    QString password = ui->loginPasswordLineEdit->text();
+    QString inputPassword = ui->loginPasswordLineEdit->text();
     QString registeredPassword = DatabaseManager::instance()->selectPasswordFromUsers(login);
-    if (registeredPassword.isEmpty() || password != registeredPassword) {
+    if (!Password::compare(inputPassword, registeredPassword)) {
         QMessageBox::warning(this, tr("Внимание"),
                               tr("Неправильный логин или пароль"));
         return;
@@ -78,8 +79,8 @@ void LoginDialog::onSignupClicked()
     }
 
     QString login = ui->signupLoginLineEdit->text();
-    QString password = ui->signupPasswordLineEdit->text();
-    if (!DatabaseManager::instance()->insertToUsers(login, password)) {
+    QString hashedPassword = Password::generateHash(ui->signupPasswordLineEdit->text());
+    if (!DatabaseManager::instance()->insertToUsers(login, hashedPassword)) {
         QMessageBox::warning(this, tr("Внимание"),
                               tr("Ошибка при регистрации."
                                  "\nВозможно, такой логин уже существует."

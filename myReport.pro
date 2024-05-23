@@ -13,6 +13,8 @@ INCLUDEPATH += \
     src/base/ \
     F:\Development\Libs\OpenSSL-Win64\include
 
+LIBS += -LF:\Development\Libs\OpenSSL-Win64\lib\VC\x64\MDd -lssl -lcrypto
+
 SOURCES += \
     src/base/databasemanager.cpp \
     src/base/nospacevalidator.cpp \
