@@ -11,16 +11,16 @@ CONFIG += c++17
 INCLUDEPATH += \
     src/gui/ \
     src/base/ \
-    F:\Development\Libs\OpenSSL-Win64\include
+    src/utils/ \
+    libs/OpenSSL/include
 
-LIBS += -LF:\Development\Libs\OpenSSL-Win64\lib\VC\x64\MDd -lssl -lcrypto
+LIBS += -L$$PWD/libs/OpenSSL/lib/MDd -lssl -lcrypto
 
 SOURCES += \
     src/base/databasemanager.cpp \
     src/base/nospacevalidator.cpp \
     src/base/namevalidator.cpp \
     src/app/main.cpp \
-    src/base/password.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/listeditwidget.cpp \
     src/gui/logindialog.cpp \
@@ -32,13 +32,13 @@ HEADERS += \
     src/base/databasemanager.h \
     src/base/nospacevalidator.h \
     src/base/namevalidator.h \
-    src/base/password.h \
     src/gui/groupslistedit.h \
     src/gui/listeditwidget.h \
     src/gui/logindialog.h \
     src/gui/mainwindow.h \
     src/gui/starterdialog.h \
-    src/gui/subjectslistedit.h
+    src/gui/subjectslistedit.h \
+    src/utils/passwordencrypt.h
 
 FORMS += \
     src/gui/listeditwidget.ui \

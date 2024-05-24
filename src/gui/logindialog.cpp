@@ -2,7 +2,7 @@
 #include "ui_logindialog.h"
 #include "mainwindow.h"
 #include "databasemanager.h"
-#include "password.h"
+#include "passwordencrypt.h"
 
 #include <QMessageBox>
 
@@ -27,6 +27,31 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
+bool LoginDialog::verifyPassword(const QString &login,
+                                 const QString &password)
+{
+    const auto dbManager = DatabaseManager::instance();
+    QByteArray storedHash = dbManager->selectPasswordFromUsers(login);
+    QByteArray storedSalt = dbManager->selectSaltFromUsers(login);
+    return PasswordEncrypt::compare(password, storedHash, storedSalt);
+}
+
+bool LoginDialog::storePasswordInDatabase(const QString &login,
+                                          const QString &password)
+{
+    const auto dbManager = DatabaseManager::instance();
+    QByteArray salt = PasswordEncrypt::generateSalt();
+    QByteArray hashedPassword = PasswordEncrypt::generateHash(password, salt);
+    return dbManager->insertToUsers(login, hashedPassword, salt);
+}
+
+void LoginDialog::clearSignupLineEdits()
+{
+    ui->signupLoginLineEdit->clear();
+    ui->signupPasswordLineEdit->clear();
+    ui->repeatPasswordLineEdit->clear();
+}
+
 void LoginDialog::createMainWindow()
 {
     MainWindow* mainWindow = new MainWindow();
@@ -49,9 +74,8 @@ void LoginDialog::onLoginClicked()
     }
 
     QString login = ui->loginLineEdit->text();
-    QString inputPassword = ui->loginPasswordLineEdit->text();
-    QString registeredPassword = DatabaseManager::instance()->selectPasswordFromUsers(login);
-    if (!Password::compare(inputPassword, registeredPassword)) {
+    QString password = ui->loginPasswordLineEdit->text();
+    if (!verifyPassword(login, password)) {
         QMessageBox::warning(this, tr("Внимание"),
                               tr("Неправильный логин или пароль"));
         return;
@@ -79,8 +103,8 @@ void LoginDialog::onSignupClicked()
     }
 
     QString login = ui->signupLoginLineEdit->text();
-    QString hashedPassword = Password::generateHash(ui->signupPasswordLineEdit->text());
-    if (!DatabaseManager::instance()->insertToUsers(login, hashedPassword)) {
+    QString password = ui->signupPasswordLineEdit->text();
+    if (!storePasswordInDatabase(login, password)) {
         QMessageBox::warning(this, tr("Внимание"),
                               tr("Ошибка при регистрации."
                                  "\nВозможно, такой логин уже существует."
@@ -88,8 +112,6 @@ void LoginDialog::onSignupClicked()
         return;
     }
 
-    ui->signupLoginLineEdit->clear();
-    ui->signupPasswordLineEdit->clear();
-    ui->repeatPasswordLineEdit->clear();
+    clearSignupLineEdits();
     ui->onSignupLabel->show();
 }

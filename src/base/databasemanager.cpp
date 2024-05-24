@@ -1,8 +1,6 @@
 #include "databasemanager.h"
 #include "qdebug.h"
 
-#include <QSqlError>
-#include <QSqlQuery>
 #include <QStringList>
 #include <QFile>
 
@@ -42,9 +40,22 @@ bool DatabaseManager::connect()
 }
 
 bool DatabaseManager::insertToUsers(const QString &login,
-                                    const QString &password) const
+                                    const QByteArray &password,
+                                    const QByteArray &salt) const
 {
-    return insertToTable({login, password}, "users", {"login", "password"});
+    QSqlQuery query;
+    query.prepare("INSERT INTO users (login, password, salt)"
+                  "VALUES (:login, :password, :salt)");
+    query.bindValue(":login", login);
+    query.bindValue(":password", password);
+    query.bindValue(":salt", salt);
+    if (!query.exec()) {
+        qDebug() << "Ошибка при вствке в users: "
+                 << query.lastError();
+        return false;
+    }
+
+    return true;
 }
 
 bool DatabaseManager::insertToGroups(const QString &item) const
@@ -57,11 +68,6 @@ bool DatabaseManager::insertToSubjects(const QString &item) const
     return insertToTable(item, "subjects", "name");
 }
 
-QStringList DatabaseManager::selectFromTeachers() const
-{
-    return selectFromTable("teachers", "fullName");
-}
-
 QStringList DatabaseManager::selectFromGroups() const
 {
     return selectFromTable("groups", "name");
@@ -72,25 +78,14 @@ QStringList DatabaseManager::selectFromSubjects() const
     return selectFromTable("subjects", "name");
 }
 
-QString DatabaseManager::selectPasswordFromUsers(const QString &login) const
+QByteArray DatabaseManager::selectPasswordFromUsers(const QString &login) const
 {
-    QString result;
-    if (!isItemInTable(login, "users", "login"))
-        return result;
-
-    QSqlQuery query;
-    query.prepare("SELECT password FROM users WHERE login = :login");
-    query.bindValue(":login", login);
-    if (!query.exec())
-        return result;
-
-    result = query.next() ? query.value(0).toString() : "";
-    return result;
+    return selectFromUsersByLogin(login, "password");
 }
 
-bool DatabaseManager::deleteFromTeachers(const QString &item) const
+QByteArray DatabaseManager::selectSaltFromUsers(const QString &login) const
 {
-    return deleteFromTable(item, "teachers", "fullName");
+    return selectFromUsersByLogin(login, "salt");
 }
 
 bool DatabaseManager::deleteFromGroups(const QString &item) const
@@ -128,9 +123,9 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS users ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "login TEXT NOT NULL,"
-                "password TEXT NOT NULL,"
-                "UNIQUE(login))";
+                "login TEXT NOT NULL UNIQUE,"
+                "password BINARY(32) NOT NULL,"
+                "salt BINARY(16) NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы пользователей: "
                  << query.lastError();
@@ -181,41 +176,6 @@ bool DatabaseManager::insertToTable(const QString &item,
     return true;
 }
 
-bool DatabaseManager::insertToTable(const QStringList items,
-                                    const QString &table,
-                                    const QStringList &columns) const
-{
-    if (items.size() != columns.size())
-        return false;
-
-    QSqlQuery query;
-    QStringList queryParams;
-    QString queryText;
-    QString paramNames;
-    QString columnNames;
-
-    for (int i = 0; i < items.size(); ++i) {
-        queryParams.append(":value" + QString::number(i));
-    }
-    paramNames = queryParams.join(", ");
-    columnNames = columns.join(", ");
-    queryText = QString("INSERT INTO %1 (%2) VALUES (%3)")
-                    .arg(table, columnNames, paramNames);
-    query.prepare(queryText);
-    for (int i = 0; i < items.size(); ++i) {
-        query.bindValue(queryParams[i], items[i]);
-    }
-
-    if (!query.exec()) {
-        qDebug() << "Ошибка при вставке в "
-                 << table
-                 << query.lastError();
-        return false;
-    }
-
-    return true;
-}
-
 QStringList DatabaseManager::selectFromTable(const QString &table,
                                              const QString &column) const
 {
@@ -236,7 +196,7 @@ QStringList DatabaseManager::selectFromTable(const QString &table,
     return result;
 }
 
-// not usable
+// not working
 QStringList DatabaseManager::selectFromTable(const QString &table,
                                              const QString &column,
                                              const QString &condition) const
@@ -259,6 +219,25 @@ QStringList DatabaseManager::selectFromTable(const QString &table,
         result.append(query.value(0).toString());
     }
 
+    return result;
+}
+
+QByteArray DatabaseManager::selectFromUsersByLogin(const QString &login,
+                                                   const QString &column) const
+{
+    QByteArray result;
+    if (!isItemInTable(login, "users", "login"))
+        return result;
+
+    QSqlQuery query;
+    QString queryText = QString("SELECT %1 FROM users WHERE login = :login")
+        .arg(column);
+    query.prepare(queryText);
+    query.bindValue(":login", login);
+    if (!query.exec())
+        return result;
+
+    result = query.next() ? query.value(0).toByteArray() : "";
     return result;
 }
 

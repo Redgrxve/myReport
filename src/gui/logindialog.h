@@ -18,6 +18,14 @@ public:
 private:
     Ui::LoginDialog *ui;
 
+    bool verifyPassword(const QString &login,
+                        const QString &password);
+
+    bool storePasswordInDatabase(const QString &login,
+                                 const QString &password);
+
+    void clearSignupLineEdits();
+
 public slots:
     void createMainWindow();
 

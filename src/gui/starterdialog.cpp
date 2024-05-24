@@ -15,7 +15,7 @@ StarterDialog::StarterDialog(QWidget *parent)
     ui->newTeacherGroupBox->hide();
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-    ui->comboBox->insertItems(0, DatabaseManager::instance()->selectFromTeachers());
+   // ui->comboBox->insertItems(0, DatabaseManager::instance()->selectFromTeachers());
     if (ui->comboBox->count() == 0)
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
