@@ -1,14 +1,17 @@
 #include "databasemanager.h"
-#include "qdebug.h"
 
 #include <QStringList>
 #include <QFile>
+#include <QDebug>
 
 DatabaseManager* DatabaseManager::m_instance = nullptr;
 
 DatabaseManager::DatabaseManager() {}
 
-DatabaseManager::~DatabaseManager() {}
+DatabaseManager::~DatabaseManager()
+{
+    m_db.close();
+}
 
 DatabaseManager *DatabaseManager::instance()
 {
@@ -21,11 +24,9 @@ DatabaseManager *DatabaseManager::instance()
 bool DatabaseManager::connect()
 {
     QString dbPath = "database.db";
-    m_db = QSqlDatabase::addDatabase("QSQLITE");
+    m_db = QSqlDatabase::addDatabase("SQLITECIPHER");
     m_db.setDatabaseName(dbPath);
-
-    if (!createDatabaseFile(dbPath))
-        return false;
+    //m_db.setPassword("supersecretpassword");
 
     if (!m_db.open()) {
         qDebug() << "Ошибка при открытии БД:"

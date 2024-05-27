@@ -9,6 +9,8 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+class WindowManager;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,6 +21,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    WindowManager *windowManager;
+
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void onGroupsTriggered();

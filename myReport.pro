@@ -14,29 +14,26 @@ INCLUDEPATH += \
     src/utils/ \
     libs/OpenSSL/include
 
-LIBS += -L$$PWD/libs/OpenSSL/lib/MDd -lssl -lcrypto
+LIBS += \
+    -L$$PWD/libs/OpenSSL/lib/MDd -lssl -lcrypto
 
 SOURCES += \
     src/base/databasemanager.cpp \
-    src/base/nospacevalidator.cpp \
-    src/base/namevalidator.cpp \
     src/app/main.cpp \
+    src/base/windowmanager.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/listeditwidget.cpp \
     src/gui/logindialog.cpp \
     src/gui/mainwindow.cpp \
-    src/gui/starterdialog.cpp \
     src/gui/subjectslistedit.cpp
 
 HEADERS += \
     src/base/databasemanager.h \
-    src/base/nospacevalidator.h \
-    src/base/namevalidator.h \
+    src/base/windowmanager.h \
     src/gui/groupslistedit.h \
     src/gui/listeditwidget.h \
     src/gui/logindialog.h \
     src/gui/mainwindow.h \
-    src/gui/starterdialog.h \
     src/gui/subjectslistedit.h \
     src/utils/passwordencrypt.h
 
@@ -44,7 +41,6 @@ FORMS += \
     src/gui/listeditwidget.ui \
     src/gui/logindialog.ui \
     src/gui/mainwindow.ui \
-    src/gui/starterdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -30,6 +30,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QLineEdit" name="loginPasswordLineEdit">
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
      <property name="placeholderText">
       <string>Пароль</string>
      </property>
@@ -68,6 +71,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QLineEdit" name="signupPasswordLineEdit">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
         <property name="placeholderText">
          <string>Пароль</string>
         </property>
@@ -75,6 +81,9 @@
       </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="repeatPasswordLineEdit">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
         <property name="placeholderText">
          <string>Повторите пароль</string>
         </property>
