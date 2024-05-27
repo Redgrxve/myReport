@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QDebug>
 
-DatabaseManager* DatabaseManager::m_instance = nullptr;
+Q_GLOBAL_STATIC(DatabaseManager, databaseManagerInstance)
 
 DatabaseManager::DatabaseManager() {}
 
@@ -15,10 +15,7 @@ DatabaseManager::~DatabaseManager()
 
 DatabaseManager *DatabaseManager::instance()
 {
-    if (!m_instance)
-        m_instance = new DatabaseManager;
-
-    return m_instance;
+    return databaseManagerInstance;
 }
 
 bool DatabaseManager::connect()
@@ -79,6 +76,11 @@ QStringList DatabaseManager::selectFromSubjects() const
     return selectFromTable("subjects", "name");
 }
 
+int DatabaseManager::selectIdFromUsers(const QString &login) const
+{
+    return selectFromUsersByLogin(login, "id").toInt();
+}
+
 QByteArray DatabaseManager::selectPasswordFromUsers(const QString &login) const
 {
     return selectFromUsersByLogin(login, "password");
@@ -135,6 +137,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS groups ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "user_id INTEGER NOT NULL REFERENCES users(id),"
                 "name TEXT NOT NULL,"
                 "UNIQUE(name))";
     if (!query.exec(queryText)) {
@@ -145,6 +148,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS subjects ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "user_id INTEGER NOT NULL REFERENCES users(id),"
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы дисциплины: "

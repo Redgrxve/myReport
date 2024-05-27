@@ -24,6 +24,7 @@ private:
     bool storePasswordInDatabase(const QString &login,
                                  const QString &password);
 
+    int userIdByLogin(const QString& login);
     void clearSignupLineEdits();
 
 public slots:

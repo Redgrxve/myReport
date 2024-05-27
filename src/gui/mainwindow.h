@@ -21,7 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    WindowManager *windowManager;
+    WindowManager *m_windowManager;
 
     void closeEvent(QCloseEvent *event) override;
 

@@ -18,6 +18,7 @@ LIBS += \
     -L$$PWD/libs/OpenSSL/lib/MDd -lssl -lcrypto
 
 SOURCES += \
+    src/base/appconfig.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
     src/base/windowmanager.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     src/gui/subjectslistedit.cpp
 
 HEADERS += \
+    src/base/appconfig.h \
     src/base/databasemanager.h \
     src/base/windowmanager.h \
     src/gui/groupslistedit.h \

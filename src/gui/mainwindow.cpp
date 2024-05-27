@@ -10,18 +10,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    windowManager = new WindowManager;
+    m_windowManager = new WindowManager;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete windowManager;
+    delete m_windowManager;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    windowManager->closeAndDeleteAll();
+    m_windowManager->closeAndDeleteAll();
 
     QMainWindow::closeEvent(event);
 }
@@ -30,13 +30,13 @@ void MainWindow::onGroupsTriggered()
 {
     GroupsListEdit *groupsWidget = new GroupsListEdit;
     groupsWidget->show();
-    windowManager->add(groupsWidget);
+    m_windowManager->add(groupsWidget);
 }
 
 void MainWindow::onDisciplinesTriggered()
 {
     SubjectsListEdit *subjectsWidget = new SubjectsListEdit;
     subjectsWidget->show();
-    windowManager->add(subjectsWidget);
+    m_windowManager->add(subjectsWidget);
 }
 

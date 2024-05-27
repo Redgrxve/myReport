@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "databasemanager.h"
 #include "passwordencrypt.h"
+#include "appconfig.h"
 
 #include <QMessageBox>
 
@@ -45,6 +46,11 @@ bool LoginDialog::storePasswordInDatabase(const QString &login,
     return dbManager->insertToUsers(login, hashedPassword, salt);
 }
 
+int LoginDialog::userIdByLogin(const QString &login)
+{
+    return DatabaseManager::instance()->selectIdFromUsers(login);
+}
+
 void LoginDialog::clearSignupLineEdits()
 {
     ui->signupLoginLineEdit->clear();
@@ -54,7 +60,7 @@ void LoginDialog::clearSignupLineEdits()
 
 void LoginDialog::createMainWindow()
 {
-    MainWindow* mainWindow = new MainWindow();
+    MainWindow* mainWindow = new MainWindow;
     mainWindow->show();
 }
 
@@ -81,6 +87,8 @@ void LoginDialog::onLoginClicked()
         return;
     }
 
+    AppConfig::instance()->setCurrentUser(login , userIdByLogin(login));
+    qDebug() << "login: " << login << ", id: " << userIdByLogin(login);
     emit accepted();
     close();
 }

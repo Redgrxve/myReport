@@ -4,10 +4,13 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QGlobalStatic>
 
 class DatabaseManager
 {
 public:
+    DatabaseManager();
+    ~DatabaseManager();
     DatabaseManager(const DatabaseManager &dm) = delete;
     DatabaseManager& operator=(const DatabaseManager &dm) = delete;
 
@@ -23,6 +26,7 @@ public:
 
     QStringList selectFromGroups() const;
     QStringList selectFromSubjects() const;
+    int selectIdFromUsers(const QString& login) const;
     QByteArray selectPasswordFromUsers(const QString &login) const;
     QByteArray selectSaltFromUsers(const QString &login) const;
 
@@ -32,11 +36,6 @@ public:
     QSqlDatabase *database();
 
 private:
-    DatabaseManager();
-    ~DatabaseManager();
-
-    static DatabaseManager *m_instance;
-
     QSqlDatabase m_db;
 
     bool createDatabaseFile(const QString &path) const;
