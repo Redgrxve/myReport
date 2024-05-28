@@ -46,11 +46,6 @@ bool LoginDialog::storePasswordInDatabase(const QString &login,
     return dbManager->insertToUsers(login, hashedPassword, salt);
 }
 
-int LoginDialog::userIdByLogin(const QString &login)
-{
-    return DatabaseManager::instance()->selectIdFromUsers(login);
-}
-
 void LoginDialog::clearSignupLineEdits()
 {
     ui->signupLoginLineEdit->clear();
@@ -87,8 +82,7 @@ void LoginDialog::onLoginClicked()
         return;
     }
 
-    AppConfig::instance()->setCurrentUser(login , userIdByLogin(login));
-    qDebug() << "login: " << login << ", id: " << userIdByLogin(login);
+    AppConfig::instance()->setUser(login);
     emit accepted();
     close();
 }

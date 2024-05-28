@@ -5,7 +5,7 @@ GroupsListEdit::GroupsListEdit(QWidget* parent)
     : ListEditWidget(parent)
 {
     setWindowTitle(tr("Список групп"));
-    listWidget()->addItems(DatabaseManager::instance()->selectFromGroups());
+    listWidget()->addItems(DatabaseManager::instance()->selectNamesFromGroups());
 }
 
 bool GroupsListEdit::addToDatabase(const QString &item)

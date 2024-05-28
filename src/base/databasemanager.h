@@ -4,7 +4,6 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QGlobalStatic>
 
 class DatabaseManager
 {
@@ -16,6 +15,8 @@ public:
 
     static DatabaseManager *instance();
 
+    void setUserId(int id);
+
     bool connect();
 
     bool insertToUsers(const QString &login,
@@ -24,9 +25,10 @@ public:
     bool insertToGroups(const QString &item) const;
     bool insertToSubjects(const QString &item) const;
 
-    QStringList selectFromGroups() const;
-    QStringList selectFromSubjects() const;
-    int selectIdFromUsers(const QString& login) const;
+    QStringList selectNamesFromGroups() const;
+    QStringList selectNamesFromSubjects() const;
+    QVariantMap selectRowFromUsers(const QString &login) const;
+    int selectIdFromUsers(const QString &login) const;
     QByteArray selectPasswordFromUsers(const QString &login) const;
     QByteArray selectSaltFromUsers(const QString &login) const;
 
@@ -37,68 +39,27 @@ public:
 
 private:
     QSqlDatabase m_db;
+    int m_userId;
 
     bool createDatabaseFile(const QString &path) const;
     bool createTables() const;
 
-    bool insertToTable(const QString &item,
-                       const QString &table,
-                       const QString &column) const;
+    QStringList stringListByQuery(QSqlQuery &query,
+                                  const QString &column) const;
 
-    QStringList selectFromTable(const QString &table,
-                                const QString &column) const;
+    bool insertIntoTable(const QString &table,
+                         const QVariantMap &data) const;
 
-    //not working
-    QStringList selectFromTable(const QString &table,
-                                const QString &column,
-                                const QString &condition) const;
+    QSqlQuery selectFromTable(const QString &table,
+                              const QString &condition = "") const;
 
-    QByteArray selectFromUsersByLogin(const QString &login,
-                                      const QString &column) const;
-
-    bool deleteFromTable(const QString &item,
-                         const QString &table,
-                         const QString &column) const;
+    bool deleteFromTable(const QString &table,
+                         const QString &condition) const;
 
     bool isItemInTable(const QString &item,
                        const QString &table,
-                       const QString &column) const;
-
-    template<typename T>
-    bool insertToTable(const QList<T> items,
-                       const QString &table,
-                       const QStringList &columns) const
-    {
-        if (items.size() != columns.size())
-            return false;
-
-        QSqlQuery query;
-        QStringList queryParams;
-        QString queryText;
-        QString paramNames;
-        QString columnNames;
-
-        for (int i = 0; i < items.size(); ++i) {
-            queryParams.append(":value" + QString::number(i));
-        }
-        paramNames = queryParams.join(", ");
-        columnNames = columns.join(", ");
-        queryText = QString("INSERT INTO %1 (%2) VALUES (%3)")
-                        .arg(table, columnNames, paramNames);
-        query.prepare(queryText);
-        for (int i = 0; i < items.size(); ++i) {
-            query.bindValue(queryParams[i], items[i]);
-        }
-
-        if (!query.exec()) {
-            qDebug() << "Ошибка при вставке в "
-                     << table
-                     << query.lastError();
-            return false;
-        }
-
-        return true;
-    }
+                       const QString &column,
+                       bool checkUserId = true) const;
 };
 
 #endif // DATABASEMANAGER_H

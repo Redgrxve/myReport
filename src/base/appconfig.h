@@ -13,8 +13,10 @@ public:
 
     static AppConfig *instance();
 
-    void setCurrentUser(const QString& login, int id);
-    QString currentUser() const;
+    void setUser(const QString& user);
+    void setUser(const QString& user, int id);
+    QString user() const;
+    int userId() const;
 
 private:
     QString m_user;

@@ -5,7 +5,7 @@ SubjectsListEdit::SubjectsListEdit(QWidget *parent)
     : ListEditWidget(parent)
 {
     setWindowTitle(tr("Список дисциплин"));
-    listWidget()->addItems(DatabaseManager::instance()->selectFromSubjects());
+    listWidget()->addItems(DatabaseManager::instance()->selectNamesFromSubjects());
 }
 
 bool SubjectsListEdit::addToDatabase(const QString &item)

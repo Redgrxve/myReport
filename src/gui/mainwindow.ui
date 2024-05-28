@@ -45,6 +45,13 @@
     <addaction name="actionGroups"/>
     <addaction name="actionDisciplines"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="action"/>
+   </widget>
+   <addaction name="menu_2"/>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -88,6 +95,11 @@
    </property>
    <property name="text">
     <string>Дисциплины</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Выгрузить базу данных</string>
    </property>
   </action>
  </widget>
