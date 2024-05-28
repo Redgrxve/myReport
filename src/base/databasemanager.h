@@ -11,7 +11,7 @@ public:
     DatabaseManager();
     ~DatabaseManager();
     DatabaseManager(const DatabaseManager &dm) = delete;
-    DatabaseManager& operator=(const DatabaseManager &dm) = delete;
+    DatabaseManager &operator=(const DatabaseManager &dm) = delete;
 
     static DatabaseManager *instance();
 

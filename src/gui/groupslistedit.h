@@ -13,6 +13,9 @@ public:
 private:
     bool addToDatabase(const QString &item) override;
     bool deleteFromDatabase(const QString &item) override;
+
+private slots:
+    void onItemDoubleClicked(QListWidgetItem* item);
 };
 
 #endif // GROUPSLISTEDIT_H

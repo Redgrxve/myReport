@@ -26,6 +26,7 @@ SOURCES += \
     src/gui/listeditwidget.cpp \
     src/gui/logindialog.cpp \
     src/gui/mainwindow.cpp \
+    src/gui/studentslistedit.cpp \
     src/gui/subjectslistedit.cpp
 
 HEADERS += \
@@ -36,6 +37,7 @@ HEADERS += \
     src/gui/listeditwidget.h \
     src/gui/logindialog.h \
     src/gui/mainwindow.h \
+    src/gui/studentslistedit.h \
     src/gui/subjectslistedit.h \
     src/utils/passwordencrypt.h
 

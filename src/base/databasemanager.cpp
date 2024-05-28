@@ -46,19 +46,12 @@ bool DatabaseManager::insertToUsers(const QString &login,
                                     const QByteArray &password,
                                     const QByteArray &salt) const
 {
-    QSqlQuery query;
-    query.prepare("INSERT INTO users (login, password, salt)"
-                  "VALUES (:login, :password, :salt)");
-    query.bindValue(":login", login);
-    query.bindValue(":password", password);
-    query.bindValue(":salt", salt);
-    if (!query.exec()) {
-        qDebug() << "Ошибка при вствке в users: "
-                 << query.lastError();
-        return false;
-    }
+    QVariantMap data;
+    data["login"] = login;
+    data["password"] = password;
+    data["salt"] = salt;
 
-    return true;
+    return insertIntoTable("users", data);
 }
 
 bool DatabaseManager::insertToGroups(const QString &item) const
@@ -206,7 +199,18 @@ bool DatabaseManager::createTables() const
                 "user_id INTEGER NOT NULL REFERENCES users(id),"
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
-        qDebug() << "Ошибка при создании таблицы дисциплины: "
+        qDebug() << "Ошибка при создании таблицы дисциплин: "
+                 << query.lastError();
+        return false;
+    }
+
+    queryText = "CREATE TABLE IF NOT EXISTS students ("
+                "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "user_id INTEGER NOT NULL REFERENCES users(id),"
+                "group_id INTEGER NOT NULL REFERENCES groups(id),"
+                "name TEXT NOT NULL)";
+    if (!query.exec(queryText)) {
+        qDebug() << "Ошибка при создании таблицы учеников: "
                  << query.lastError();
         return false;
     }
