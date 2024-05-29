@@ -76,11 +76,27 @@ bool DatabaseManager::insertToSubjects(const QString &item) const
     return insertIntoTable("subjects", data);
 }
 
+bool DatabaseManager::insertToStudents(const QString &item, const int groupId) const
+{
+    QVariantMap data;
+    data["name"] = item;
+    data["group_id"] = groupId;
+    return insertIntoTable("students", data);
+}
+
 QStringList DatabaseManager::selectNamesFromGroups() const
 {
     QString condition = QString("user_id = %1").arg(m_userId);
     QSqlQuery query = selectFromTable("groups", condition);
     return stringListByQuery(query, "name");
+}
+
+int DatabaseManager::selectIdFromGroups(const QString &groupName) const
+{
+    QString condition = QString("user_id = %1 AND name = '%2'")
+                            .arg(QString::number(m_userId), groupName);
+    QSqlQuery query = selectFromTable("groups", condition);
+    return query.next() ? query.value("id").toInt() : -1;
 }
 
 QStringList DatabaseManager::selectNamesFromSubjects() const
@@ -138,16 +154,32 @@ QByteArray DatabaseManager::selectSaltFromUsers(const QString &login) const
     return query.value("salt").toByteArray();
 }
 
+QStringList DatabaseManager::selectNamesFromStudents(int groupId) const
+{
+    QString condition = QString("group_id = %2").arg(groupId);
+    QSqlQuery query = selectFromTable("students", condition);
+    return stringListByQuery(query, "name");
+}
+
 bool DatabaseManager::deleteFromGroups(const QString &item) const
 {
-    QString condition = QString("name = '%1'").arg(item);
+    QString condition = QString("name = '%1' AND user_id = %2")
+                            .arg(item).arg(m_userId);;
     return deleteFromTable("groups", condition);
 }
 
 bool DatabaseManager::deleteFromSubjects(const QString &item) const
 {
-    QString condition = QString("name = '%1'").arg(item);
+    QString condition = QString("name = '%1' AND user_id = %2")
+                            .arg(item).arg(m_userId);
     return deleteFromTable("subjects", condition);
+}
+
+bool DatabaseManager::deleteFromStudents(const QString &item, int groupId) const
+{
+    QString condition = QString("name = '%1' AND group_id = %2")
+                            .arg(item).arg(groupId);
+    return deleteFromTable("students", condition);
 }
 
 QSqlDatabase *DatabaseManager::database()
@@ -172,6 +204,13 @@ bool DatabaseManager::createTables() const
 {
     QSqlQuery query;
     QString queryText;
+
+    queryText = "PRAGMA foreign_keys = ON";
+    if (!query.exec(queryText)) {
+        qDebug() << "Ошибка при включении внешних ключей: "
+                 << query.lastError();
+        return false;
+    }
 
     queryText = "CREATE TABLE IF NOT EXISTS users ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -206,8 +245,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS students ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "user_id INTEGER NOT NULL REFERENCES users(id),"
-                "group_id INTEGER NOT NULL REFERENCES groups(id),"
+                "group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,"
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы учеников: "

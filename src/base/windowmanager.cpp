@@ -9,6 +9,11 @@ WindowManager::~WindowManager()
 
 void WindowManager::add(QWidget *widget)
 {
+    if (m_openedWidgets.contains(widget)) {
+        widget->focusWidget();
+        return;
+    }
+
     m_openedWidgets.push(widget);
 }
 

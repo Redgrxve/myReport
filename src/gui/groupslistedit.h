@@ -3,14 +3,19 @@
 
 #include "listeditwidget.h"
 
+class WindowManager;
+
 class GroupsListEdit : public ListEditWidget
 {
     Q_OBJECT
 
 public:
-    explicit GroupsListEdit(QWidget* parent = nullptr);
+    explicit GroupsListEdit(WindowManager* windowManager,
+                            QWidget* parent = nullptr);
 
 private:
+    WindowManager* m_windowManager;
+
     bool addToDatabase(const QString &item) override;
     bool deleteFromDatabase(const QString &item) override;
 

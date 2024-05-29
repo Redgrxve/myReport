@@ -28,7 +28,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::onGroupsTriggered()
 {
-    GroupsListEdit *groupsWidget = new GroupsListEdit;
+    GroupsListEdit *groupsWidget = new GroupsListEdit(m_windowManager);
     groupsWidget->show();
     m_windowManager->add(groupsWidget);
 }

@@ -7,10 +7,10 @@ class StudentsListEdit : public ListEditWidget
 {
     Q_OBJECT
 public:
-    explicit StudentsListEdit(const QString &group, QWidget *parent = nullptr);
+    explicit StudentsListEdit(int groupId, QWidget *parent = nullptr);
 
 private:
-    QString m_group;
+    int m_groupId;
 
     bool addToDatabase(const QString &item) override;
     bool deleteFromDatabase(const QString &item) override;

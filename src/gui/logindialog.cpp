@@ -62,6 +62,8 @@ void LoginDialog::createMainWindow()
 void LoginDialog::onCheckBoxToggled(bool checked)
 {
     ui->signupGroupBox->setVisible(checked);
+    ui->signupButton->setDefault(checked);
+    ui->loginButton->setDefault(!checked);
     ui->onSignupLabel->hide();
 }
 

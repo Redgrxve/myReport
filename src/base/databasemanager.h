@@ -24,16 +24,22 @@ public:
                        const QByteArray &salt) const;
     bool insertToGroups(const QString &item) const;
     bool insertToSubjects(const QString &item) const;
+    bool insertToStudents(const QString &item,
+                          const int groupId) const;
 
     QStringList selectNamesFromGroups() const;
+    int selectIdFromGroups(const QString &groupName) const;
     QStringList selectNamesFromSubjects() const;
+    int selectIdFromSubjects(const QString &name) const;
     QVariantMap selectRowFromUsers(const QString &login) const;
     int selectIdFromUsers(const QString &login) const;
     QByteArray selectPasswordFromUsers(const QString &login) const;
     QByteArray selectSaltFromUsers(const QString &login) const;
+    QStringList selectNamesFromStudents(int groupId) const;
 
     bool deleteFromGroups(const QString &item) const;
     bool deleteFromSubjects(const QString &item) const;
+    bool deleteFromStudents(const QString &item, int groupId) const;
 
     QSqlDatabase *database();
 

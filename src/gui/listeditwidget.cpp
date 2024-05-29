@@ -11,7 +11,6 @@ ListEditWidget::ListEditWidget(QWidget *parent)
     ui->setupUi(this);
 
     setFixedWidth(sizeHint().width());
-
     connect(ui->addButton, SIGNAL(clicked()), this, SLOT(onAddButtonClicked()));
     connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(onDeleteButtonClicked()));
 }
@@ -51,7 +50,6 @@ void ListEditWidget::addNewItem()
     }
 
     listWidget()->addItem(groupName);
-    listWidget()->sortItems();
 }
 
 void ListEditWidget::removeSelectedItem()
