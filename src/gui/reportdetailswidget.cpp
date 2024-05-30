@@ -18,7 +18,7 @@ ReportDetailsWidget::~ReportDetailsWidget()
 
 void ReportDetailsWidget::onCalendarButtonClicked()
 {
-    CalendarDialog calendarDialog;
+    CalendarDialog calendarDialog(this);
     connect(&calendarDialog, SIGNAL(dateSelected(QDate)), this, SLOT(onDateSelected(QDate)));
     calendarDialog.exec();
 }
