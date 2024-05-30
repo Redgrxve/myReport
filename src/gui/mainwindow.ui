@@ -24,7 +24,7 @@
        <bool>true</bool>
       </property>
       <widget class="QListView" name="listView"/>
-      <widget class="QListWidget" name="listWidget"/>
+      <widget class="ReportDetailsWidget" name="widget" native="true"/>
      </widget>
     </item>
    </layout>
@@ -103,6 +103,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ReportDetailsWidget</class>
+   <extends>QWidget</extends>
+   <header>reportdetailswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../res/resources.qrc"/>
  </resources>

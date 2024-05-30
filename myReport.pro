@@ -22,10 +22,13 @@ SOURCES += \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
     src/base/windowmanager.cpp \
+    src/gui/calendardialog.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/listeditwidget.cpp \
     src/gui/logindialog.cpp \
     src/gui/mainwindow.cpp \
+    src/gui/reportdetailswidget.cpp \
+    src/gui/reportlistitemwidget.cpp \
     src/gui/studentslistedit.cpp \
     src/gui/subjectslistedit.cpp
 
@@ -33,18 +36,24 @@ HEADERS += \
     src/base/appconfig.h \
     src/base/databasemanager.h \
     src/base/windowmanager.h \
+    src/gui/calendardialog.h \
     src/gui/groupslistedit.h \
     src/gui/listeditwidget.h \
     src/gui/logindialog.h \
     src/gui/mainwindow.h \
+    src/gui/reportdetailswidget.h \
+    src/gui/reportlistitemwidget.h \
     src/gui/studentslistedit.h \
     src/gui/subjectslistedit.h \
     src/utils/passwordencrypt.h
 
 FORMS += \
+    src/gui/calendardialog.ui \
     src/gui/listeditwidget.ui \
     src/gui/logindialog.ui \
     src/gui/mainwindow.ui \
+    src/gui/reportdetailswidget.ui \
+    src/gui/reportlistitemwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

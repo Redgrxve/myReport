@@ -85,8 +85,7 @@ void LoginDialog::onLoginClicked()
     }
 
     AppConfig::instance()->setUser(login);
-    emit accepted();
-    close();
+    accept();
 }
 
 void LoginDialog::onSignupClicked()
