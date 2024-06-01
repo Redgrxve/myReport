@@ -18,6 +18,11 @@ public:
 private:
     Ui::ReportDetailsWidget *ui;
 
+    //СДЕЛАТЬ ПОТОМ ЧТОБЫ КОМБОБОКСЫ ОБНОВЛЯЛИСЬ ПРИ УДАЛЕНИИ ЭЛЕМЕНТОВ ИЗ СПИСКА
+    void updateComboBoxes();
+
+    void setupDelegates();
+
 private slots:
     void onCalendarButtonClicked();
     void onDateSelected(const QDate &date);

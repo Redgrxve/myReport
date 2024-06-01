@@ -1,6 +1,7 @@
 #include "reportdetailswidget.h"
 #include "ui_reportdetailswidget.h"
 #include "calendardialog.h"
+#include "comboboxdelegate.h"
 
 ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
     : QWidget(parent)
@@ -8,12 +9,19 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setupDelegates();
     connect(ui->celendarButton, SIGNAL(clicked()), this, SLOT(onCalendarButtonClicked()));
 }
 
 ReportDetailsWidget::~ReportDetailsWidget()
 {
     delete ui;
+}
+
+void ReportDetailsWidget::setupDelegates()
+{
+    ComboBoxDelegate *delegate = new ComboBoxDelegate(ui->tableWidget);
+    ui->tableWidget->setItemDelegateForColumn(0, delegate);
 }
 
 void ReportDetailsWidget::onCalendarButtonClicked()

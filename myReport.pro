@@ -19,6 +19,7 @@ LIBS += \
 
 SOURCES += \
     src/base/appconfig.cpp \
+    src/base/comboboxdelegate.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
     src/base/windowmanager.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
 
 HEADERS += \
     src/base/appconfig.h \
+    src/base/comboboxdelegate.h \
     src/base/databasemanager.h \
     src/base/windowmanager.h \
     src/gui/calendardialog.h \
