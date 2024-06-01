@@ -11,8 +11,10 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
                                         const QStyleOptionViewItem &option,
                                         const QModelIndex &index) const
 {
+
     QComboBox *comboBox = new QComboBox(parent);
     comboBox->addItems(DatabaseManager::instance()->selectNamesFromGroups());
+    connect(comboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(onComboBoxTextChanged(QString)));
     return comboBox;
 }
 
@@ -39,4 +41,9 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor,
                                             const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
+}
+
+void ComboBoxDelegate::onComboBoxTextChanged(const QString &text)
+{
+    emit currentTextChanged(text);
 }

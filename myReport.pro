@@ -18,12 +18,13 @@ LIBS += \
     -L$$PWD/libs/OpenSSL/lib/MDd -lssl -lcrypto
 
 SOURCES += \
+    src/base/absenteesitemdelegate.cpp \
     src/base/appconfig.cpp \
     src/base/comboboxdelegate.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
-    src/base/lineeditwithbuttondelegate.cpp \
     src/base/windowmanager.cpp \
+    src/gui/absenteescellwidget.cpp \
     src/gui/calendardialog.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/labelwithbuttonwidget.cpp \
@@ -36,11 +37,12 @@ SOURCES += \
     src/gui/subjectslistedit.cpp
 
 HEADERS += \
+    src/base/absenteesitemdelegate.h \
     src/base/appconfig.h \
     src/base/comboboxdelegate.h \
     src/base/databasemanager.h \
-    src/base/lineeditwithbuttondelegate.h \
     src/base/windowmanager.h \
+    src/gui/absenteescellwidget.h \
     src/gui/calendardialog.h \
     src/gui/groupslistedit.h \
     src/gui/labelwithbuttonwidget.h \

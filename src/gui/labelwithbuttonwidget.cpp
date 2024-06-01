@@ -6,6 +6,8 @@ LabelWithButtonWidget::LabelWithButtonWidget(QWidget *parent)
     , ui(new Ui::LabelWithButtonWidget)
 {
     ui->setupUi(this);
+
+    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(onButtonClicked()));
 }
 
 LabelWithButtonWidget::~LabelWithButtonWidget()
@@ -16,4 +18,9 @@ LabelWithButtonWidget::~LabelWithButtonWidget()
 QLabel *LabelWithButtonWidget::label() const
 {
     return ui->label;
+}
+
+void LabelWithButtonWidget::onButtonClicked()
+{
+    emit buttonClicked();
 }

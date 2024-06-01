@@ -99,6 +99,13 @@ int DatabaseManager::selectIdFromGroups(const QString &groupName) const
     return query.next() ? query.value("id").toInt() : -1;
 }
 
+QString DatabaseManager::selectNameFromGroups(int groupId) const
+{
+    QString condition = QString("id = %1").arg(groupId);
+    QSqlQuery query = selectFromTable("groups", condition);
+    return query.next() ? query.value("name").toString() : QString();
+}
+
 QStringList DatabaseManager::selectNamesFromSubjects() const
 {
     QString condition = QString("user_id = %1").arg(m_userId);

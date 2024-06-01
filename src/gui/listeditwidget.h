@@ -19,8 +19,6 @@ public:
     bool isItemInList(const QString &text) const;
 
 protected:
-    Ui::ListEditWidget *ui;
-
     virtual bool addToDatabase(const QString &item) = 0;
     virtual bool deleteFromDatabase(const QString &item) = 0;
 
@@ -28,6 +26,9 @@ protected:
     virtual void removeSelectedItem();
 
     QListWidget *listWidget() const;
+
+private:
+    Ui::ListEditWidget *ui;
 
 protected slots:
     void onAddButtonClicked();

@@ -1,16 +1,21 @@
-#ifndef LINEEDITWITHBUTTONDELEGATE_H
-#define LINEEDITWITHBUTTONDELEGATE_H
+#ifndef ABSENTEESITEMDELEGATE_H
+#define ABSENTEESITEMDELEGATE_H
 
 #include <QStyledItemDelegate>
 
-class LineEditWithButtonDelegate : public QStyledItemDelegate
+class AbsenteesItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
 public:
-    explicit LineEditWithButtonDelegate(QObject *parent = nullptr);
+    explicit AbsenteesItemDelegate(int groupId,
+                                   QObject *parent = nullptr);
+
+    void setGroupId(int id);
 
 private:
+    int m_groupId;
+
     QWidget *createEditor(QWidget *parent,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const override;
@@ -27,4 +32,4 @@ private:
                               const QModelIndex &index) const override;
 };
 
-#endif // LINEEDITWITHBUTTONDELEGATE_H
+#endif // ABSENTEESITEMDELEGATE_H

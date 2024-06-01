@@ -2,7 +2,7 @@
 #include "ui_reportdetailswidget.h"
 #include "calendardialog.h"
 #include "comboboxdelegate.h"
-#include "lineeditwithbuttondelegate.h"
+#include "absenteesitemdelegate.h"
 
 ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
     : QWidget(parent)
@@ -26,8 +26,8 @@ void ReportDetailsWidget::setupDelegates()
     ComboBoxDelegate *comboBoxDelegate = new ComboBoxDelegate(ui->tableWidget);
     ui->tableWidget->setItemDelegateForColumn(0, comboBoxDelegate);
 
-    LineEditWithButtonDelegate *lineEditButtonDelegate = new LineEditWithButtonDelegate(ui->tableWidget);
-    ui->tableWidget->setItemDelegateForColumn(1, lineEditButtonDelegate);
+    AbsenteesItemDelegate *absenteesDelegate = new AbsenteesItemDelegate(7, ui->tableWidget);
+    ui->tableWidget->setItemDelegateForColumn(1, absenteesDelegate);
 }
 
 void ReportDetailsWidget::onCalendarButtonClicked()

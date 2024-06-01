@@ -20,6 +20,12 @@ public:
 
 private:
     Ui::LabelWithButtonWidget *ui;
+
+signals:
+    void buttonClicked();
+
+private slots:
+    void onButtonClicked();
 };
 
 #endif // LABELWITHBUTTONWIDGET_H

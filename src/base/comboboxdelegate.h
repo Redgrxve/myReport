@@ -25,6 +25,12 @@ private:
     void updateEditorGeometry(QWidget *editor,
                               const QStyleOptionViewItem &option,
                               const QModelIndex &index) const override;
+
+signals:
+    void currentTextChanged(const QString &text);
+
+private slots:
+    void onComboBoxTextChanged(const QString &text);
 };
 
 #endif // COMBOBOXDELEGATE_H

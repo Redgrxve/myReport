@@ -29,6 +29,7 @@ public:
 
     QStringList selectNamesFromGroups() const;
     int selectIdFromGroups(const QString &groupName) const;
+    QString selectNameFromGroups(int groupId) const;
     QStringList selectNamesFromSubjects() const;
     int selectIdFromSubjects(const QString &name) const;
     QVariantMap selectRowFromUsers(const QString &login) const;
