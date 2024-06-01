@@ -19,13 +19,18 @@ private:
     Ui::ReportDetailsWidget *ui;
 
     //СДЕЛАТЬ ПОТОМ ЧТОБЫ КОМБОБОКСЫ ОБНОВЛЯЛИСЬ ПРИ УДАЛЕНИИ ЭЛЕМЕНТОВ ИЗ СПИСКА
-    void updateComboBoxes();
+    //void updateComboBoxes();
 
     void setupDelegates();
+
+signals:
+    void rowInserted(int newRowIndex);
 
 private slots:
     void onCalendarButtonClicked();
     void onDateSelected(const QDate &date);
+    void insertRow();
+    void onRowInserted(int newRowIndex);
 };
 
 #endif // REPORTDETAILSWIDGET_H

@@ -18,9 +18,9 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
 
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    QString value = index.model()->data(index, Qt::EditRole).toString();
+    QString data = index.model()->data(index, Qt::EditRole).toString();
     QComboBox *comboBox = static_cast<QComboBox*>(editor);
-    int itemIndex = comboBox->findText(value);
+    int itemIndex = comboBox->findText(data);
     if (itemIndex != -1)
         comboBox->setCurrentIndex(itemIndex);
 }

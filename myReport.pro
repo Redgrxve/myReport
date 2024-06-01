@@ -22,9 +22,11 @@ SOURCES += \
     src/base/comboboxdelegate.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
+    src/base/lineeditwithbuttondelegate.cpp \
     src/base/windowmanager.cpp \
     src/gui/calendardialog.cpp \
     src/gui/groupslistedit.cpp \
+    src/gui/labelwithbuttonwidget.cpp \
     src/gui/listeditwidget.cpp \
     src/gui/logindialog.cpp \
     src/gui/mainwindow.cpp \
@@ -37,9 +39,11 @@ HEADERS += \
     src/base/appconfig.h \
     src/base/comboboxdelegate.h \
     src/base/databasemanager.h \
+    src/base/lineeditwithbuttondelegate.h \
     src/base/windowmanager.h \
     src/gui/calendardialog.h \
     src/gui/groupslistedit.h \
+    src/gui/labelwithbuttonwidget.h \
     src/gui/listeditwidget.h \
     src/gui/logindialog.h \
     src/gui/mainwindow.h \
@@ -51,6 +55,7 @@ HEADERS += \
 
 FORMS += \
     src/gui/calendardialog.ui \
+    src/gui/labelwithbuttonwidget.ui \
     src/gui/listeditwidget.ui \
     src/gui/logindialog.ui \
     src/gui/mainwindow.ui \
