@@ -11,8 +11,11 @@ ListEditWidget::ListEditWidget(QWidget *parent)
     ui->setupUi(this);
 
     setFixedWidth(sizeHint().width());
-    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(onAddButtonClicked()));
-    connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(onDeleteButtonClicked()));
+
+    connect(ui->addButton, &QPushButton::clicked,
+            this, &ListEditWidget::onAddButtonClicked);
+    connect(ui->deleteButton, &QPushButton::clicked,
+            this, &ListEditWidget::onDeleteButtonClicked);
 }
 
 ListEditWidget::~ListEditWidget()

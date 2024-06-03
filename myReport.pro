@@ -20,11 +20,12 @@ LIBS += \
 SOURCES += \
     src/base/absenteesitemdelegate.cpp \
     src/base/appconfig.cpp \
-    src/base/comboboxdelegate.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
+    src/base/groupscomboboxdelegate.cpp \
     src/base/windowmanager.cpp \
     src/gui/absenteescellwidget.cpp \
+    src/gui/absenteeseditdialog.cpp \
     src/gui/calendardialog.cpp \
     src/gui/groupslistedit.cpp \
     src/gui/labelwithbuttonwidget.cpp \
@@ -34,15 +35,17 @@ SOURCES += \
     src/gui/reportdetailswidget.cpp \
     src/gui/reportlistitemwidget.cpp \
     src/gui/studentslistedit.cpp \
+    src/gui/studentsselectdialog.cpp \
     src/gui/subjectslistedit.cpp
 
 HEADERS += \
     src/base/absenteesitemdelegate.h \
     src/base/appconfig.h \
-    src/base/comboboxdelegate.h \
     src/base/databasemanager.h \
+    src/base/groupscomboboxdelegate.h \
     src/base/windowmanager.h \
     src/gui/absenteescellwidget.h \
+    src/gui/absenteeseditdialog.h \
     src/gui/calendardialog.h \
     src/gui/groupslistedit.h \
     src/gui/labelwithbuttonwidget.h \
@@ -52,17 +55,20 @@ HEADERS += \
     src/gui/reportdetailswidget.h \
     src/gui/reportlistitemwidget.h \
     src/gui/studentslistedit.h \
+    src/gui/studentsselectdialog.h \
     src/gui/subjectslistedit.h \
     src/utils/passwordencrypt.h
 
 FORMS += \
+    src/gui/absenteeseditdialog.ui \
     src/gui/calendardialog.ui \
     src/gui/labelwithbuttonwidget.ui \
     src/gui/listeditwidget.ui \
     src/gui/logindialog.ui \
     src/gui/mainwindow.ui \
     src/gui/reportdetailswidget.ui \
-    src/gui/reportlistitemwidget.ui
+    src/gui/reportlistitemwidget.ui \
+    src/gui/studentsselectdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

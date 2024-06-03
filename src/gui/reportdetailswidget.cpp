@@ -1,19 +1,25 @@
 #include "reportdetailswidget.h"
 #include "ui_reportdetailswidget.h"
 #include "calendardialog.h"
-#include "comboboxdelegate.h"
+#include "groupscomboboxdelegate.h"
 #include "absenteesitemdelegate.h"
+#include "databasemanager.h"
 
 ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ReportDetailsWidget)
 {
     ui->setupUi(this);
-
     setupDelegates();
-    connect(ui->celendarButton, SIGNAL(clicked()), this, SLOT(onCalendarButtonClicked()));
-    connect(ui->addRowButton, SIGNAL(clicked()), this, SLOT(insertRow()));
-    connect(this, SIGNAL(rowInserted(int)), this, SLOT(onRowInserted(int)));
+
+    connect(ui->celendarButton, &QPushButton::clicked,
+            this, &ReportDetailsWidget::onCalendarButtonClicked);
+    connect(ui->addRowButton, &QPushButton::clicked,
+            this, &ReportDetailsWidget::insertRow);
+    connect(ui->tableWidget, &QTableWidget::cellDoubleClicked,
+            this, &ReportDetailsWidget::onCellEdit);
+    connect(this, &ReportDetailsWidget::rowInserted,
+            this, &ReportDetailsWidget::onRowInserted);
 }
 
 ReportDetailsWidget::~ReportDetailsWidget()
@@ -23,17 +29,26 @@ ReportDetailsWidget::~ReportDetailsWidget()
 
 void ReportDetailsWidget::setupDelegates()
 {
-    ComboBoxDelegate *comboBoxDelegate = new ComboBoxDelegate(ui->tableWidget);
+    GroupsComboBoxDelegate *comboBoxDelegate = new GroupsComboBoxDelegate(ui->tableWidget);
+    connect(comboBoxDelegate, &GroupsComboBoxDelegate::groupIndexChanged,
+            this, &ReportDetailsWidget::setAbsenteesDelegateGroupId);
     ui->tableWidget->setItemDelegateForColumn(0, comboBoxDelegate);
 
-    AbsenteesItemDelegate *absenteesDelegate = new AbsenteesItemDelegate(7, ui->tableWidget);
+    AbsenteesItemDelegate *absenteesDelegate = new AbsenteesItemDelegate(ui->tableWidget);
     ui->tableWidget->setItemDelegateForColumn(1, absenteesDelegate);
+}
+
+void ReportDetailsWidget::setAbsenteesDelegateGroupId(int id)
+{
+    AbsenteesItemDelegate *absenteesDelegate = static_cast<AbsenteesItemDelegate*>(ui->tableWidget->itemDelegateForColumn(1));
+    absenteesDelegate->setGroupId(id);
 }
 
 void ReportDetailsWidget::onCalendarButtonClicked()
 {
     CalendarDialog calendarDialog(this);
-    connect(&calendarDialog, SIGNAL(dateSelected(QDate)), this, SLOT(onDateSelected(QDate)));
+    connect(&calendarDialog, &CalendarDialog::dateSelected,
+            this, &ReportDetailsWidget::onDateSelected);
     calendarDialog.exec();
 }
 
@@ -58,4 +73,14 @@ void ReportDetailsWidget::onRowInserted(int newRowIndex)
     QTableWidgetItem *item = new QTableWidgetItem();
     item->setTextAlignment(Qt::AlignCenter);
     ui->tableWidget->setItem(newRowIndex, 0, item);
+}
+
+void ReportDetailsWidget::onCellEdit(int row, int column)
+{
+    if (column != 1)
+        return;
+
+    QString groupName = ui->tableWidget->item(row, 0)->text();
+    int groupId = groupName.isEmpty() ? -1 : DatabaseManager::instance()->selectIdFromGroups(groupName);
+    setAbsenteesDelegateGroupId(groupId);
 }

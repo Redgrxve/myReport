@@ -1,9 +1,8 @@
 #include "absenteesitemdelegate.h"
 #include "absenteescellwidget.h"
 
-AbsenteesItemDelegate::AbsenteesItemDelegate(int groupId, QObject *parent)
+AbsenteesItemDelegate::AbsenteesItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
-    , m_groupId(groupId)
 {}
 
 void AbsenteesItemDelegate::setGroupId(int id)

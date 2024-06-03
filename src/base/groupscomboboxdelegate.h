@@ -1,14 +1,14 @@
-#ifndef COMBOBOXDELEGATE_H
-#define COMBOBOXDELEGATE_H
+#ifndef GROUPSCOMBOBOXDELEGATE_H
+#define GROUPSCOMBOBOXDELEGATE_H
 
 #include <QStyledItemDelegate>
 
-class ComboBoxDelegate : public QStyledItemDelegate
+class GroupsComboBoxDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
 public:
-    explicit ComboBoxDelegate(QObject* parent);
+    explicit GroupsComboBoxDelegate(QObject* parent);
 
 private:
     QWidget *createEditor(QWidget *parent,
@@ -27,10 +27,11 @@ private:
                               const QModelIndex &index) const override;
 
 signals:
-    void currentTextChanged(const QString &text);
+    void groupChanged(const QString &text);
+    void groupIndexChanged(int groupIndex);
 
 private slots:
     void onComboBoxTextChanged(const QString &text);
 };
 
-#endif // COMBOBOXDELEGATE_H
+#endif // GROUPSCOMBOBOXDELEGATE_H

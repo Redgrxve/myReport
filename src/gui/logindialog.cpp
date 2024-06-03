@@ -18,9 +18,12 @@ LoginDialog::LoginDialog(QWidget *parent)
     ui->signupGroupBox->hide();
     ui->onSignupLabel->hide();
 
-    connect(ui->newUserCheckBox, SIGNAL(toggled(bool)), this, SLOT(onCheckBoxToggled(bool)));
-    connect(ui->loginButton, SIGNAL(clicked()), this, SLOT(onLoginClicked()));
-    connect(ui->signupButton, SIGNAL(clicked()), this, SLOT(onSignupClicked()));
+    connect(ui->newUserCheckBox, &QCheckBox::toggled,
+            this, &LoginDialog::onCheckBoxToggled);
+    connect(ui->loginButton, &QPushButton::clicked,
+            this, &LoginDialog::onLoginClicked);
+    connect(ui->signupButton, &QPushButton::clicked,
+            this, &LoginDialog::onSignupClicked);
 }
 
 LoginDialog::~LoginDialog()

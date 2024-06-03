@@ -22,6 +22,7 @@ private:
     //void updateComboBoxes();
 
     void setupDelegates();
+    void setAbsenteesDelegateGroupId(int id);
 
 signals:
     void rowInserted(int newRowIndex);
@@ -31,6 +32,7 @@ private slots:
     void onDateSelected(const QDate &date);
     void insertRow();
     void onRowInserted(int newRowIndex);
+    void onCellEdit(int row, int column);
 };
 
 #endif // REPORTDETAILSWIDGET_H
