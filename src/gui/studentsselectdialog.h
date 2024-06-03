@@ -2,6 +2,7 @@
 #define STUDENTSSELECTDIALOG_H
 
 #include <QDialog>
+#include <QListWidgetItem>
 
 namespace Ui {
 class StudentsSelectDialog;
@@ -18,6 +19,13 @@ public:
 private:
     Ui::StudentsSelectDialog *ui;
     int m_groupId;
+
+signals:
+    void studentSelected(const QString &name);
+
+private slots:
+    void onAccepted();
+    void onItemDoubleClicked(QListWidgetItem *item);
 };
 
 #endif // STUDENTSSELECTDIALOG_H

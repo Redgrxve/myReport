@@ -12,15 +12,23 @@ class AbsenteesEditDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AbsenteesEditDialog(int groupId, QWidget *parent = nullptr);
+    explicit AbsenteesEditDialog(int groupId,
+                                 const QStringList &names,
+                                 QWidget *parent = nullptr);
     ~AbsenteesEditDialog();
 
 private:
     Ui::AbsenteesEditDialog *ui;
     int m_groupId;
 
+signals:
+    void absenteesSaved(const QStringList &absentees);
+
 private slots:
-    void onAddButtonClicked();
+    void onAddClicked();
+    void onRemoveClicked();
+    void onStudentSelected(const QString &name);
+    void onSaveClicked();
 };
 
 #endif // ABSENTEESEDITDIALOG_H

@@ -11,9 +11,24 @@ StudentsSelectDialog::StudentsSelectDialog(int groupId, QWidget *parent)
 
     ui->listWidget->addItems(
         DatabaseManager::instance()->selectNamesFromStudents(m_groupId));
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &StudentsSelectDialog::onAccepted);
+    connect(ui->listWidget, &QListWidget::itemDoubleClicked,
+            this, &StudentsSelectDialog::onItemDoubleClicked);
 }
 
 StudentsSelectDialog::~StudentsSelectDialog()
 {
     delete ui;
 }
+
+void StudentsSelectDialog::onAccepted()
+{
+    emit studentSelected(ui->listWidget->currentItem()->text());
+}
+
+void StudentsSelectDialog::onItemDoubleClicked(QListWidgetItem *item)
+{
+    emit studentSelected(item->text());
+    accept();
+}
+

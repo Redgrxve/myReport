@@ -23,6 +23,8 @@ private:
 
     void setupDelegates();
     void setAbsenteesDelegateGroupId(int id);
+    void insertRow();
+    void removeLastRow();
 
 signals:
     void rowInserted(int newRowIndex);
@@ -30,7 +32,6 @@ signals:
 private slots:
     void onCalendarButtonClicked();
     void onDateSelected(const QDate &date);
-    void insertRow();
     void onRowInserted(int newRowIndex);
     void onCellEdit(int row, int column);
 };

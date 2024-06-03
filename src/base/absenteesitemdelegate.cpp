@@ -31,7 +31,7 @@ void AbsenteesItemDelegate::setModelData(QWidget *editor,
                                          const QModelIndex &index) const
 {
     auto absenteesWidget = static_cast<AbsenteesCellWidget*>(editor);
-    QString data = absenteesWidget->label()->selectedText();
+    QString data = absenteesWidget->label()->text();
     model->setData(index, data, Qt::EditRole);
 }
 
@@ -41,3 +41,4 @@ void AbsenteesItemDelegate::updateEditorGeometry(QWidget *editor,
 {
     editor->setGeometry(option.rect);
 }
+

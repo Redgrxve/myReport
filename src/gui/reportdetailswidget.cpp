@@ -16,6 +16,8 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
             this, &ReportDetailsWidget::onCalendarButtonClicked);
     connect(ui->addRowButton, &QPushButton::clicked,
             this, &ReportDetailsWidget::insertRow);
+    connect(ui->removeRowButton, &QPushButton::clicked,
+            this, &ReportDetailsWidget::removeLastRow);
     connect(ui->tableWidget, &QTableWidget::cellDoubleClicked,
             this, &ReportDetailsWidget::onCellEdit);
     connect(this, &ReportDetailsWidget::rowInserted,
@@ -66,6 +68,11 @@ void ReportDetailsWidget::insertRow()
     int newRowIndex = ui->tableWidget->rowCount();
     ui->tableWidget->insertRow(newRowIndex);
     emit rowInserted(newRowIndex);
+}
+
+void ReportDetailsWidget::removeLastRow()
+{
+    ui->tableWidget->removeRow(ui->tableWidget->rowCount() - 1);
 }
 
 void ReportDetailsWidget::onRowInserted(int newRowIndex)

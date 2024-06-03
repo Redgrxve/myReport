@@ -12,5 +12,6 @@
         <file>icons/text-editor.png</file>
         <file>icons/group.png</file>
         <file>icons/book.png</file>
+        <file>icons/edit2.png</file>
     </qresource>
 </RCC>
