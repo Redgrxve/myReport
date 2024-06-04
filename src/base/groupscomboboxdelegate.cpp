@@ -1,20 +1,26 @@
 #include "groupscomboboxdelegate.h"
 #include "databasemanager.h"
+#include "groupscombobox.h"
 
-#include <QComboBox>
-
-GroupsComboBoxDelegate::GroupsComboBoxDelegate(QObject* parent)
+GroupsComboBoxDelegate::GroupsComboBoxDelegate(const QStringList &groups,
+                                               QObject* parent)
     : QStyledItemDelegate(parent)
+    , m_groups(groups)
 {}
+
+void GroupsComboBoxDelegate::setAvailableGroups(const QStringList &groups)
+{
+    m_groups = groups;
+}
 
 QWidget *GroupsComboBoxDelegate::createEditor(QWidget *parent,
                                               const QStyleOptionViewItem &option,
                                               const QModelIndex &index) const
 {
 
-    QComboBox *comboBox = new QComboBox(parent);
-    comboBox->addItems(DatabaseManager::instance()->selectNamesFromGroups());
-    connect(comboBox, &QComboBox::currentTextChanged,
+    GroupsComboBox *comboBox = new GroupsComboBox(m_groups,
+                                                  parent);
+    connect(comboBox, &GroupsComboBox::currentTextChanged,
             this, &GroupsComboBoxDelegate::onComboBoxTextChanged);
     return comboBox;
 }
@@ -22,11 +28,13 @@ QWidget *GroupsComboBoxDelegate::createEditor(QWidget *parent,
 void GroupsComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QString data = index.model()->data(index, Qt::EditRole).toString();
-    QComboBox *comboBox = static_cast<QComboBox*>(editor);
+    GroupsComboBox *comboBox = static_cast<GroupsComboBox*>(editor);
+    connect(comboBox, &GroupsComboBox::currentTextChanged,
+            this, &GroupsComboBoxDelegate::onComboBoxTextChanged);
     int itemIndex = comboBox->findText(data);
     if (itemIndex != -1) {
         comboBox->setCurrentIndex(itemIndex);
-        emit comboBox->currentTextChanged(comboBox->itemText(itemIndex));
+        //emit comboBox->currentTextChanged(comboBox->itemText(itemIndex));
     }
 }
 
@@ -34,7 +42,7 @@ void GroupsComboBoxDelegate::setModelData(QWidget *editor,
                                           QAbstractItemModel *model,
                                           const QModelIndex &index) const
 {
-    QComboBox *comboBox = static_cast<QComboBox*>(editor);
+    GroupsComboBox *comboBox = static_cast<GroupsComboBox*>(editor);
     QString value = comboBox->currentText();
     model->setData(index, value, Qt::EditRole);
 }

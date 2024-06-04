@@ -22,9 +22,9 @@ private:
     //void updateComboBoxes();
 
     void setupDelegates();
-    void setAbsenteesDelegateGroupId(int id);
     void insertRow();
     void removeLastRow();
+    QStringList availableGroups(const QString &currentGroup) const;
 
 signals:
     void rowInserted(int newRowIndex);

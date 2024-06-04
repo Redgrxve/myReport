@@ -8,9 +8,14 @@ class GroupsComboBoxDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit GroupsComboBoxDelegate(QObject* parent);
+    explicit GroupsComboBoxDelegate(const QStringList &groups,
+                                    QObject* parent);
+
+    void setAvailableGroups(const QStringList &groups);
 
 private:
+    QStringList m_groups;
+
     QWidget *createEditor(QWidget *parent,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const override;

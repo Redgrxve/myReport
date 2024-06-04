@@ -3,6 +3,8 @@
 
 #include <QMessageBox>
 
+QHash<int, QStringList> AbsenteesCellWidget::m_absentees;
+
 AbsenteesCellWidget::AbsenteesCellWidget(int groupId, QWidget *parent)
     : LabelWithButtonWidget(parent)
     , m_groupId(groupId)
@@ -27,7 +29,7 @@ void AbsenteesCellWidget::onButtonClicked()
         return;
     }
 
-    AbsenteesEditDialog absenteesDialog(m_groupId, labelToList(), this);
+    AbsenteesEditDialog absenteesDialog(m_groupId, m_absentees[m_groupId], this);
     connect(&absenteesDialog, &AbsenteesEditDialog::absenteesSaved,
             this, &AbsenteesCellWidget::onAbsenteesSaved);
     absenteesDialog.exec();
@@ -36,5 +38,6 @@ void AbsenteesCellWidget::onButtonClicked()
 void AbsenteesCellWidget::onAbsenteesSaved(const QStringList &names)
 {
     label()->setText(names.join(", "));
+    m_absentees[m_groupId] = names;
     emit absenteesSaved(names);
 }

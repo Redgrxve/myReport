@@ -11,6 +11,7 @@ public:
 
 private:
     int m_groupId;
+    static QHash<int, QStringList> m_absentees;
 
     QStringList labelToList() const;
 

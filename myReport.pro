@@ -22,6 +22,7 @@ SOURCES += \
     src/base/appconfig.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
+    src/base/groupscombobox.cpp \
     src/base/groupscomboboxdelegate.cpp \
     src/base/windowmanager.cpp \
     src/gui/absenteescellwidget.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     src/base/absenteesitemdelegate.h \
     src/base/appconfig.h \
     src/base/databasemanager.h \
+    src/base/groupscombobox.h \
     src/base/groupscomboboxdelegate.h \
     src/base/windowmanager.h \
     src/gui/absenteescellwidget.h \

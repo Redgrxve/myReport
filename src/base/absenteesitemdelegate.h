@@ -14,7 +14,6 @@ public:
 
 private:
     int m_groupId = -1;
-    QString absentees;
 
     QWidget *createEditor(QWidget *parent,
                           const QStyleOptionViewItem &option,

@@ -31,19 +31,12 @@ ReportDetailsWidget::~ReportDetailsWidget()
 
 void ReportDetailsWidget::setupDelegates()
 {
-    GroupsComboBoxDelegate *comboBoxDelegate = new GroupsComboBoxDelegate(ui->tableWidget);
-    connect(comboBoxDelegate, &GroupsComboBoxDelegate::groupIndexChanged,
-            this, &ReportDetailsWidget::setAbsenteesDelegateGroupId);
+    GroupsComboBoxDelegate *comboBoxDelegate = new GroupsComboBoxDelegate(DatabaseManager::instance()->selectNamesFromGroups(),
+                                                                          ui->tableWidget);
     ui->tableWidget->setItemDelegateForColumn(0, comboBoxDelegate);
 
     AbsenteesItemDelegate *absenteesDelegate = new AbsenteesItemDelegate(ui->tableWidget);
     ui->tableWidget->setItemDelegateForColumn(1, absenteesDelegate);
-}
-
-void ReportDetailsWidget::setAbsenteesDelegateGroupId(int id)
-{
-    AbsenteesItemDelegate *absenteesDelegate = static_cast<AbsenteesItemDelegate*>(ui->tableWidget->itemDelegateForColumn(1));
-    absenteesDelegate->setGroupId(id);
 }
 
 void ReportDetailsWidget::onCalendarButtonClicked()
@@ -75,6 +68,19 @@ void ReportDetailsWidget::removeLastRow()
     ui->tableWidget->removeRow(ui->tableWidget->rowCount() - 1);
 }
 
+QStringList ReportDetailsWidget::availableGroups(const QString &currentGroup) const
+{
+    QStringList groups = DatabaseManager::instance()->selectNamesFromGroups();
+    for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        QString selectedGroup = ui->tableWidget->item(row, 0)->text();
+        if (groups.contains(selectedGroup)
+            && selectedGroup != currentGroup) {
+            groups.removeOne(selectedGroup);
+        }
+    }
+    return groups;
+}
+
 void ReportDetailsWidget::onRowInserted(int newRowIndex)
 {
     QTableWidgetItem *item = new QTableWidgetItem();
@@ -84,10 +90,14 @@ void ReportDetailsWidget::onRowInserted(int newRowIndex)
 
 void ReportDetailsWidget::onCellEdit(int row, int column)
 {
-    if (column != 1)
-        return;
-
-    QString groupName = ui->tableWidget->item(row, 0)->text();
-    int groupId = groupName.isEmpty() ? -1 : DatabaseManager::instance()->selectIdFromGroups(groupName);
-    setAbsenteesDelegateGroupId(groupId);
+    if (column == 1) {
+        QString groupName = ui->tableWidget->item(row, 0)->text();
+        int groupId = groupName.isEmpty() ? -1 : DatabaseManager::instance()->selectIdFromGroups(groupName);
+        auto absenteesDelegate = static_cast<AbsenteesItemDelegate*>(ui->tableWidget->itemDelegateForColumn(1));
+        absenteesDelegate->setGroupId(groupId);
+    } else {
+        auto comboBoxDelegate = static_cast<GroupsComboBoxDelegate*>(ui->tableWidget->itemDelegateForColumn(0));
+        QString currentGroup = ui->tableWidget->item(row, column)->text();
+        comboBoxDelegate->setAvailableGroups(availableGroups(currentGroup));
+    }
 }
