@@ -35,6 +35,7 @@ SOURCES += \
     src/gui/mainwindow.cpp \
     src/gui/reportdetailswidget.cpp \
     src/gui/reportlistitemwidget.cpp \
+    src/gui/reportslistwidget.cpp \
     src/gui/studentslistedit.cpp \
     src/gui/studentsselectdialog.cpp \
     src/gui/subjectslistedit.cpp
@@ -56,6 +57,7 @@ HEADERS += \
     src/gui/mainwindow.h \
     src/gui/reportdetailswidget.h \
     src/gui/reportlistitemwidget.h \
+    src/gui/reportslistwidget.h \
     src/gui/studentslistedit.h \
     src/gui/studentsselectdialog.h \
     src/gui/subjectslistedit.h \

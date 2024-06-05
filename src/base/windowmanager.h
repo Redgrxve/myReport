@@ -13,6 +13,7 @@ public:
     void add(QWidget *widget);
     void closeAll();
     void closeAndDeleteAll();
+    bool isAlreadyOpened(QWidget *widget);
 
 private:
     QStack<QWidget*> m_openedWidgets;

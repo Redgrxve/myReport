@@ -9,6 +9,8 @@ class AbsenteesCellWidget : public LabelWithButtonWidget
 public:
     explicit AbsenteesCellWidget(int groupId, QWidget *parent);
 
+    static QHash<int, QStringList> absentees();
+
 private:
     int m_groupId;
     static QHash<int, QStringList> m_absentees;

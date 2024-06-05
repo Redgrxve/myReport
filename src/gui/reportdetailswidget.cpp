@@ -1,9 +1,12 @@
 #include "reportdetailswidget.h"
+#include "absenteescellwidget.h"
 #include "ui_reportdetailswidget.h"
 #include "calendardialog.h"
 #include "groupscomboboxdelegate.h"
 #include "absenteesitemdelegate.h"
 #include "databasemanager.h"
+
+#include <QMessageBox>
 
 ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
     : QWidget(parent)
@@ -18,6 +21,8 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
             this, &ReportDetailsWidget::insertRow);
     connect(ui->removeRowButton, &QPushButton::clicked,
             this, &ReportDetailsWidget::removeLastRow);
+    connect(ui->saveButton, &QPushButton::clicked,
+            this, &ReportDetailsWidget::onSaveClicked);
     connect(ui->tableWidget, &QTableWidget::cellDoubleClicked,
             this, &ReportDetailsWidget::onCellEdit);
     connect(this, &ReportDetailsWidget::rowInserted,
@@ -39,6 +44,12 @@ void ReportDetailsWidget::setupDelegates()
     ui->tableWidget->setItemDelegateForColumn(1, absenteesDelegate);
 }
 
+void ReportDetailsWidget::setupFromDatabase(const QDate &date)
+{
+
+}
+
+
 void ReportDetailsWidget::onCalendarButtonClicked()
 {
     CalendarDialog calendarDialog(this);
@@ -49,8 +60,8 @@ void ReportDetailsWidget::onCalendarButtonClicked()
 
 void ReportDetailsWidget::onDateSelected(const QDate &date)
 {
+    m_date = date;
     ui->dateLabel->setText(date.toString("dd.MM.yyyy"));
-
     QLocale locale = QLocale(QLocale::Russian);
     QString localeDate = locale.toString(date, "dddd");
     ui->dayLabel->setText(localeDate);
@@ -100,4 +111,13 @@ void ReportDetailsWidget::onCellEdit(int row, int column)
         QString currentGroup = ui->tableWidget->item(row, column)->text();
         comboBoxDelegate->setAvailableGroups(availableGroups(currentGroup));
     }
+}
+
+void ReportDetailsWidget::onSaveClicked()
+{
+    if (m_date.isNull()) {
+        QMessageBox::critical(this, "Ошибка", "Необходимо установить дату.");
+        return;
+    }
+    emit saveClicked(m_date, AbsenteesCellWidget::absentees());
 }

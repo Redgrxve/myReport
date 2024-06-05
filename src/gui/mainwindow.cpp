@@ -10,6 +10,11 @@ MainWindow::MainWindow(QWidget *parent)
     , m_windowManager(new WindowManager)
 {
     ui->setupUi(this);
+
+    connect(ui->reportDetailsWidget, &ReportDetailsWidget::saveClicked,
+            ui->listWidget, &ReportsListWidget::onReportSaved);
+    connect(ui->listWidget, &ReportsListWidget::reportSelected,
+            ui->reportDetailsWidget, &ReportDetailsWidget::setupFromDatabase);
 }
 
 MainWindow::~MainWindow()
@@ -37,5 +42,10 @@ void MainWindow::onDisciplinesTriggered()
     SubjectsListEdit *subjectsWidget = new SubjectsListEdit;
     subjectsWidget->show();
     m_windowManager->add(subjectsWidget);
+}
+
+void MainWindow::onNewReportTriggered()
+{
+    ui->listWidget->addEmptyItem();
 }
 

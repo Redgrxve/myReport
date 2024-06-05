@@ -23,8 +23,8 @@
       <property name="opaqueResize">
        <bool>true</bool>
       </property>
-      <widget class="QListView" name="listView"/>
-      <widget class="ReportDetailsWidget" name="widget" native="true"/>
+      <widget class="ReportsListWidget" name="listWidget"/>
+      <widget class="ReportDetailsWidget" name="reportDetailsWidget" native="true"/>
      </widget>
     </item>
    </layout>
@@ -66,6 +66,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionNewRepot"/>
+   <addaction name="actionGroups"/>
   </widget>
   <action name="actionNewRepot">
    <property name="icon">
@@ -110,6 +111,11 @@
    <header>reportdetailswidget.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>ReportsListWidget</class>
+   <extends>QListView</extends>
+   <header>reportslistwidget.h</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="../res/resources.qrc"/>
@@ -147,9 +153,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionNewRepot</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onNewReportTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onGroupsTriggered()</slot>
   <slot>onDisciplinesTriggered()</slot>
+  <slot>onNewReportTriggered()</slot>
  </slots>
 </ui>

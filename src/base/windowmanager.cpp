@@ -9,11 +9,6 @@ WindowManager::~WindowManager()
 
 void WindowManager::add(QWidget *widget)
 {
-    if (m_openedWidgets.contains(widget)) {
-        widget->focusWidget();
-        return;
-    }
-
     m_openedWidgets.push(widget);
 }
 
@@ -32,4 +27,13 @@ void WindowManager::closeAndDeleteAll()
         widget->close();
         widget->deleteLater();
     }
+}
+
+bool WindowManager::isAlreadyOpened(QWidget *widget)
+{
+    for (QWidget *openedWidget : m_openedWidgets) {
+        if (typeid(*openedWidget) == typeid(*widget))
+            return true;
+    }
+    return false;
 }

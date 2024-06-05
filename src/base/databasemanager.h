@@ -25,7 +25,10 @@ public:
     bool insertToGroups(const QString &item) const;
     bool insertToSubjects(const QString &item) const;
     bool insertToStudents(const QString &item,
-                          const int groupId) const;
+                          int groupId) const;
+    bool insertToAbsentees(int group_id,
+                           const QDate &date,
+                           const QString &name);
 
     QStringList selectNamesFromGroups() const;
     int selectIdFromGroups(const QString &groupName) const;

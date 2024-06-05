@@ -22,6 +22,11 @@ QStringList AbsenteesCellWidget::labelToList() const
     return QStringList();
 }
 
+QHash<int, QStringList> AbsenteesCellWidget::absentees()
+{
+    return m_absentees;
+}
+
 void AbsenteesCellWidget::onButtonClicked()
 {
     if (m_groupId == -1) {

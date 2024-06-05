@@ -3,6 +3,7 @@
 #include <QStringList>
 #include <QFile>
 #include <QDebug>
+#include <QDate>
 
 Q_GLOBAL_STATIC(DatabaseManager, databaseManagerInstance)
 
@@ -76,12 +77,25 @@ bool DatabaseManager::insertToSubjects(const QString &item) const
     return insertIntoTable("subjects", data);
 }
 
-bool DatabaseManager::insertToStudents(const QString &item, const int groupId) const
+bool DatabaseManager::insertToStudents(const QString &item,
+                                       int groupId) const
 {
     QVariantMap data;
     data["name"] = item;
     data["group_id"] = groupId;
     return insertIntoTable("students", data);
+}
+
+bool DatabaseManager::insertToAbsentees(int group_id,
+                                        const QDate &date,
+                                        const QString &name)
+{
+    QVariantMap data;
+    data["user_id"] = m_userId;
+    data["group_id"] = group_id;
+    data["date"] = date;
+    data["name"] = name;
+    return insertIntoTable("absentees", data);
 }
 
 QStringList DatabaseManager::selectNamesFromGroups() const
@@ -256,6 +270,18 @@ bool DatabaseManager::createTables() const
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы учеников: "
+                 << query.lastError();
+        return false;
+    }
+
+    queryText = "CREATE TABLE IF NOT EXISTS absentees ("
+                "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "user_id INTEGER NOT NULL REFERENCES users(id),"
+                "group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,"
+                "date DATE NOT NULL UNIQUE,"
+                "name TEXT NOT NULL)";
+    if (!query.exec(queryText)) {
+        qDebug() << "Ошибка при создании таблицы отсутствующих: "
                  << query.lastError();
         return false;
     }
