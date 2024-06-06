@@ -28,7 +28,7 @@ public:
                           int groupId) const;
     bool insertToAbsentees(int group_id,
                            const QDate &date,
-                           const QString &name);
+                           const QString &names);
 
     QStringList selectNamesFromGroups() const;
     int selectIdFromGroups(const QString &groupName) const;
@@ -40,10 +40,17 @@ public:
     QByteArray selectPasswordFromUsers(const QString &login) const;
     QByteArray selectSaltFromUsers(const QString &login) const;
     QStringList selectNamesFromStudents(int groupId) const;
+    QList<QDate> selectDatesFromAbsentees() const;
+    QStringList selectNamesFromAbsentees(const QDate &date,
+                                         int groupId);
+    QList<int> selectGroupIdFromAbsentees(const QDate &date);
+    QHash<int, QStringList> selectFromAbsentees(const QDate &date);
+
 
     bool deleteFromGroups(const QString &item) const;
     bool deleteFromSubjects(const QString &item) const;
     bool deleteFromStudents(const QString &item, int groupId) const;
+    bool deleteFromAbsentees(const QDate &date);
 
     QSqlDatabase *database();
 

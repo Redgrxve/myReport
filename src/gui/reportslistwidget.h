@@ -10,10 +10,12 @@ public:
     explicit ReportsListWidget(QWidget *parent = nullptr);
 
     void addEmptyItem();
+    bool isItemInList(const QDate &date) const;
 
 private:
     QListWidgetItem *createItem();
     QListWidgetItem *createItem(const QDate &date);
+    void setupItemsFromDatabase();
 
 signals:
     void reportSelected(const QDate &date);

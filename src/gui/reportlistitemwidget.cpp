@@ -27,3 +27,4 @@ QDate ReportListItemWidget::date() const
 {
     return m_date;
 }
+

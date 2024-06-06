@@ -88,13 +88,13 @@ bool DatabaseManager::insertToStudents(const QString &item,
 
 bool DatabaseManager::insertToAbsentees(int group_id,
                                         const QDate &date,
-                                        const QString &name)
+                                        const QString &names)
 {
     QVariantMap data;
     data["user_id"] = m_userId;
     data["group_id"] = group_id;
     data["date"] = date;
-    data["name"] = name;
+    data["name"] = names;
     return insertIntoTable("absentees", data);
 }
 
@@ -182,10 +182,82 @@ QStringList DatabaseManager::selectNamesFromStudents(int groupId) const
     return stringListByQuery(query, "name");
 }
 
+QList<QDate> DatabaseManager::selectDatesFromAbsentees() const
+{
+    QList<QDate> result;
+    QSqlQuery query;
+    QString queryText = QString("SELECT DISTINCT date FROM absentees "
+                                "WHERE user_id = %1").arg(m_userId);
+    if (!query.exec(queryText)) {
+        qDebug() << "Ошибка при выборе дат:"
+                 << query.lastError().text();
+        return result;
+    }
+
+    while (query.next()) {
+        result.append(query.value(0).toDate());
+    }
+    return result;
+}
+
+QStringList DatabaseManager::selectNamesFromAbsentees(const QDate &date,
+                                                      int groupId)
+{
+    QString dateString = date.toString(Qt::ISODate);
+    QString condition = QString("date = '%1' AND group_id = %2")
+                            .arg(dateString).arg(groupId);
+    QSqlQuery query = selectFromTable("absentees", condition);
+    QStringList result;
+    while (query.next()) {
+        result.append(query.value("name").toString());
+    }
+
+    return result;
+}
+
+QList<int> DatabaseManager::selectGroupIdFromAbsentees(const QDate &date)
+{
+    QString dateString = date.toString(Qt::ISODate);
+    QString condition = QString("date = '%1' AND user_id = %2")
+                            .arg(dateString).arg(m_userId);
+    QSqlQuery query = selectFromTable("absentees", condition);
+    QList<int> result;
+    while (query.next()) {
+        result.append(query.value("group_id").toInt());
+    }
+
+    return result;
+}
+
+QHash<int, QStringList> DatabaseManager::selectFromAbsentees(const QDate &date)
+{
+    QSqlQuery query;
+    QList<int> groupsId;
+    QHash<int, QStringList> result;
+    QString dateString = date.toString(Qt::ISODate);
+    QString queryText = QString("SELECT DISTINCT group_id FROM absentees "
+                                "WHERE date = '%1'").arg(dateString);
+    if (!query.exec(queryText)) {
+        qDebug() << "Ошибка при получении индексов групп"
+                 << query.lastError();
+        return result;
+    }
+
+    while (query.next()) {
+        groupsId.append(query.value(0).toInt());
+    }
+
+    for (int groupId : groupsId) {
+        result[groupId] = selectNamesFromAbsentees(date, groupId);
+    }
+
+    return result;
+}
+
 bool DatabaseManager::deleteFromGroups(const QString &item) const
 {
     QString condition = QString("name = '%1' AND user_id = %2")
-                            .arg(item).arg(m_userId);;
+                            .arg(item).arg(m_userId);
     return deleteFromTable("groups", condition);
 }
 
@@ -201,6 +273,13 @@ bool DatabaseManager::deleteFromStudents(const QString &item, int groupId) const
     QString condition = QString("name = '%1' AND group_id = %2")
                             .arg(item).arg(groupId);
     return deleteFromTable("students", condition);
+}
+
+bool DatabaseManager::deleteFromAbsentees(const QDate &date)
+{
+    QString dateString = date.toString(Qt::ISODate);
+    QString condition = QString("date = '%1'").arg(dateString);
+    return deleteFromTable("absentees", condition);
 }
 
 QSqlDatabase *DatabaseManager::database()
@@ -278,7 +357,7 @@ bool DatabaseManager::createTables() const
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "user_id INTEGER NOT NULL REFERENCES users(id),"
                 "group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,"
-                "date DATE NOT NULL UNIQUE,"
+                "date DATE NOT NULL,"
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы отсутствующих: "

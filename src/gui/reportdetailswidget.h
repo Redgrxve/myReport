@@ -4,6 +4,9 @@
 #include <QDate>
 #include <QWidget>
 
+class AbsenteesItemDelegate;
+class GroupsComboBoxDelegate;
+
 namespace Ui {
 class ReportDetailsWidget;
 }
@@ -16,14 +19,19 @@ public:
     explicit ReportDetailsWidget(QWidget *parent = nullptr);
     ~ReportDetailsWidget();
 
+    void setDate(const QDate &date);
+
 private:
     Ui::ReportDetailsWidget *ui;
     QDate m_date;
 
     void setupDelegates();
-    void insertRow();
+    int insertRow();
     void removeLastRow();
     QStringList availableGroups(const QString &currentGroup) const;
+    bool saveToDatabase() const;
+    AbsenteesItemDelegate *absenteesItemDelegate() const;
+    GroupsComboBoxDelegate *groupsComboBoxDelegate() const;
     //СДЕЛАТЬ ПОТОМ ЧТОБЫ КОМБОБОКСЫ ОБНОВЛЯЛИСЬ ПРИ УДАЛЕНИИ ЭЛЕМЕНТОВ ИЗ СПИСКА
     //void updateComboBoxes();
 
