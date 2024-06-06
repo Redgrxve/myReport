@@ -3,6 +3,8 @@
 
 #include <QListWidget>
 
+class ReportListItemWidget;
+
 class ReportsListWidget : public QListWidget
 {
     Q_OBJECT
@@ -13,16 +15,18 @@ public:
     bool isItemInList(const QDate &date) const;
 
 private:
+    QListWidgetItem *emptyItem = nullptr;
+
     QListWidgetItem *createItem();
     QListWidgetItem *createItem(const QDate &date);
     void setupItemsFromDatabase();
+    ReportListItemWidget *reportListItemWidget(QListWidgetItem *item) const;
 
 signals:
     void reportSelected(const QDate &date);
 
 public slots:
-    void onReportSaved(const QDate &date,
-                       const QHash<int, QStringList> &absentees);
+    void onReportSaved(const QDate &date);
 
 private slots:
     void onItemClicked(QListWidgetItem *item);

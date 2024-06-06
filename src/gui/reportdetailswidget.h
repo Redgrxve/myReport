@@ -37,8 +37,7 @@ private:
 
 signals:
     void rowInserted(int newRowIndex);
-    void saveClicked(const QDate &date,
-                     const QHash<int, QStringList> &absentees);
+    void saveClicked(const QDate &date);
 
 public slots:
     void setupFromDatabase(const QDate &date);

@@ -22,7 +22,7 @@ QStringList AbsenteesCellWidget::labelToList() const
     return QStringList();
 }
 
-QHash<int, QStringList> AbsenteesCellWidget::absentees()
+QHash<int, QStringList> &AbsenteesCellWidget::absentees()
 {
     return m_absentees;
 }

@@ -76,6 +76,9 @@
    <property name="text">
     <string>newRepot</string>
    </property>
+   <property name="toolTip">
+    <string>Новая рапортичка</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>

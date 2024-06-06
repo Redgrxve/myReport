@@ -278,7 +278,8 @@ bool DatabaseManager::deleteFromStudents(const QString &item, int groupId) const
 bool DatabaseManager::deleteFromAbsentees(const QDate &date)
 {
     QString dateString = date.toString(Qt::ISODate);
-    QString condition = QString("date = '%1'").arg(dateString);
+    QString condition = QString("date = '%1' AND user_id = %2")
+                            .arg(dateString).arg(m_userId);
     return deleteFromTable("absentees", condition);
 }
 
@@ -358,7 +359,7 @@ bool DatabaseManager::createTables() const
                 "user_id INTEGER NOT NULL REFERENCES users(id),"
                 "group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,"
                 "date DATE NOT NULL,"
-                "name TEXT NOT NULL)";
+                "name TEXT)";
     if (!query.exec(queryText)) {
         qDebug() << "Ошибка при создании таблицы отсутствующих: "
                  << query.lastError();

@@ -13,16 +13,17 @@ ReportsListWidget::ReportsListWidget(QWidget *parent)
 
 void ReportsListWidget::addEmptyItem()
 {
-    addItem(createItem());
+    if (!emptyItem)
+        addItem(createItem());
 }
 
 QListWidgetItem *ReportsListWidget::createItem()
 {
-    QListWidgetItem *item = new QListWidgetItem(this);
+    emptyItem = new QListWidgetItem(this);
     ReportListItemWidget *itemWidget = new ReportListItemWidget(this);
-    item->setSizeHint(QSize(0, 40));
-    setItemWidget(item, itemWidget);
-    return item;
+    emptyItem->setSizeHint(QSize(0, 40));
+    setItemWidget(emptyItem, itemWidget);
+    return emptyItem;
 }
 
 QListWidgetItem *ReportsListWidget::createItem(const QDate &date)
@@ -43,25 +44,30 @@ void ReportsListWidget::setupItemsFromDatabase()
     }
 }
 
+ReportListItemWidget *ReportsListWidget::reportListItemWidget(QListWidgetItem *item) const
+{
+    return static_cast<ReportListItemWidget*>(itemWidget(item));
+}
+
 bool ReportsListWidget::isItemInList(const QDate &date) const
 {
     for (int row = 0; row < count(); ++row) {
-        auto reportItemWidget = static_cast<ReportListItemWidget*>(itemWidget(item(row)));
+        auto reportItemWidget = reportListItemWidget(item(row));
         if (date == reportItemWidget->date())
             return true;
     }
     return false;
 }
 
-void ReportsListWidget::onReportSaved(const QDate &date,
-                                      const QHash<int, QStringList> &absentees)
+void ReportsListWidget::onReportSaved(const QDate &date)
 {
-    if (!isItemInList(date))
-        addItem(createItem(date));
+    clear();
+    setupItemsFromDatabase();
+    emptyItem = nullptr;
 }
 
 void ReportsListWidget::onItemClicked(QListWidgetItem *item)
 {
-    auto reportItemWidget = static_cast<ReportListItemWidget*>(itemWidget(item));
+    auto reportItemWidget = reportListItemWidget(item);
     emit reportSelected(reportItemWidget->date());
 }

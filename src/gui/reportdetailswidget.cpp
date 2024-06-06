@@ -60,6 +60,7 @@ void ReportDetailsWidget::setupFromDatabase(const QDate &date)
     QVector<int> groupsId = absentees.keys();
     ui->tableWidget->setRowCount(0);
     setDate(date);
+    AbsenteesCellWidget::absentees() = absentees;
     for (int groupId : groupsId) {
         int newRowIndex = insertRow();
         QString groupName = dbManager->selectNameFromGroups(groupId);
@@ -104,7 +105,16 @@ int ReportDetailsWidget::insertRow()
 
 void ReportDetailsWidget::removeLastRow()
 {
-    ui->tableWidget->removeRow(ui->tableWidget->rowCount() - 1);
+    if (ui->tableWidget->rowCount() == 0)
+        return;
+
+    int newRowIndex = ui->tableWidget->rowCount() - 1;
+    QString group = ui->tableWidget->item(newRowIndex, 0)->text();
+    int groupId = DatabaseManager::instance()->selectIdFromGroups(group);
+    if (groupId != -1)
+        AbsenteesCellWidget::absentees().remove(groupId);
+
+    ui->tableWidget->removeRow(newRowIndex);
 }
 
 QStringList ReportDetailsWidget::availableGroups(const QString &currentGroup) const
@@ -181,5 +191,5 @@ void ReportDetailsWidget::onSaveClicked()
                                               "\nПопробуйте еще раз");
         return;
     }
-    emit saveClicked(m_date, AbsenteesCellWidget::absentees());
+    emit saveClicked(m_date);
 }
