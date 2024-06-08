@@ -11,7 +11,8 @@ AbsenteesEditDialog::AbsenteesEditDialog(int groupId,
 {
     ui->setupUi(this);
 
-    ui->listWidget->addItems(names);
+    if (!names.isEmpty() && names[0] != "null")
+        ui->listWidget->addItems(names);
 
     connect(ui->addButton, &QPushButton::clicked,
             this, &AbsenteesEditDialog::onAddClicked);

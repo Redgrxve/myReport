@@ -19,11 +19,13 @@ LIBS += \
 
 SOURCES += \
     src/base/absenteesitemdelegate.cpp \
+    src/base/absenteestablewidgetitem.cpp \
     src/base/appconfig.cpp \
     src/base/databasemanager.cpp \
     src/app/main.cpp \
     src/base/groupscombobox.cpp \
     src/base/groupscomboboxdelegate.cpp \
+    src/base/grouptablewidgetitem.cpp \
     src/base/windowmanager.cpp \
     src/gui/absenteescellwidget.cpp \
     src/gui/absenteeseditdialog.cpp \
@@ -42,10 +44,12 @@ SOURCES += \
 
 HEADERS += \
     src/base/absenteesitemdelegate.h \
+    src/base/absenteestablewidgetitem.h \
     src/base/appconfig.h \
     src/base/databasemanager.h \
     src/base/groupscombobox.h \
     src/base/groupscomboboxdelegate.h \
+    src/base/grouptablewidgetitem.h \
     src/base/windowmanager.h \
     src/gui/absenteescellwidget.h \
     src/gui/absenteeseditdialog.h \

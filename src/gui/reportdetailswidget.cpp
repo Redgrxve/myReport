@@ -1,10 +1,11 @@
 #include "reportdetailswidget.h"
-#include "absenteescellwidget.h"
 #include "ui_reportdetailswidget.h"
 #include "calendardialog.h"
 #include "groupscomboboxdelegate.h"
 #include "absenteesitemdelegate.h"
 #include "databasemanager.h"
+#include "grouptablewidgetitem.h"
+#include "absenteestablewidgetitem.h"
 
 #include <QMessageBox>
 
@@ -13,6 +14,9 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
     , ui(new Ui::ReportDetailsWidget)
 {
     ui->setupUi(this);
+    ui->tableWidget->setRowCount(0);
+    ui->saveButton->setEnabled(false);
+
     setupDelegates();
 
     connect(ui->celendarButton, &QPushButton::clicked,
@@ -55,30 +59,34 @@ void ReportDetailsWidget::setupDelegates()
 
 void ReportDetailsWidget::setupFromDatabase(const QDate &date)
 {
+    if (!m_isSaved) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this,
+                              tr("Рапортичка не сохранена"),
+                              tr("Вы не сохранили рапортичку."
+                                 "\nВы хотите переключиться на другую?"));
+        if (reply == QMessageBox::StandardButton::No)
+            return;
+    }
+
+    setDate(date);
+    ui->tableWidget->setRowCount(0);
+
     auto dbManager = DatabaseManager::instance();
     QHash<int, QStringList> absentees = dbManager->selectFromAbsentees(date);
     QVector<int> groupsId = absentees.keys();
-    ui->tableWidget->setRowCount(0);
-    setDate(date);
-    AbsenteesCellWidget::absentees() = absentees;
     for (int groupId : groupsId) {
         int newRowIndex = insertRow();
+        auto groupItem = groupTableItem(newRowIndex, 0);
+        auto absenteesItem = absenteesTableItem(newRowIndex, 1);
+
         QString groupName = dbManager->selectNameFromGroups(groupId);
-        QString absenteesString = absentees[groupId].join(", ");
-        QTableWidgetItem *groupItem = ui->tableWidget->item(newRowIndex, 0);
-        if (!groupItem) {
-            groupItem = new QTableWidgetItem;
-            ui->tableWidget->setItem(newRowIndex, 0, groupItem);
-        }
+        QString absenteesStr = absentees[groupId].join(", ");
 
-        QTableWidgetItem *absenteesItem = ui->tableWidget->item(newRowIndex, 1);
-        if (!absenteesItem) {
-            absenteesItem = new QTableWidgetItem;
-            ui->tableWidget->setItem(newRowIndex, 1, absenteesItem);
-        }
-
+        groupItem->setGroupId(groupId);
+        absenteesItem->setAbsentees(absentees[groupId]);
         groupItem->setText(groupName);
-        absenteesItem->setText(absenteesString);
+        absenteesItem->setText(absenteesStr == "null" ? "" : absenteesStr);
     }
 }
 
@@ -99,22 +107,23 @@ int ReportDetailsWidget::insertRow()
 {
     int newRowIndex = ui->tableWidget->rowCount();
     ui->tableWidget->insertRow(newRowIndex);
+    GroupTableWidgetItem* groupsItem = new GroupTableWidgetItem;
+    AbsenteesTableWidgetItem* absenteesItem = new AbsenteesTableWidgetItem;
+    ui->tableWidget->setItem(newRowIndex, 0, groupsItem);
+    ui->tableWidget->setItem(newRowIndex, 1, absenteesItem);
     emit rowInserted(newRowIndex);
+    ui->saveButton->setEnabled(true);
     return newRowIndex;
 }
 
 void ReportDetailsWidget::removeLastRow()
 {
-    if (ui->tableWidget->rowCount() == 0)
-        return;
-
     int newRowIndex = ui->tableWidget->rowCount() - 1;
-    QString group = ui->tableWidget->item(newRowIndex, 0)->text();
-    int groupId = DatabaseManager::instance()->selectIdFromGroups(group);
-    if (groupId != -1)
-        AbsenteesCellWidget::absentees().remove(groupId);
-
     ui->tableWidget->removeRow(newRowIndex);
+
+    if (ui->tableWidget->rowCount() == 0) {
+        ui->saveButton->setEnabled(false);
+    }
 }
 
 QStringList ReportDetailsWidget::availableGroups(const QString &currentGroup) const
@@ -130,22 +139,57 @@ QStringList ReportDetailsWidget::availableGroups(const QString &currentGroup) co
     return groups;
 }
 
-bool ReportDetailsWidget::saveToDatabase() const
+bool ReportDetailsWidget::saveToDatabase()
 {
+    int rowCount = ui->tableWidget->rowCount();
+    if (!rowCount)
+        return false;
+
     auto dbManager = DatabaseManager::instance();
     if (!dbManager->deleteFromAbsentees(m_date))
         return false;
 
-    QHash<int, QStringList> absentees = AbsenteesCellWidget::absentees();
-
-    QVector<int> indexes = absentees.keys();
-    for (int index : indexes) {
-        for (const QString &name : absentees[index]) {
-            if (!dbManager->insertToAbsentees(index, m_date, name))
+    for (int row = 0; row < rowCount; ++row) {
+        auto groupItem = groupTableItem(row, 0);
+        auto absenteesItem = absenteesTableItem(row, 1);
+        if (absenteesItem->absentees().isEmpty()) {
+            absenteesItem->setAbsentees({"null"});
+        }
+        for (const QString &name : absenteesItem->absentees()) {
+            if (!dbManager->insertToAbsentees(groupItem->groupId(), m_date, name))
                 return false;
         }
     }
+    m_isSaved = true;
     return true;
+}
+
+void ReportDetailsWidget::onRowInserted(int newRowIndex)
+{
+    QTableWidgetItem *item = new QTableWidgetItem();
+    item->setTextAlignment(Qt::AlignCenter);
+    ui->tableWidget->setItem(newRowIndex, 0, item);
+}
+
+void ReportDetailsWidget::onCellEdit(int row, int column)
+{
+    m_isSaved = false;
+}
+
+void ReportDetailsWidget::onSaveClicked()
+{
+    if (m_date.isNull()) {
+        QMessageBox::critical(this, "Ошибка", "Необходимо установить дату.");
+        return;
+    }
+
+    if (!saveToDatabase()) {
+        QMessageBox::critical(this, "Ошибка", "Не удалось сохранить таблицу."
+                                              "\nВозможно, таблица пустая, или вы не заполнили строки."
+                                              "\nПопробуйте еще раз");
+        return;
+    }
+    emit saveClicked(m_date);
 }
 
 AbsenteesItemDelegate *ReportDetailsWidget::absenteesItemDelegate() const
@@ -158,38 +202,12 @@ GroupsComboBoxDelegate *ReportDetailsWidget::groupsComboBoxDelegate() const
     return static_cast<GroupsComboBoxDelegate*>(ui->tableWidget->itemDelegateForColumn(0));
 }
 
-void ReportDetailsWidget::onRowInserted(int newRowIndex)
+GroupTableWidgetItem *ReportDetailsWidget::groupTableItem(int row, int column) const
 {
-    QTableWidgetItem *item = new QTableWidgetItem();
-    item->setTextAlignment(Qt::AlignCenter);
-    ui->tableWidget->setItem(newRowIndex, 0, item);
+    return static_cast<GroupTableWidgetItem*>(ui->tableWidget->item(row, column));
 }
 
-void ReportDetailsWidget::onCellEdit(int row, int column)
+AbsenteesTableWidgetItem *ReportDetailsWidget::absenteesTableItem(int row, int column) const
 {
-    if (column == 1) {
-        QString groupName = ui->tableWidget->item(row, 0)->text();
-        int groupId = groupName.isEmpty() ? -1 : DatabaseManager::instance()->selectIdFromGroups(groupName);
-        auto absenteesDelegate = absenteesItemDelegate();
-        absenteesDelegate->setGroupId(groupId);
-    } else {
-        auto comboBoxDelegate = groupsComboBoxDelegate();
-        QString currentGroup = ui->tableWidget->item(row, column)->text();
-        comboBoxDelegate->setAvailableGroups(availableGroups(currentGroup));
-    }
-}
-
-void ReportDetailsWidget::onSaveClicked()
-{
-    if (m_date.isNull()) {
-        QMessageBox::critical(this, "Ошибка", "Необходимо установить дату.");
-        return;
-    }
-
-    if (!saveToDatabase()) {
-        QMessageBox::critical(this, "Ошибка", "Не удалось сохранить таблицу"
-                                              "\nПопробуйте еще раз");
-        return;
-    }
-    emit saveClicked(m_date);
+    return static_cast<AbsenteesTableWidgetItem*>(ui->tableWidget->item(row, column));
 }

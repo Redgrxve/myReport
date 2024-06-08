@@ -30,13 +30,6 @@ private:
     void updateEditorGeometry(QWidget *editor,
                               const QStyleOptionViewItem &option,
                               const QModelIndex &index) const override;
-
-signals:
-    void groupChanged(const QString &text);
-    void groupIndexChanged(int groupIndex);
-
-private slots:
-    void onComboBoxTextChanged(const QString &text);
 };
 
 #endif // GROUPSCOMBOBOXDELEGATE_H

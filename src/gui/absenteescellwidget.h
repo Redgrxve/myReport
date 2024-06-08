@@ -9,16 +9,19 @@ class AbsenteesCellWidget : public LabelWithButtonWidget
 public:
     explicit AbsenteesCellWidget(int groupId, QWidget *parent);
 
-    static QHash<int, QStringList> &absentees();
+    void clear();
+
+    const QStringList &absentees() const;
+    void setAbsentees(const QStringList &list);
 
 private:
     int m_groupId;
-    static QHash<int, QStringList> m_absentees;
+    QStringList m_absentees;
 
     QStringList labelToList() const;
 
 signals:
-    void absenteesSaved(const QStringList &names);
+    void absenteesSaved(QWidget *editor);
 
 private slots:
     void onButtonClicked();

@@ -3,14 +3,18 @@
 
 #include <QMessageBox>
 
-QHash<int, QStringList> AbsenteesCellWidget::m_absentees;
-
 AbsenteesCellWidget::AbsenteesCellWidget(int groupId, QWidget *parent)
     : LabelWithButtonWidget(parent)
     , m_groupId(groupId)
 {
     connect(this, &AbsenteesCellWidget::buttonClicked,
             this, &AbsenteesCellWidget::onButtonClicked);
+}
+
+void AbsenteesCellWidget::clear()
+{
+    m_absentees.clear();
+    label()->clear();
 }
 
 QStringList AbsenteesCellWidget::labelToList() const
@@ -22,9 +26,14 @@ QStringList AbsenteesCellWidget::labelToList() const
     return QStringList();
 }
 
-QHash<int, QStringList> &AbsenteesCellWidget::absentees()
+const QStringList &AbsenteesCellWidget::absentees() const
 {
     return m_absentees;
+}
+
+void AbsenteesCellWidget::setAbsentees(const QStringList &list)
+{
+    m_absentees = list;
 }
 
 void AbsenteesCellWidget::onButtonClicked()
@@ -34,7 +43,7 @@ void AbsenteesCellWidget::onButtonClicked()
         return;
     }
 
-    AbsenteesEditDialog absenteesDialog(m_groupId, m_absentees[m_groupId], this);
+    AbsenteesEditDialog absenteesDialog(m_groupId, m_absentees, this);
     connect(&absenteesDialog, &AbsenteesEditDialog::absenteesSaved,
             this, &AbsenteesCellWidget::onAbsenteesSaved);
     absenteesDialog.exec();
@@ -43,6 +52,6 @@ void AbsenteesCellWidget::onButtonClicked()
 void AbsenteesCellWidget::onAbsenteesSaved(const QStringList &names)
 {
     label()->setText(names.join(", "));
-    m_absentees[m_groupId] = names;
-    emit absenteesSaved(names);
+    m_absentees = names;
+    emit absenteesSaved(this);
 }

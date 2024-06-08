@@ -1,6 +1,7 @@
 #include "groupscomboboxdelegate.h"
-#include "databasemanager.h"
+#include "absenteestablewidgetitem.h"
 #include "groupscombobox.h"
+#include "grouptablewidgetitem.h"
 
 GroupsComboBoxDelegate::GroupsComboBoxDelegate(const QStringList &groups,
                                                QObject* parent)
@@ -18,23 +19,17 @@ QWidget *GroupsComboBoxDelegate::createEditor(QWidget *parent,
                                               const QModelIndex &index) const
 {
 
-    GroupsComboBox *comboBox = new GroupsComboBox(m_groups,
-                                                  parent);
-    connect(comboBox, &GroupsComboBox::currentTextChanged,
-            this, &GroupsComboBoxDelegate::onComboBoxTextChanged);
-    return comboBox;
+    GroupsComboBox *editor = new GroupsComboBox(m_groups, parent);
+    return editor;
 }
 
 void GroupsComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QString data = index.model()->data(index, Qt::EditRole).toString();
-    GroupsComboBox *comboBox = static_cast<GroupsComboBox*>(editor);
-    connect(comboBox, &GroupsComboBox::currentTextChanged,
-            this, &GroupsComboBoxDelegate::onComboBoxTextChanged);
+    auto comboBox = static_cast<GroupsComboBox*>(editor);
     int itemIndex = comboBox->findText(data);
     if (itemIndex != -1) {
         comboBox->setCurrentIndex(itemIndex);
-        //emit comboBox->currentTextChanged(comboBox->itemText(itemIndex));
     }
 }
 
@@ -42,9 +37,19 @@ void GroupsComboBoxDelegate::setModelData(QWidget *editor,
                                           QAbstractItemModel *model,
                                           const QModelIndex &index) const
 {
-    GroupsComboBox *comboBox = static_cast<GroupsComboBox*>(editor);
-    QString value = comboBox->currentText();
-    model->setData(index, value, Qt::EditRole);
+    auto comboBox = static_cast<GroupsComboBox*>(editor);
+    auto tableWidget = static_cast<QTableWidget*>(model->parent());
+    auto groupItem = static_cast<GroupTableWidgetItem*>(
+        tableWidget->item(index.row(), index.column()));
+    auto absenteesItem = static_cast<AbsenteesTableWidgetItem*>(
+        tableWidget->item(index.row(), 1));
+
+    QString data = comboBox->currentText();
+    groupItem->setGroup(data);
+    if (model->data(index, Qt::EditRole) != data)
+        absenteesItem->clear();
+
+    model->setData(index, data, Qt::EditRole);
 }
 
 void GroupsComboBoxDelegate::updateEditorGeometry(QWidget *editor,
@@ -52,10 +57,4 @@ void GroupsComboBoxDelegate::updateEditorGeometry(QWidget *editor,
                                                   const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
-}
-
-void GroupsComboBoxDelegate::onComboBoxTextChanged(const QString &text)
-{
-    emit groupChanged(text);
-    emit groupIndexChanged(DatabaseManager::instance()->selectIdFromGroups(text));
 }

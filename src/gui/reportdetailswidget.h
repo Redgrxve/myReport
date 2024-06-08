@@ -6,6 +6,8 @@
 
 class AbsenteesItemDelegate;
 class GroupsComboBoxDelegate;
+class GroupTableWidgetItem;
+class AbsenteesTableWidgetItem;
 
 namespace Ui {
 class ReportDetailsWidget;
@@ -24,14 +26,20 @@ public:
 private:
     Ui::ReportDetailsWidget *ui;
     QDate m_date;
+    bool m_isSaved = true;
 
     void setupDelegates();
     int insertRow();
     void removeLastRow();
     QStringList availableGroups(const QString &currentGroup) const;
-    bool saveToDatabase() const;
+    bool saveToDatabase();
+
     AbsenteesItemDelegate *absenteesItemDelegate() const;
     GroupsComboBoxDelegate *groupsComboBoxDelegate() const;
+    GroupTableWidgetItem *groupTableItem(int row, int column) const;
+    AbsenteesTableWidgetItem *absenteesTableItem(int row, int column) const;
+
+
     //СДЕЛАТЬ ПОТОМ ЧТОБЫ КОМБОБОКСЫ ОБНОВЛЯЛИСЬ ПРИ УДАЛЕНИИ ЭЛЕМЕНТОВ ИЗ СПИСКА
     //void updateComboBoxes();
 
