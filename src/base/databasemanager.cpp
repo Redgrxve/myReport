@@ -29,7 +29,7 @@ bool DatabaseManager::connect()
     QString dbPath = "database.db";
     m_db = QSqlDatabase::addDatabase("SQLITECIPHER");
     m_db.setDatabaseName(dbPath);
-    //m_db.setPassword("supersecretpassword");
+    m_db.setPassword("supersecretpassword");
 
     if (!m_db.open()) {
         qDebug() << "Ошибка при открытии БД:"

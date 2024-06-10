@@ -13,5 +13,7 @@
         <file>icons/group.png</file>
         <file>icons/book.png</file>
         <file>icons/edit2.png</file>
+        <file>icons/remove (2).png</file>
+        <file>icons/remove (3).png</file>
     </qresource>
 </RCC>

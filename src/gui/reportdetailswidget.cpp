@@ -40,6 +40,10 @@ ReportDetailsWidget::~ReportDetailsWidget()
 
 void ReportDetailsWidget::setDate(const QDate &date)
 {
+    if (date.isNull()) {
+        ui->dateLabel->setText("Выберите дату");
+        return;
+    }
     m_date = date;
     ui->dateLabel->setText(date.toString("dd.MM.yyyy"));
     QLocale locale = QLocale(QLocale::Russian);
@@ -88,6 +92,7 @@ void ReportDetailsWidget::setupFromDatabase(const QDate &date)
         groupItem->setText(groupName);
         absenteesItem->setText(absenteesStr == "null" ? "" : absenteesStr);
     }
+    m_isSaved = true;
 }
 
 void ReportDetailsWidget::onCalendarButtonClicked()
@@ -173,6 +178,11 @@ void ReportDetailsWidget::onRowInserted(int newRowIndex)
 
 void ReportDetailsWidget::onCellEdit(int row, int column)
 {
+    if (column == 0) {
+        auto item = ui->tableWidget->item(row, column);
+        auto groupsDelegate = groupsComboBoxDelegate();
+        groupsDelegate->setAvailableGroups(availableGroups(item->text()));
+    }
     m_isSaved = false;
 }
 

@@ -13,8 +13,13 @@ ReportsListWidget::ReportsListWidget(QWidget *parent)
 
 void ReportsListWidget::addEmptyItem()
 {
-    if (!emptyItem)
-        addItem(createItem());
+    if (emptyItem)
+        return;
+
+    QListWidgetItem *item = createItem();
+    addItem(item);
+    setCurrentItem(item);
+    emit itemClicked(item);
 }
 
 QListWidgetItem *ReportsListWidget::createItem()
