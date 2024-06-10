@@ -61,6 +61,13 @@ void ListEditWidget::removeSelectedItem()
     if (!selectedItem)
         return;
 
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+                                  tr("Удаление выбранного элемента"),
+                                  tr("Вы действительно хотите удалить выбранный элемент?"));
+    if (reply == QMessageBox::StandardButton::No)
+        return;
+
     if (!deleteFromDatabase(selectedItem->text())) {
         QMessageBox::critical(this, tr("Ошибка"),
                               tr("Ошибка при удалении элемента из базы данных."

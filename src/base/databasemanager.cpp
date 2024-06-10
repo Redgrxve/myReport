@@ -357,7 +357,7 @@ bool DatabaseManager::createTables() const
     queryText = "CREATE TABLE IF NOT EXISTS absentees ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "user_id INTEGER NOT NULL REFERENCES users(id),"
-                "group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,"
+                "group_id INTEGER NOT NULL REFERENCES groups(id),"
                 "date DATE NOT NULL,"
                 "name TEXT)";
     if (!query.exec(queryText)) {

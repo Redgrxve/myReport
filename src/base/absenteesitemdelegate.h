@@ -10,11 +10,7 @@ class AbsenteesItemDelegate : public QStyledItemDelegate
 public:
     explicit AbsenteesItemDelegate(QObject *parent = nullptr);
 
-    void setGroupId(int id);
-
 private:
-    int m_groupId = -1;
-
     QWidget *createEditor(QWidget *parent,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const override;

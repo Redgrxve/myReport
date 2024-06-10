@@ -15,7 +15,6 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
 {
     ui->setupUi(this);
     ui->tableWidget->setRowCount(0);
-    ui->saveButton->setEnabled(false);
 
     setupDelegates();
 
@@ -29,8 +28,6 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
             this, &ReportDetailsWidget::onSaveClicked);
     connect(ui->tableWidget, &QTableWidget::cellDoubleClicked,
             this, &ReportDetailsWidget::onCellEdit);
-    connect(this, &ReportDetailsWidget::rowInserted,
-            this, &ReportDetailsWidget::onRowInserted);
 }
 
 ReportDetailsWidget::~ReportDetailsWidget()
@@ -40,12 +37,13 @@ ReportDetailsWidget::~ReportDetailsWidget()
 
 void ReportDetailsWidget::setDate(const QDate &date)
 {
-    if (date.isNull()) {
+    m_date = date;
+    if (!date.isValid()) {
         ui->dateLabel->setText("Выберите дату");
         ui->dayLabel->clear();
         return;
     }
-    m_date = date;
+
     ui->dateLabel->setText(date.toString("dd.MM.yyyy"));
     QLocale locale = QLocale(QLocale::Russian);
     QString localeDate = locale.toString(date, "dddd");
@@ -113,12 +111,11 @@ int ReportDetailsWidget::insertRow()
 {
     int newRowIndex = ui->tableWidget->rowCount();
     ui->tableWidget->insertRow(newRowIndex);
-    GroupTableWidgetItem* groupsItem = new GroupTableWidgetItem;
-    AbsenteesTableWidgetItem* absenteesItem = new AbsenteesTableWidgetItem;
+    GroupTableWidgetItem *groupsItem = new GroupTableWidgetItem;
+    AbsenteesTableWidgetItem *absenteesItem = new AbsenteesTableWidgetItem;
     ui->tableWidget->setItem(newRowIndex, 0, groupsItem);
     ui->tableWidget->setItem(newRowIndex, 1, absenteesItem);
-    emit rowInserted(newRowIndex);
-    ui->saveButton->setEnabled(true);
+    m_isSaved = false;
     return newRowIndex;
 }
 
@@ -127,9 +124,7 @@ void ReportDetailsWidget::removeLastRow()
     int newRowIndex = ui->tableWidget->rowCount() - 1;
     ui->tableWidget->removeRow(newRowIndex);
 
-    if (ui->tableWidget->rowCount() == 0) {
-        ui->saveButton->setEnabled(false);
-    }
+    m_isSaved = false;
 }
 
 QStringList ReportDetailsWidget::availableGroups(const QString &currentGroup) const
@@ -170,13 +165,6 @@ bool ReportDetailsWidget::saveToDatabase()
     return true;
 }
 
-void ReportDetailsWidget::onRowInserted(int newRowIndex)
-{
-    QTableWidgetItem *item = new QTableWidgetItem();
-    item->setTextAlignment(Qt::AlignCenter);
-    ui->tableWidget->setItem(newRowIndex, 0, item);
-}
-
 void ReportDetailsWidget::onCellEdit(int row, int column)
 {
     if (column == 0) {
@@ -189,7 +177,7 @@ void ReportDetailsWidget::onCellEdit(int row, int column)
 
 void ReportDetailsWidget::onSaveClicked()
 {
-    if (m_date.isNull()) {
+    if (!m_date.isValid()) {
         QMessageBox::critical(this, "Ошибка", "Необходимо установить дату.");
         return;
     }

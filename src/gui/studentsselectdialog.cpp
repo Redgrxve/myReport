@@ -23,6 +23,9 @@ StudentsSelectDialog::~StudentsSelectDialog()
 
 void StudentsSelectDialog::onAccepted()
 {
+    if (!ui->listWidget->currentItem())
+        return;
+
     emit studentSelected(ui->listWidget->currentItem()->text());
 }
 

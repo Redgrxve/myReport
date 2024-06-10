@@ -44,7 +44,6 @@ private:
     //void updateComboBoxes();
 
 signals:
-    void rowInserted(int newRowIndex);
     void saveClicked(const QDate &date);
 
 public slots:
@@ -53,7 +52,6 @@ public slots:
 private slots:
     void onCalendarButtonClicked();
     void onDateSelected(const QDate &date);
-    void onRowInserted(int newRowIndex);
     void onCellEdit(int row, int column);
     void onSaveClicked();
 };

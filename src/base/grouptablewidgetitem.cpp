@@ -4,7 +4,9 @@
 GroupTableWidgetItem::GroupTableWidgetItem(int groupId)
     : QTableWidgetItem()
     , m_groupId(groupId)
-{}
+{
+    setTextAlignment(Qt::AlignCenter);
+}
 
 int GroupTableWidgetItem::groupId() const
 {

@@ -7,11 +7,6 @@ AbsenteesItemDelegate::AbsenteesItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {}
 
-void AbsenteesItemDelegate::setGroupId(int id)
-{
-    m_groupId = id;
-}
-
 QWidget *AbsenteesItemDelegate::createEditor(QWidget *parent,
                                              const QStyleOptionViewItem &option,
                                              const QModelIndex &index) const

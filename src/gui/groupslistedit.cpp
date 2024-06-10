@@ -28,7 +28,7 @@ void GroupsListEdit::onItemDoubleClicked(QListWidgetItem *item)
 {
     int groupId = DatabaseManager::instance()->selectIdFromGroups(item->text());
     StudentsListEdit* studentsListEdit = new StudentsListEdit(groupId);
-    studentsListEdit->setWindowTitle(item->text());
+    studentsListEdit->setWindowTitle("Состав группы " + item->text());
     studentsListEdit->show();
     m_windowManager->add(studentsListEdit);
 }
