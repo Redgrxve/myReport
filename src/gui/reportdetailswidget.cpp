@@ -42,6 +42,7 @@ void ReportDetailsWidget::setDate(const QDate &date)
 {
     if (date.isNull()) {
         ui->dateLabel->setText("Выберите дату");
+        ui->dayLabel->clear();
         return;
     }
     m_date = date;
