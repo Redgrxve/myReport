@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->reportDetailsWidget, &ReportDetailsWidget::saveClicked,
             ui->listWidget, &ReportsListWidget::onReportSaved);
     connect(ui->listWidget, &ReportsListWidget::reportSelected,
-            ui->reportDetailsWidget, &ReportDetailsWidget::setupFromDatabase);
+            ui->reportDetailsWidget, &ReportDetailsWidget::onReportSelected);
 }
 
 MainWindow::~MainWindow()
@@ -47,5 +47,10 @@ void MainWindow::onDisciplinesTriggered()
 void MainWindow::onNewReportTriggered()
 {
     ui->listWidget->addEmptyItem();
+}
+
+void MainWindow::onDeleteTriggered()
+{
+    ui->listWidget->deleteCurrentItem();
 }
 

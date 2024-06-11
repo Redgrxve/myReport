@@ -29,5 +29,6 @@ private slots:
     void onGroupsTriggered();
     void onDisciplinesTriggered();
     void onNewReportTriggered();
+    void onDeleteTriggered();
 };
 #endif // MAINWINDOW_H

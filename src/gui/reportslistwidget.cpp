@@ -22,6 +22,17 @@ void ReportsListWidget::addEmptyItem()
     emit itemClicked(item);
 }
 
+void ReportsListWidget::deleteCurrentItem()
+{
+    if (!currentItem())
+        return;
+
+    auto dbManager = DatabaseManager::instance();
+    auto reportItemWidget = reportListItemWidget(currentItem());
+    dbManager->deleteFromAbsentees(reportItemWidget->date());
+    delete takeItem(currentRow());
+}
+
 QListWidgetItem *ReportsListWidget::createItem()
 {
     emptyItem = new QListWidgetItem(this);

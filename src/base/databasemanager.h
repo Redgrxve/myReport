@@ -52,6 +52,8 @@ public:
     bool deleteFromStudents(const QString &item, int groupId) const;
     bool deleteFromAbsentees(const QDate &date);
 
+    bool isItemInAbsentees(const QDate &date);
+
     QSqlDatabase *database();
 
 private:

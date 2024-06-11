@@ -35,6 +35,33 @@ ReportDetailsWidget::~ReportDetailsWidget()
     delete ui;
 }
 
+bool ReportDetailsWidget::save()
+{
+    if (!m_date.isValid()) {
+        onCalendarButtonClicked();
+    }
+
+    if (isReportInDatabase()) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this,
+                                      tr("Перезапись существующей рапортички"),
+                                      tr("Рапортичка c этой датой уже существует."
+                                         "\nВы хотите перезаписать её?"));
+        if (reply == QMessageBox::StandardButton::No) {
+            return false;
+        }
+    }
+
+    if (!writeToDatabase()) {
+        QMessageBox::critical(this, "Ошибка", "Не удалось сохранить таблицу."
+                                              "\nВозможно, таблица пустая, \nили вы не заполнили строки.");
+        return false;
+    }
+
+    emit saveClicked(m_date);
+    return true;
+}
+
 void ReportDetailsWidget::setDate(const QDate &date)
 {
     m_date = date;
@@ -62,16 +89,6 @@ void ReportDetailsWidget::setupDelegates()
 
 void ReportDetailsWidget::setupFromDatabase(const QDate &date)
 {
-    if (!m_isSaved) {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this,
-                              tr("Рапортичка не сохранена"),
-                              tr("Вы не сохранили рапортичку."
-                                 "\nВы хотите переключиться на другую?"));
-        if (reply == QMessageBox::StandardButton::No)
-            return;
-    }
-
     setDate(date);
     ui->tableWidget->setRowCount(0);
 
@@ -107,6 +124,25 @@ void ReportDetailsWidget::onDateSelected(const QDate &date)
     setDate(date);
 }
 
+void ReportDetailsWidget::onReportSelected(const QDate &date)
+{
+    if (m_isSaved) {
+        setupFromDatabase(date);
+        return;
+    }
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+                                  tr("Рапортичка не сохранена"),
+                                  tr("Вы хотите сохранить текущую рапортичку?"));
+    if (reply == QMessageBox::StandardButton::No) {
+        return;
+    }
+
+    if (save())
+        emit saveClicked(m_date);
+}
+
 int ReportDetailsWidget::insertRow()
 {
     int newRowIndex = ui->tableWidget->rowCount();
@@ -140,19 +176,34 @@ QStringList ReportDetailsWidget::availableGroups(const QString &currentGroup) co
     return groups;
 }
 
-bool ReportDetailsWidget::saveToDatabase()
+bool ReportDetailsWidget::isReportInDatabase()
 {
+    return DatabaseManager::instance()->isItemInAbsentees(m_date);
+}
+
+bool ReportDetailsWidget::writeToDatabase()
+{   
     int rowCount = ui->tableWidget->rowCount();
-    if (!rowCount)
+    if (rowCount == 0)
         return false;
 
-    auto dbManager = DatabaseManager::instance();
+    DatabaseManager *dbManager;
+    GroupTableWidgetItem *groupItem;
+    AbsenteesTableWidgetItem *absenteesItem;
+
+    for (int row = 0; row < rowCount; ++row) {
+        groupItem = groupTableItem(row, 0);
+        if (groupItem->groupId() == -1)
+            return false;
+    }
+
+    dbManager = DatabaseManager::instance();
     if (!dbManager->deleteFromAbsentees(m_date))
         return false;
 
     for (int row = 0; row < rowCount; ++row) {
-        auto groupItem = groupTableItem(row, 0);
-        auto absenteesItem = absenteesTableItem(row, 1);
+        groupItem = groupTableItem(row, 0);
+        absenteesItem = absenteesTableItem(row, 1);
         if (absenteesItem->absentees().isEmpty()) {
             absenteesItem->setAbsentees({"null"});
         }
@@ -177,18 +228,8 @@ void ReportDetailsWidget::onCellEdit(int row, int column)
 
 void ReportDetailsWidget::onSaveClicked()
 {
-    if (!m_date.isValid()) {
-        QMessageBox::critical(this, "Ошибка", "Необходимо установить дату.");
-        return;
-    }
-
-    if (!saveToDatabase()) {
-        QMessageBox::critical(this, "Ошибка", "Не удалось сохранить таблицу."
-                                              "\nВозможно, таблица пустая, или вы не заполнили строки."
-                                              "\nПопробуйте еще раз");
-        return;
-    }
-    emit saveClicked(m_date);
+    if (save())
+        emit saveClicked(m_date);
 }
 
 AbsenteesItemDelegate *ReportDetailsWidget::absenteesItemDelegate() const

@@ -283,6 +283,12 @@ bool DatabaseManager::deleteFromAbsentees(const QDate &date)
     return deleteFromTable("absentees", condition);
 }
 
+bool DatabaseManager::isItemInAbsentees(const QDate &date)
+{
+    QString dateString = date.toString(Qt::ISODate);
+    return isItemInTable(dateString, "absentees", "date");
+}
+
 QSqlDatabase *DatabaseManager::database()
 {
     return &m_db;

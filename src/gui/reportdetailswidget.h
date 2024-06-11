@@ -21,7 +21,9 @@ public:
     explicit ReportDetailsWidget(QWidget *parent = nullptr);
     ~ReportDetailsWidget();
 
+    bool save();
     void setDate(const QDate &date);
+    void setupFromDatabase(const QDate &date);
 
 private:
     Ui::ReportDetailsWidget *ui;
@@ -32,13 +34,13 @@ private:
     int insertRow();
     void removeLastRow();
     QStringList availableGroups(const QString &currentGroup) const;
-    bool saveToDatabase();
+    bool isReportInDatabase();
+    bool writeToDatabase();
 
     AbsenteesItemDelegate *absenteesItemDelegate() const;
     GroupsComboBoxDelegate *groupsComboBoxDelegate() const;
     GroupTableWidgetItem *groupTableItem(int row, int column) const;
     AbsenteesTableWidgetItem *absenteesTableItem(int row, int column) const;
-
 
     //СДЕЛАТЬ ПОТОМ ЧТОБЫ КОМБОБОКСЫ ОБНОВЛЯЛИСЬ ПРИ УДАЛЕНИИ ЭЛЕМЕНТОВ ИЗ СПИСКА
     //void updateComboBoxes();
@@ -47,7 +49,7 @@ signals:
     void saveClicked(const QDate &date);
 
 public slots:
-    void setupFromDatabase(const QDate &date);
+    void onReportSelected(const QDate &date);
 
 private slots:
     void onCalendarButtonClicked();

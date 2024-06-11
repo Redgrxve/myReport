@@ -12,6 +12,7 @@ public:
     explicit ReportsListWidget(QWidget *parent = nullptr);
 
     void addEmptyItem();
+    void deleteCurrentItem();
     bool isItemInList(const QDate &date) const;
 
 private:
