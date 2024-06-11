@@ -4,6 +4,7 @@
 #include "databasemanager.h"
 #include "passwordencrypt.h"
 #include "appconfig.h"
+#include "nospacevalidator.h"
 
 #include <QMessageBox>
 
@@ -15,6 +16,9 @@ LoginDialog::LoginDialog(QWidget *parent)
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
+    NoSpaceValidator *validator = new NoSpaceValidator(this);
+    ui->loginLineEdit->setValidator(validator);
+    ui->signupLoginLineEdit->setValidator(validator);
     ui->signupGroupBox->hide();
     ui->onSignupLabel->hide();
 

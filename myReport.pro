@@ -26,6 +26,7 @@ SOURCES += \
     src/base/groupscombobox.cpp \
     src/base/groupscomboboxdelegate.cpp \
     src/base/grouptablewidgetitem.cpp \
+    src/base/nospacevalidator.cpp \
     src/base/windowmanager.cpp \
     src/gui/absenteescellwidget.cpp \
     src/gui/absenteeseditdialog.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     src/base/groupscombobox.h \
     src/base/groupscomboboxdelegate.h \
     src/base/grouptablewidgetitem.h \
+    src/base/nospacevalidator.h \
     src/base/windowmanager.h \
     src/gui/absenteescellwidget.h \
     src/gui/absenteeseditdialog.h \
