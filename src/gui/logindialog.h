@@ -18,6 +18,7 @@ public:
 private:
     Ui::LoginDialog *ui;
 
+    void setLineEditValidators();
     bool verifyPassword(const QString &login,
                         const QString &password);
 

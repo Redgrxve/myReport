@@ -14,11 +14,10 @@ LoginDialog::LoginDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setLineEditValidators();
+
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-    NoSpaceValidator *validator = new NoSpaceValidator(this);
-    ui->loginLineEdit->setValidator(validator);
-    ui->signupLoginLineEdit->setValidator(validator);
     ui->signupGroupBox->hide();
     ui->onSignupLabel->hide();
 
@@ -33,6 +32,16 @@ LoginDialog::LoginDialog(QWidget *parent)
 LoginDialog::~LoginDialog()
 {
     delete ui;
+}
+
+void LoginDialog::setLineEditValidators()
+{
+    NoSpaceValidator *validator = new NoSpaceValidator(this);
+    ui->loginLineEdit->setValidator(validator);
+    ui->signupLoginLineEdit->setValidator(validator);
+    ui->loginPasswordLineEdit->setValidator(validator);
+    ui->signupPasswordLineEdit->setValidator(validator);
+    ui->repeatPasswordLineEdit->setValidator(validator);
 }
 
 bool LoginDialog::verifyPassword(const QString &login,
