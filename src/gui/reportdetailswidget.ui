@@ -120,6 +120,9 @@
        <property name="text">
         <string>Сохранить</string>
        </property>
+       <property name="shortcut">
+        <string>Ctrl+S</string>
+       </property>
       </widget>
      </item>
     </layout>

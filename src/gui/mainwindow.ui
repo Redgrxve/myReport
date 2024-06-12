@@ -80,6 +80,9 @@
    <property name="toolTip">
     <string>Новая рапортичка</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionGroups">
    <property name="icon">
@@ -89,6 +92,9 @@
    <property name="text">
     <string>Группы</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
   </action>
   <action name="actionDelete">
    <property name="icon">
@@ -97,6 +103,9 @@
    </property>
    <property name="text">
     <string>Удалить</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

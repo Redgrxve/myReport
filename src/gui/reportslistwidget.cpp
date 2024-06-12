@@ -31,6 +31,8 @@ void ReportsListWidget::deleteCurrentItem()
     auto reportItemWidget = reportListItemWidget(currentItem());
     dbManager->deleteFromAbsentees(reportItemWidget->date());
     delete takeItem(currentRow());
+    if (currentItem())
+        itemClicked(currentItem());
 }
 
 QListWidgetItem *ReportsListWidget::createItem()

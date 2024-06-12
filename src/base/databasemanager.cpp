@@ -80,9 +80,14 @@ bool DatabaseManager::insertToSubjects(const QString &item) const
 bool DatabaseManager::insertToStudents(const QString &item,
                                        int groupId) const
 {
+    QString condition = QString("group_id = %1").arg(groupId);
+    if (isItemInTable(item, "students", "name", condition))
+        return false;
+
     QVariantMap data;
     data["name"] = item;
     data["group_id"] = groupId;
+    data["user_id"] = m_userId;
     return insertIntoTable("students", data);
 }
 
@@ -352,6 +357,7 @@ bool DatabaseManager::createTables() const
 
     queryText = "CREATE TABLE IF NOT EXISTS students ("
                 "id	INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "user_id INTEGER NOT NULL REFERENCES users(id),"
                 "group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,"
                 "name TEXT NOT NULL)";
     if (!query.exec(queryText)) {
@@ -452,18 +458,29 @@ bool DatabaseManager::deleteFromTable(const QString &table,
     return true;
 }
 
-bool DatabaseManager::isItemInTable(const QString &item,
+bool DatabaseManager::isItemInTable(const QVariant &item,
                                     const QString &table,
                                     const QString &column,
+                                    const QString &additionalCondition,
                                     bool checkUserId) const
 {
     QSqlQuery query;
     QString queryText;
-    queryText = QString("SELECT COUNT(*) FROM %1 WHERE %2 = :item").arg(table, column);
+    queryText = QString("SELECT COUNT(*) FROM %1 WHERE %2 = :item").arg(table).arg(column);
+    if (!additionalCondition.isEmpty()) {
+        queryText += " AND " + additionalCondition;
+    }
     if (checkUserId) {
         queryText += QString(" AND user_id = '%1'").arg(m_userId);
     }
-    query.prepare(queryText);
+
+    if (!query.prepare(queryText)) {
+        qDebug() << "Ошибка при получении кол-ва эл-тов из "
+                 << table
+                 << query.lastError();
+        return true;
+    }
+
     query.bindValue(":item", item);
     if (!query.exec()) {
         qDebug() << "Ошибка при получении кол-ва эл-тов из "

@@ -32,19 +32,19 @@ bool ListEditWidget::isItemInList(const QString &text) const
 void ListEditWidget::addNewItem()
 {
     bool okPressed;
-    QString groupName = QInputDialog::getText(this, tr("Добавление нового элемента"),
+    QString itemName = QInputDialog::getText(this, tr("Добавление нового элемента"),
                                               tr("Введите наименование"),
                                               QLineEdit::Normal, "", &okPressed);
     if (!okPressed)
         return;
 
-    if (groupName.isEmpty()) {
+    if (itemName.isEmpty()) {
         QMessageBox::warning(this, tr("Внимание"),
                              tr("Поле должно быть заполнено."));
         return;
     }
 
-    if (!addToDatabase(groupName)) {
+    if (!addToDatabase(itemName)) {
         QMessageBox::critical(this, tr("Ошибка"),
                               tr("Ошибка при добавлении элемента."
                               "\nВозможно, элемент уже добавлена в список."
@@ -52,7 +52,7 @@ void ListEditWidget::addNewItem()
         return;
     }
 
-    listWidget()->addItem(groupName);
+    listWidget()->addItem(itemName);
 }
 
 void ListEditWidget::removeSelectedItem()

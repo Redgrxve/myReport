@@ -75,9 +75,10 @@ private:
     bool deleteFromTable(const QString &table,
                          const QString &condition) const;
 
-    bool isItemInTable(const QString &item,
+    bool isItemInTable(const QVariant &item,
                        const QString &table,
                        const QString &column,
+                       const QString &additionalCondition = "",
                        bool checkUserId = true) const;
 };
 
