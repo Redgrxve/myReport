@@ -19,7 +19,7 @@ ReportDetailsWidget::ReportDetailsWidget(QWidget *parent)
     setupDelegates();
 
     connect(ui->celendarButton, &QPushButton::clicked,
-            this, &ReportDetailsWidget::onCalendarButtonClicked);
+            this, &ReportDetailsWidget::openCalendar);
     connect(ui->addRowButton, &QPushButton::clicked,
             this, &ReportDetailsWidget::insertRow);
     connect(ui->removeRowButton, &QPushButton::clicked,
@@ -38,7 +38,7 @@ ReportDetailsWidget::~ReportDetailsWidget()
 bool ReportDetailsWidget::save()
 {
     if (!m_date.isValid()) {
-        onCalendarButtonClicked();
+        openCalendar();
     }
 
     if (isReportInDatabase()) {
@@ -111,7 +111,7 @@ void ReportDetailsWidget::setupFromDatabase(const QDate &date)
     m_isSaved = true;
 }
 
-void ReportDetailsWidget::onCalendarButtonClicked()
+void ReportDetailsWidget::openCalendar()
 {
     CalendarDialog calendarDialog(this);
     connect(&calendarDialog, &CalendarDialog::dateSelected,

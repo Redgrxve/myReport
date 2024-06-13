@@ -52,7 +52,7 @@ public slots:
     void onReportSelected(const QDate &date);
 
 private slots:
-    void onCalendarButtonClicked();
+    void openCalendar();
     void onDateSelected(const QDate &date);
     void onCellEdit(int row, int column);
     void onSaveClicked();

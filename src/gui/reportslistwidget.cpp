@@ -30,7 +30,11 @@ void ReportsListWidget::deleteCurrentItem()
     auto dbManager = DatabaseManager::instance();
     auto reportItemWidget = reportListItemWidget(currentItem());
     dbManager->deleteFromAbsentees(reportItemWidget->date());
+    if (currentItem() == emptyItem)
+        emptyItem = nullptr;
+
     delete takeItem(currentRow());
+
     if (currentItem())
         itemClicked(currentItem());
 }
