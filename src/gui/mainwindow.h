@@ -30,5 +30,6 @@ private slots:
     void onDisciplinesTriggered();
     void onNewReportTriggered();
     void onDeleteTriggered();
+    void onReportSaved(const QDate &date);
 };
 #endif // MAINWINDOW_H

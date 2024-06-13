@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->reportDetailsWidget, &ReportDetailsWidget::saveClicked,
             ui->listWidget, &ReportsListWidget::onReportSaved);
+    connect(ui->reportDetailsWidget, &ReportDetailsWidget::saveClicked,
+            this, &MainWindow::onReportSaved);
     connect(ui->listWidget, &ReportsListWidget::reportSelected,
             ui->reportDetailsWidget, &ReportDetailsWidget::onReportSelected);
 }
@@ -52,5 +54,11 @@ void MainWindow::onNewReportTriggered()
 void MainWindow::onDeleteTriggered()
 {
     ui->listWidget->deleteCurrentItem();
+}
+
+void MainWindow::onReportSaved(const QDate &date)
+{
+    QString dateString = date.toString("dd.MM.yyyy");
+    ui->statusbar->showMessage(tr("Рапортичка с датой ") + dateString + tr(" сохранена"));
 }
 
