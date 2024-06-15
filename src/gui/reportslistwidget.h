@@ -20,11 +20,12 @@ private:
 
     QListWidgetItem *createItem();
     QListWidgetItem *createItem(const QDate &date);
+    QListWidgetItem *itemByDate(const QDate &date);
     void setupItemsFromDatabase();
     ReportListItemWidget *reportListItemWidget(QListWidgetItem *item) const;
 
 signals:
-    void reportSelected(const QDate &date, QListWidgetItem *report);
+    void reportSelected(const QDate &date);
     void reportsDeleted();
 
 public slots:

@@ -42,11 +42,13 @@ bool ReportDetailsWidget::save(bool forceSave)
     }
 
     if (isReportInDatabase() && !forceSave) {
+        QString dateStr = m_date.toString("dd.MM.yyyy");
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this,
                                       tr("Перезапись существующей рапортички"),
-                                      tr("Рапортичка c этой датой уже существует."
-                                         "\nВы хотите перезаписать её?"));
+                                      tr("Рапортичка на %1 уже существует."
+                                         "\nВы хотите перезаписать её?")
+                                          .arg(dateStr));
         if (reply == QMessageBox::StandardButton::No) {
             return false;
         }

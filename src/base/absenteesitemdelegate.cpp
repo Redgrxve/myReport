@@ -79,5 +79,6 @@ void AbsenteesItemDelegate::onAbsenteesSaved(QWidget *editor)
     }
 
     setModelData(editor, model, index);
+    editor->clearFocus();
 }
 

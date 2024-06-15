@@ -3,6 +3,8 @@
 #include "studentslistedit.h"
 #include "windowmanager.h"
 
+#include <QMessageBox>
+
 GroupsListEdit::GroupsListEdit(WindowManager* windowManager,
                                QWidget* parent)
     : ListEditWidget(parent)
@@ -12,6 +14,29 @@ GroupsListEdit::GroupsListEdit(WindowManager* windowManager,
     listWidget()->addItems(DatabaseManager::instance()->selectNamesFromGroups());
     connect(listWidget(), SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(onItemDoubleClicked(QListWidgetItem*)));
+}
+
+void GroupsListEdit::removeSelectedItem()
+{
+    auto selectedItem = listWidget()->currentItem();
+    if (!selectedItem)
+        return;
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+                                  tr("Удаление выбранного элемента"),
+                                  tr("Вы действительно хотите удалить выбранный элемент?"));
+    if (reply == QMessageBox::StandardButton::No)
+        return;
+
+    if (!deleteFromDatabase(selectedItem->text())) {
+        QMessageBox::critical(this, tr("Ошибка"),
+                              tr("Ошибка при удалении элемента из базы данных."
+                                 "\nГруппу нельзя удалить, если она присутствует в рапортичках."));
+        return;
+    }
+
+    delete listWidget()->takeItem(listWidget()->row(selectedItem));
 }
 
 bool GroupsListEdit::addToDatabase(const QString &item)

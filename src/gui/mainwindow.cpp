@@ -39,12 +39,12 @@ void MainWindow::onGroupsTriggered()
     m_windowManager->add(groupsWidget);
 }
 
-void MainWindow::onDisciplinesTriggered()
-{
-    SubjectsListEdit *subjectsWidget = new SubjectsListEdit;
-    subjectsWidget->show();
-    m_windowManager->add(subjectsWidget);
-}
+// void MainWindow::onDisciplinesTriggered()
+// {
+//     SubjectsListEdit *subjectsWidget = new SubjectsListEdit;
+//     subjectsWidget->show();
+//     m_windowManager->add(subjectsWidget);
+// }
 
 void MainWindow::onNewReportTriggered()
 {

@@ -41,7 +41,7 @@ SOURCES += \
     src/gui/reportslistwidget.cpp \
     src/gui/studentslistedit.cpp \
     src/gui/studentsselectdialog.cpp \
-    src/gui/subjectslistedit.cpp
+    #src/gui/subjectslistedit.cpp
 
 HEADERS += \
     src/base/absenteesitemdelegate.h \
@@ -66,8 +66,9 @@ HEADERS += \
     src/gui/reportslistwidget.h \
     src/gui/studentslistedit.h \
     src/gui/studentsselectdialog.h \
-    src/gui/subjectslistedit.h \
-    src/utils/passwordencrypt.h
+    #src/gui/subjectslistedit.h \
+    src/utils/passwordencrypt.h \
+    src/utils/utils.h
 
 FORMS += \
     src/gui/absenteeseditdialog.ui \
@@ -80,10 +81,10 @@ FORMS += \
     src/gui/reportlistitemwidget.ui \
     src/gui/studentsselectdialog.ui
 
+RESOURCES += \
+    src/res/resources.qrc
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-RESOURCES += \
-    src/res/resources.qrc

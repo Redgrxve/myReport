@@ -2,6 +2,8 @@
 #include "databasemanager.h"
 #include "reportlistitemwidget.h"
 
+#include <QMessageBox>
+
 ReportsListWidget::ReportsListWidget(QWidget *parent)
     : QListWidget(parent)
 {
@@ -25,6 +27,13 @@ void ReportsListWidget::addEmptyItem()
 void ReportsListWidget::deleteCurrentItem()
 {
     if (!currentItem())
+        return;
+
+    QString dateStr = reportListItemWidget(currentItem())->date().toString("dd.MM.yyyy");
+    QMessageBox::StandardButton reply = QMessageBox::question(this,
+                                  tr("Внимание"),
+                                  tr("Вы точно хотите удалить рапортичку на ") + dateStr);
+    if (reply == QMessageBox::StandardButton::No)
         return;
 
     auto dbManager = DatabaseManager::instance();
@@ -81,15 +90,31 @@ bool ReportsListWidget::isItemInList(const QDate &date) const
     return false;
 }
 
+QListWidgetItem *ReportsListWidget::itemByDate(const QDate &date)
+{
+    for (int row = 0; row < count(); ++row) {
+        auto reportItem = item(row);
+        auto reportItemWidget = reportListItemWidget(reportItem);
+        if (date == reportItemWidget->date())
+            return reportItem;
+    }
+
+    return nullptr;
+}
+
 void ReportsListWidget::onReportSaved(const QDate &date)
 {
     clear();
     setupItemsFromDatabase();
     emptyItem = nullptr;
+
+    auto item = itemByDate(date);
+    if (item)
+        setCurrentItem(item);
 }
 
 void ReportsListWidget::onItemClicked(QListWidgetItem *item)
 {
     auto reportItemWidget = reportListItemWidget(item);
-    emit reportSelected(reportItemWidget->date(), item);
+    emit reportSelected(reportItemWidget->date());
 }

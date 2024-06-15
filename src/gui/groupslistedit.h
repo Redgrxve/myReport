@@ -16,6 +16,7 @@ public:
 private:
     WindowManager* m_windowManager;
 
+    void removeSelectedItem() override;
     bool addToDatabase(const QString &item) override;
     bool deleteFromDatabase(const QString &item) override;
 
