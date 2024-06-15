@@ -35,13 +35,13 @@ ReportDetailsWidget::~ReportDetailsWidget()
     delete ui;
 }
 
-bool ReportDetailsWidget::save()
+bool ReportDetailsWidget::save(bool forceSave)
 {
     if (!m_date.isValid()) {
         openCalendar();
     }
 
-    if (isReportInDatabase()) {
+    if (isReportInDatabase() && !forceSave) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this,
                                       tr("Перезапись существующей рапортички"),
@@ -136,11 +136,14 @@ void ReportDetailsWidget::onReportSelected(const QDate &date)
                                   tr("Рапортичка не сохранена"),
                                   tr("Вы хотите сохранить текущую рапортичку?"));
     if (reply == QMessageBox::StandardButton::No) {
+        setupFromDatabase(date);
         return;
     }
 
-    if (save())
+    if (save(true)) {
+        setupFromDatabase(date);
         emit saveClicked(m_date);
+    }
 }
 
 int ReportDetailsWidget::insertRow()

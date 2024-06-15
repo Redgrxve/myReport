@@ -36,7 +36,7 @@ void ReportsListWidget::deleteCurrentItem()
     delete takeItem(currentRow());
 
     if (currentItem())
-        itemClicked(currentItem());
+        emit itemClicked(currentItem());
 }
 
 QListWidgetItem *ReportsListWidget::createItem()
@@ -91,5 +91,5 @@ void ReportsListWidget::onReportSaved(const QDate &date)
 void ReportsListWidget::onItemClicked(QListWidgetItem *item)
 {
     auto reportItemWidget = reportListItemWidget(item);
-    emit reportSelected(reportItemWidget->date());
+    emit reportSelected(reportItemWidget->date(), item);
 }

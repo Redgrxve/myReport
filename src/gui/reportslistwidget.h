@@ -24,7 +24,8 @@ private:
     ReportListItemWidget *reportListItemWidget(QListWidgetItem *item) const;
 
 signals:
-    void reportSelected(const QDate &date);
+    void reportSelected(const QDate &date, QListWidgetItem *report);
+    void reportsDeleted();
 
 public slots:
     void onReportSaved(const QDate &date);

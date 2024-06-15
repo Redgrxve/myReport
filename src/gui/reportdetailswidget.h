@@ -21,7 +21,7 @@ public:
     explicit ReportDetailsWidget(QWidget *parent = nullptr);
     ~ReportDetailsWidget();
 
-    bool save();
+    bool save(bool forceSave = false);
     void setDate(const QDate &date);
     void setupFromDatabase(const QDate &date);
 
