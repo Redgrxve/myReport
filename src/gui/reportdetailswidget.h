@@ -42,6 +42,8 @@ private:
     GroupTableWidgetItem *groupTableItem(int row, int column) const;
     AbsenteesTableWidgetItem *absenteesTableItem(int row, int column) const;
 
+    void closeEvent(QCloseEvent *event) override;
+
     //СДЕЛАТЬ ПОТОМ ЧТОБЫ КОМБОБОКСЫ ОБНОВЛЯЛИСЬ ПРИ УДАЛЕНИИ ЭЛЕМЕНТОВ ИЗ СПИСКА
     //void updateComboBoxes();
 

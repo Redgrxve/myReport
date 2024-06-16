@@ -256,3 +256,20 @@ AbsenteesTableWidgetItem *ReportDetailsWidget::absenteesTableItem(int row, int c
 {
     return static_cast<AbsenteesTableWidgetItem*>(ui->tableWidget->item(row, column));
 }
+
+void ReportDetailsWidget::closeEvent(QCloseEvent *event)
+{
+    if (m_isSaved)
+        return;
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+                                  tr("Рапортичка не сохранена"),
+                                  tr("Вы хотите сохранить текущую рапортичку?"));
+    if (reply == QMessageBox::StandardButton::No) {
+        return;
+    }
+
+    save();
+    QWidget::closeEvent(event);
+}
