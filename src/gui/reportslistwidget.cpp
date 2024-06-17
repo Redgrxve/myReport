@@ -29,10 +29,12 @@ void ReportsListWidget::deleteCurrentItem()
     if (!currentItem())
         return;
 
-    QString dateStr = reportListItemWidget(currentItem())->date().toString("dd.MM.yyyy");
+    QDate date = reportListItemWidget(currentItem())->date();
+    QString questionText = date.isValid() ? tr("Вы точно хотите удалить рапортичку на ") + date.toString("dd.MM.yyyy") + "?"
+                                          : tr("Вы точно хотите удалить незаполненную рапортичку?");
     QMessageBox::StandardButton reply = QMessageBox::question(this,
                                   tr("Внимание"),
-                                  tr("Вы точно хотите удалить рапортичку на ") + dateStr);
+                                  questionText);
     if (reply == QMessageBox::StandardButton::No)
         return;
 
