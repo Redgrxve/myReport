@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "groupslistedit.h"
-#include "subjectslistedit.h"
 #include "windowmanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -38,13 +37,6 @@ void MainWindow::onGroupsTriggered()
     groupsWidget->show();
     m_windowManager->add(groupsWidget);
 }
-
-// void MainWindow::onDisciplinesTriggered()
-// {
-//     SubjectsListEdit *subjectsWidget = new SubjectsListEdit;
-//     subjectsWidget->show();
-//     m_windowManager->add(subjectsWidget);
-// }
 
 void MainWindow::onNewReportTriggered()
 {

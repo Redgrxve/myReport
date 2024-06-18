@@ -39,6 +39,8 @@ bool ReportDetailsWidget::save(bool forceSave)
 {
     if (!m_date.isValid()) {
         openCalendar();
+        if (!m_date.isValid())
+            return false;
     }
 
     if (isReportInDatabase() && !forceSave) {

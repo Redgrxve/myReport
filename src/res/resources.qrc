@@ -15,5 +15,10 @@
         <file>icons/edit2.png</file>
         <file>icons/remove (2).png</file>
         <file>icons/remove (3).png</file>
+        <file>icons/customer.png</file>
+        <file>icons/to-do-list.png</file>
+        <file>icons/calendar.png</file>
+        <file>icons/absence.png</file>
+        <file>icons/question.png</file>
     </qresource>
 </RCC>

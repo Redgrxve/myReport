@@ -3,10 +3,23 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QTranslator>
+#include <QLibraryInfo>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QLocale locale = QLocale(QLocale::Russian, QLocale::Russia);
+    QString translationsPath(QLibraryInfo::path(QLibraryInfo::TranslationsPath));
+    QTranslator qtTranslator;
+    if (qtTranslator.load(locale, "qt", "_", translationsPath))
+        a.installTranslator(&qtTranslator);
+
+    QTranslator qtBaseTranslator;
+    if (qtBaseTranslator.load(locale, "qtbase", "_", translationsPath))
+        a.installTranslator(&qtBaseTranslator);
+
 
     DatabaseManager* dbManager = DatabaseManager::instance();
     if (!dbManager->connect()) {

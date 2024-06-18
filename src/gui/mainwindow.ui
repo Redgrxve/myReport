@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>мояРапортичка</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/resources.qrc">
+    <normaloff>:/icons/icons/to-do-list.png</normaloff>:/icons/icons/to-do-list.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
