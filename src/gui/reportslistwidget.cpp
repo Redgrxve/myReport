@@ -7,8 +7,8 @@
 ReportsListWidget::ReportsListWidget(QWidget *parent)
     : QListWidget(parent)
 {
-    connect(this, &ReportsListWidget::itemClicked,
-            this, &ReportsListWidget::onItemClicked);
+    connect(this, &QListWidget::currentItemChanged,
+            this, &ReportsListWidget::onItemChanged);
 
     setupItemsFromDatabase();
 }
@@ -119,8 +119,11 @@ void ReportsListWidget::onReportSaved(const QDate &date)
         setCurrentItem(item);
 }
 
-void ReportsListWidget::onItemClicked(QListWidgetItem *item)
+void ReportsListWidget::onItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    auto reportItemWidget = reportListItemWidget(item);
+    if (!current || current == previous)
+        return;
+
+    auto reportItemWidget = reportListItemWidget(current);
     emit reportSelected(reportItemWidget->date());
 }

@@ -33,7 +33,7 @@ public slots:
     void onReportSaved(const QDate &date);
 
 private slots:
-    void onItemClicked(QListWidgetItem *item);
+    void onItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 };
 
 #endif // REPORTSLISTWIDGET_H
