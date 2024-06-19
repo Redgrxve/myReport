@@ -49,6 +49,9 @@ void ReportsListWidget::deleteCurrentItem()
 
     if (currentItem())
         emit itemClicked(currentItem());
+
+    if (count() == 0)
+        emit allReportsDeleted();
 }
 
 QListWidgetItem *ReportsListWidget::createItem()

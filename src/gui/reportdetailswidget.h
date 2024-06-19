@@ -36,6 +36,7 @@ private:
     QStringList availableGroups(const QString &currentGroup) const;
     bool isReportInDatabase();
     bool writeToDatabase();
+    void clearReport();
 
     AbsenteesItemDelegate *absenteesItemDelegate() const;
     GroupsComboBoxDelegate *groupsComboBoxDelegate() const;
@@ -52,6 +53,7 @@ signals:
 
 public slots:
     void onReportSelected(const QDate &date);
+    void onReportsDeleted();
 
 private slots:
     void openCalendar();

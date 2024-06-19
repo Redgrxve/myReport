@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onReportSaved);
     connect(ui->listWidget, &ReportsListWidget::reportSelected,
             ui->reportDetailsWidget, &ReportDetailsWidget::onReportSelected);
+    connect(ui->listWidget, &ReportsListWidget::allReportsDeleted,
+            ui->reportDetailsWidget, &ReportDetailsWidget::onReportsDeleted);
     connect(ui->listWidget, &ReportsListWidget::reportDeleted,
             this, &MainWindow::onReportDeleted);
 }

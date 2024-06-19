@@ -27,6 +27,7 @@ private:
 signals:
     void reportSelected(const QDate &date);
     void reportDeleted(const QDate &date);
+    void allReportsDeleted();
 
 public slots:
     void onReportSaved(const QDate &date);

@@ -150,6 +150,11 @@ void ReportDetailsWidget::onReportSelected(const QDate &date)
     }
 }
 
+void ReportDetailsWidget::onReportsDeleted()
+{
+    clearReport();
+}
+
 int ReportDetailsWidget::insertRow()
 {
     int newRowIndex = ui->tableWidget->rowCount();
@@ -221,6 +226,12 @@ bool ReportDetailsWidget::writeToDatabase()
     }
     m_isSaved = true;
     return true;
+}
+
+void ReportDetailsWidget::clearReport()
+{
+    ui->tableWidget->setRowCount(0);
+    setDate(QDate());
 }
 
 void ReportDetailsWidget::onCellEdit(int row, int column)
