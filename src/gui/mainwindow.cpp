@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onReportSaved);
     connect(ui->listWidget, &ReportsListWidget::reportSelected,
             ui->reportDetailsWidget, &ReportDetailsWidget::onReportSelected);
+    connect(ui->listWidget, &ReportsListWidget::reportDeleted,
+            this, &MainWindow::onReportDeleted);
 }
 
 MainWindow::~MainWindow()
@@ -52,5 +54,13 @@ void MainWindow::onReportSaved(const QDate &date)
 {
     QString dateString = date.toString("dd.MM.yyyy");
     ui->statusbar->showMessage(tr("Рапортичка с датой ") + dateString + tr(" сохранена"));
+}
+
+void MainWindow::onReportDeleted(const QDate &date)
+{
+    QString dateString = date.toString("dd.MM.yyyy");
+    QString message = date.isValid() ? "Рапортичка с датой " + dateString + " удалена"
+                                     : "Рапортичка удалена";
+    ui->statusbar->showMessage(message);
 }
 

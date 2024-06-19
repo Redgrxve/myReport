@@ -41,7 +41,8 @@ SOURCES += \
     src/gui/reportslistwidget.cpp \
     src/gui/studentslistedit.cpp \
     src/gui/studentsselectdialog.cpp \
-    #src/gui/subjectslistedit.cpp
+ \    #src/gui/subjectslistedit.cpp
+    src/utils/passwordencrypt.cpp
 
 HEADERS += \
     src/base/absenteesitemdelegate.h \

@@ -1,4 +1,5 @@
 #include "databasemanager.h"
+#include "passwordencrypt.h"
 
 #include <QStringList>
 #include <QFile>
@@ -38,6 +39,9 @@ bool DatabaseManager::connect()
     }
 
     if (!createTables())
+        return false;
+
+    if (!createDefaultData())
         return false;
 
     return true;
@@ -376,6 +380,102 @@ bool DatabaseManager::createTables() const
         qDebug() << "Ошибка при создании таблицы отсутствующих: "
                  << query.lastError();
         return false;
+    }
+
+    return true;
+}
+
+bool DatabaseManager::createDefaultData()
+{
+    QString login = "ProCode";
+    if (isItemInTable(login, "users", "login", "", false))
+        return true;
+
+    QByteArray salt = PasswordEncrypt::generateSalt();
+    QByteArray password = PasswordEncrypt::generateHash("proschool", salt);
+
+    if (!insertToUsers(login, password, salt))
+        return false;
+
+    m_userId = selectIdFromUsers(login);
+    QString groupName = "Майнкрафт СБ 9:30";
+    if (insertToGroups(groupName)) {
+        int groupId = selectIdFromGroups(groupName);
+        insertToStudents("Нефедов Тимофей Никитич", groupId);
+        insertToStudents("Родин Игорь Васильевич", groupId);
+        insertToStudents("Царев Матвей Викторович", groupId);
+        insertToStudents("Андреева Ева Максимовна", groupId);
+        insertToStudents("Новиков Иван Николаевич", groupId);
+    }
+
+    groupName = "Роблокс СБ 11:15";
+    if (insertToGroups(groupName)) {
+        int groupId = selectIdFromGroups(groupName);
+        insertToStudents("Орлова Елизавета Артёмовна", groupId);
+        insertToStudents("Нестеров Кирилл Александрович", groupId);
+        insertToStudents("Мельников Кирилл Савельевич", groupId);
+        insertToStudents("Прокофьев Максим Александрович", groupId);
+        insertToStudents("Иванов Сергей Максимович", groupId);
+        insertToStudents("Комаров Всеволод Маркович", groupId);
+        insertToStudents("Тимофеев Даниил Петрович", groupId);
+    }
+
+    groupName = "Роблокс ВС 11:15";
+    if (insertToGroups(groupName)) {
+        int groupId = selectIdFromGroups(groupName);
+        insertToStudents("Куприянов Иван Арсентьевич", groupId);
+        insertToStudents("Кулакова Виктория Данииловна", groupId);
+        insertToStudents("Лукин Лев Максимович", groupId);
+        insertToStudents("Маслов Владислав Платонович", groupId);
+        insertToStudents("Киселева Алина Глебовна", groupId);
+        insertToStudents("Еремин Ярослав Степанович", groupId);
+        insertToStudents("Авдеев Филипп Тихонович", groupId);
+        insertToStudents("Орехова Екатерина Максимовна", groupId);
+        insertToStudents("Кондратьев Дмитрий Никитич", groupId);
+    }
+
+    groupName = "Майнкрафт ВС 13:00";
+    if (insertToGroups(groupName)) {
+        int groupId = selectIdFromGroups(groupName);
+        insertToStudents("Наумова Василиса Егоровна", groupId);
+        insertToStudents("Белов Тимур Андреевич", groupId);
+        insertToStudents("Шапошников Дмитрий Максимович", groupId);
+        insertToStudents("Казаков Максим Александрович", groupId);
+        insertToStudents("Лазарев Тимур Георгиевич", groupId);
+        insertToStudents("Рябов Кирилл Миронович", groupId);
+        insertToStudents("Захаров Илья Тимофеевич", groupId);
+        insertToStudents("Андреева Виктория Сергеевна", groupId);
+        insertToStudents("Яковлев Андрей Петрович", groupId);
+        insertToStudents("Кузьмин Иван Платонович", groupId);
+        insertToStudents("Лапин Иван Александрович", groupId);
+        insertToStudents("Родионов Андрей Александрович", groupId);
+        insertToStudents("Моисеев Лев Сергеевич", groupId);
+    }
+
+    groupName = "Комп. грам. ВС 14:45";
+    if (insertToGroups(groupName)) {
+        int groupId = selectIdFromGroups(groupName);
+        insertToStudents("Сорокина Екатерина Викторовна", groupId);
+        insertToStudents("Румянцева Анна Ивановна", groupId);
+        insertToStudents("Воронин Максим Демьянович", groupId);
+        insertToStudents("Козлов Ярослав Никитич", groupId);
+        insertToStudents("Синицын Алексей Ильич", groupId);
+        insertToStudents("Устинов Дмитрий Ильич", groupId);
+        insertToStudents("Королев Степан Максимович", groupId);
+    }
+
+    groupName = "Майнкрафт ВС 16:30";
+    if (insertToGroups(groupName)) {
+        int groupId = selectIdFromGroups(groupName);
+        insertToStudents("Хохлов Пётр Мирославович", groupId);
+        insertToStudents("Иванов Фёдор Георгиевич", groupId);
+        insertToStudents("Носков Егор Владиславович", groupId);
+        insertToStudents("Миронов Артемий Олегович", groupId);
+        insertToStudents("Елисеев Тимур Русланович", groupId);
+        insertToStudents("Литвинов Борис Алексеевич", groupId);
+        insertToStudents("Фокин Максим Владиславович", groupId);
+        insertToStudents("Сорокин Михаил Сергеевич", groupId);
+        insertToStudents("Акимов Михаил Романович", groupId);
     }
 
     return true;

@@ -30,5 +30,6 @@ private slots:
     void onNewReportTriggered();
     void onDeleteTriggered();
     void onReportSaved(const QDate &date);
+    void onReportDeleted(const QDate &date);
 };
 #endif // MAINWINDOW_H

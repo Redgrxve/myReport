@@ -45,6 +45,7 @@ void ReportsListWidget::deleteCurrentItem()
         emptyItem = nullptr;
 
     delete takeItem(currentRow());
+    emit reportDeleted(date);
 
     if (currentItem())
         emit itemClicked(currentItem());

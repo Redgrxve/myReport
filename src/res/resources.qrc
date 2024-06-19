@@ -20,5 +20,6 @@
         <file>icons/calendar.png</file>
         <file>icons/absence.png</file>
         <file>icons/question.png</file>
+        <file>icons/login.png</file>
     </qresource>
 </RCC>

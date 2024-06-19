@@ -62,6 +62,7 @@ private:
 
     bool createDatabaseFile(const QString &path) const;
     bool createTables() const;
+    bool createDefaultData();
 
     QStringList stringListByQuery(QSqlQuery &query,
                                   const QString &column) const;

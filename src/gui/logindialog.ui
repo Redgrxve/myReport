@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Войдите или зарегистрируйтесь</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/resources.qrc">
+    <normaloff>:/icons/icons/login.png</normaloff>:/icons/icons/login.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QLabel" name="loginLabel">
@@ -116,6 +120,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
